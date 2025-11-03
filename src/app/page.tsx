@@ -1,65 +1,149 @@
-import Image from "next/image";
+"use client";
+
+import { useState } from "react";
+import { Header } from "@/components/ui/Header";
+import { SubNavbar } from "@/components/ui/SubNavbar";
+import { SearchBar } from "@/components/ui/SearchBar";
+import { SearchDropdown, City, State } from "@/components/ui/search-dropdown";
+
+// Sample data matching the Figma design
+const sampleCities: City[] = [
+  {
+    id: "vienna",
+    name: "Vienna",
+    districtInfo: "All Districts",
+    imageSrc: "https://images.unsplash.com/photo-1516550893923-42d28e5677af?w=400&h=300&fit=crop",
+    isSelected: true,
+  },
+  {
+    id: "graz",
+    name: "Graz",
+    districtInfo: "23 Districts",
+    imageSrc: "https://images.unsplash.com/photo-1555881605-ea6cf8b0e8f2?w=400&h=300&fit=crop",
+  },
+  {
+    id: "linz",
+    name: "Linz",
+    districtInfo: "23 Districts",
+    imageSrc: "https://images.unsplash.com/photo-1583422409516-2895a77efded?w=400&h=300&fit=crop",
+  },
+  {
+    id: "salzburg",
+    name: "Salzburg",
+    districtInfo: "23 Districts",
+    imageSrc: "https://images.unsplash.com/photo-1598880940371-c756e015faf1?w=400&h=300&fit=crop",
+  },
+  {
+    id: "innsbruck",
+    name: "Innsbruck",
+    districtInfo: "23 Districts",
+    imageSrc: "https://images.unsplash.com/photo-1583422409516-2895a77efded?w=400&h=300&fit=crop",
+  },
+  {
+    id: "klagenfurt",
+    name: "Klagenfurt",
+    districtInfo: "23 Districts",
+    imageSrc: "https://images.unsplash.com/photo-1555881605-ea6cf8b0e8f2?w=400&h=300&fit=crop",
+  },
+];
+
+const sampleStates: State[] = [
+  {
+    id: "lower-austria",
+    name: "Lower Austria",
+    districtCount: 24,
+    imageSrc: "https://images.unsplash.com/photo-1583422409516-2895a77efded?w=100&h=100&fit=crop",
+  },
+  {
+    id: "upper-austria",
+    name: "Upper Austria",
+    districtCount: 18,
+    imageSrc: "https://images.unsplash.com/photo-1555881605-ea6cf8b0e8f2?w=100&h=100&fit=crop",
+  },
+  {
+    id: "burgenland",
+    name: "Burgenland",
+    districtCount: 9,
+    imageSrc: "https://images.unsplash.com/photo-1598880940371-c756e015faf1?w=100&h=100&fit=crop",
+  },
+  {
+    id: "carinthia",
+    name: "Carinthia",
+    districtCount: 10,
+    imageSrc: "https://images.unsplash.com/photo-1516550893923-42d28e5677af?w=100&h=100&fit=crop",
+  },
+  {
+    id: "vorarlberg",
+    name: "Vorarlberg",
+    districtCount: 4,
+    imageSrc: "https://images.unsplash.com/photo-1583422409516-2895a77efded?w=100&h=100&fit=crop",
+  },
+  {
+    id: "styria",
+    name: "Styria",
+    districtCount: 13,
+    imageSrc: "https://images.unsplash.com/photo-1555881605-ea6cf8b0e8f2?w=100&h=100&fit=crop",
+  },
+];
 
 export default function Home() {
+  const [showDropdown, setShowDropdown] = useState(true);
+  const [headerMode, setHeaderMode] = useState<"rent" | "buy" | "ai">("rent");
+  const [locationTags, setLocationTags] = useState([
+    {
+      label: "Upper Austria  · Bindermichl-Keferfeld",
+      onRemove: () => {
+        setLocationTags([]);
+      },
+    },
+  ]);
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div className="min-h-screen bg-white relative">
+      {/* Header */}
+      <Header mode={headerMode} onModeChange={setHeaderMode} />
+
+      {/* Sub Navbar */}
+      <SubNavbar />
+
+      {/* Main Content Area */}
+      <div className="relative">
+        {/* Search Bar Section */}
+        <div className="bg-white pt-6 pb-6 flex flex-col items-center shadow-[0px_105px_77.6px_38px_rgba(0,0,0,0.08)] relative z-10">
+          <SearchBar
+            locationTags={locationTags}
+            onLocationClick={() => setShowDropdown(!showDropdown)}
+            onSearch={() => console.log("Search clicked")}
+          />
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+
+        {/* Overlay and Dropdown */}
+        {showDropdown && (
+          <>
+            {/* Dark Overlay */}
+            <div
+              className="fixed inset-0 bg-black/40 z-20"
+              onClick={() => setShowDropdown(false)}
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+            {/* Search Dropdown - positioned absolutely */}
+            <div className="absolute left-1/2 -translate-x-1/2 top-[77px] z-30">
+              <SearchDropdown
+                cities={sampleCities}
+                states={sampleStates}
+                onCityClick={(id) => console.log("City clicked:", id)}
+                onStateClick={(id) => console.log("State clicked:", id)}
+                onDrawAreaClick={() => console.log("Draw area clicked")}
+              />
+            </div>
+          </>
+        )}
+
+        {/* Map or other content would go here */}
+        <div className="h-[calc(100vh-240px)] bg-gray-200 flex items-center justify-center">
+          <p className="text-gray-500 text-lg">Map content area</p>
         </div>
-      </main>
+      </div>
     </div>
   );
 }

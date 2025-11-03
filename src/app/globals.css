@@ -3,6 +3,21 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  /* Brand colors */
+  --brand-purple: #a540f3;
+  --brand-purple-alt: #a440f1;
+  --brand-purple-light: #f6ecfe;
+
+  /* Backgrounds */
+  --bg-light: #f7f7fd;
+
+  /* Text colors */
+  --text-primary: #0e0e0e;
+  --text-secondary: #79767d;
+
+  /* Borders */
+  --border-light: #eee7ff;
 }
 
 @theme inline {
@@ -10,6 +25,21 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  /* Brand colors */
+  --color-brand-purple: var(--brand-purple);
+  --color-brand-purple-alt: var(--brand-purple-alt);
+  --color-brand-purple-light: var(--brand-purple-light);
+
+  /* Backgrounds */
+  --color-bg-light: var(--bg-light);
+
+  /* Text */
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+
+  /* Borders */
+  --color-border-light: var(--border-light);
 }
 
 @media (prefers-color-scheme: dark) {
