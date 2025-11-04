@@ -3,8 +3,8 @@
 import { useState, useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import type { MapboxSuggestion, GroupedSuggestions, MapboxSearchResponse } from "@/types/mapbox";
-import locationsData from "../locations.json";
 import { Dropdown } from "./Dropdown";
+import { useAllLocations, usePopularLocations, type Location } from "@/lib/locations";
 
 interface LocationDropdownProps {
   onClose?: () => void;
@@ -15,20 +15,6 @@ interface LocationDropdownProps {
   isLoading?: boolean;
   hasSearchQuery?: boolean;
   selectedLocationId?: string;
-}
-
-interface Location {
-  name: string;
-  altName: string;
-  id: string;
-  children: {
-    name: string;
-    altName: string;
-    id: string;
-    postal_code?: string;
-    urlSegment?: string | null;
-  }[];
-  urlSegment: string;
 }
 
 // City images for popular locations
@@ -59,15 +45,18 @@ export function LocationDropdown({
   hasSearchQuery = false,
   selectedLocationId,
 }: LocationDropdownProps) {
-  const locations = locationsData as Location[];
+  const { data: allLocations = [], isLoading: isLoadingAll } = useAllLocations();
+  const { data: popularLocations = [], isLoading: isLoadingPopular } = usePopularLocations();
 
-  // Find popular cities (first 6 locations with city-level data)
-  const popularCities = locations.slice(0, 6);
-  const otherLocations = locations.slice(6);
+  // Find popular cities from API
+  const popularCities = popularLocations;
+  const otherLocations = allLocations.filter(
+    (loc) => !popularLocations.some((pop) => pop.id === loc.id)
+  );
 
   // Find initial location from prop or default to null
   const findLocationById = (id: string): Location | null => {
-    return locations.find(loc => loc.id === id) || null;
+    return allLocations.find(loc => loc.id === id) || null;
   };
 
   const initialLocation = selectedLocationId ? findLocationById(selectedLocationId) : null;
@@ -360,15 +349,21 @@ export function LocationDropdown({
           {/* Original Location List (when not searching) */}
           {!hasSearchQuery && (
             <>
-              {/* By City Section */}
-              <div className="mb-2">
-                <p className="text-sm font-medium text-text-secondary mb-2">
-                  Popular Locations
-                </p>
+              {isLoadingAll || isLoadingPopular ? (
+                <div className="text-center py-8">
+                  <p className="text-sm text-text-secondary">Loading locations...</p>
+                </div>
+              ) : (
+                <>
+                  {/* By City Section */}
+                  <div className="mb-2">
+                    <p className="text-sm font-medium text-text-secondary mb-2">
+                      Popular Locations
+                    </p>
 
-            {/* Popular Cities Grid */}
-            <div className="grid grid-cols-3 gap-1 mb-2">
-              {popularCities.map((city) => {
+                    {/* Popular Cities Grid */}
+                    <div className="grid grid-cols-3 gap-1 mb-2">
+                      {popularCities.map((city) => {
                 const isSelected = isLocationSelected(city);
                 return (
                   <button
@@ -495,6 +490,8 @@ export function LocationDropdown({
               })}
             </div>
               </div>
+                </>
+              )}
             </>
           )}
         </div>
