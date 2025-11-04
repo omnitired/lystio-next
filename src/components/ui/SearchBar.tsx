@@ -29,6 +29,8 @@ export function SearchBar({
 }: SearchBarProps) {
   const [activeDropdown, setActiveDropdown] = useState<"location" | "category" | "price" | null>(null);
   const [isClosing, setIsClosing] = useState(false);
+  const [selectedMinPrice, setSelectedMinPrice] = useState<string | null>(null);
+  const [selectedMaxPrice, setSelectedMaxPrice] = useState<string | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -56,6 +58,22 @@ export function SearchBar({
     setActiveDropdown(null);
     setIsClosing(false);
   }, []);
+
+  const handlePriceUpdate = useCallback((min: string, max: string) => {
+    setSelectedMinPrice(min);
+    setSelectedMaxPrice(max);
+  }, []);
+
+  const getPriceDisplayText = () => {
+    if (!selectedMinPrice && !selectedMaxPrice) {
+      return pricePlaceholder;
+    }
+
+    const minText = selectedMinPrice === "No Minimum" ? "0" : selectedMinPrice?.replace("€", "");
+    const maxText = selectedMaxPrice === "No Maximum" ? "∞" : selectedMaxPrice?.replace("€", "");
+
+    return `${minText} - ${maxText} €`;
+  };
 
   return (
     <div ref={dropdownRef} className="w-[900px] h-[69px] bg-white border border-border-light rounded-full shadow-[0px_105px_77.6px_38px_rgba(0,0,0,0.08)] relative">
@@ -145,8 +163,10 @@ export function SearchBar({
               <label className="text-xs font-medium text-text-primary leading-[1.6] mb-1">
                 Price
               </label>
-              <span className="text-sm font-medium text-text-primary opacity-40 leading-[1.6]">
-                {pricePlaceholder}
+              <span className={`text-sm font-medium text-text-primary leading-[1.6] ${
+                !selectedMinPrice && !selectedMaxPrice ? "opacity-40" : ""
+              }`}>
+                {getPriceDisplayText()}
               </span>
             </div>
           </div>
@@ -188,9 +208,13 @@ export function SearchBar({
           </div>
 
           {/* Price Dropdown */}
-          {(activeDropdown === "price" || isClosing) && (
+          {(activeDropdown === "price") && (
             <div className="absolute w-full h-full top-0 right-0 ">
-              <PriceDropdown isOpen={!isClosing && activeDropdown === "price"} onClose={handleDropdownClose} />
+              <PriceDropdown
+                isOpen={!isClosing && activeDropdown === "price"}
+                onClose={handleDropdownClose}
+                onPriceUpdate={handlePriceUpdate}
+              />
             </div>
           )}
         </div>

@@ -4,6 +4,7 @@ import { gsap } from "gsap";
 interface PriceDropdownProps {
   onClose?: () => void;
   onApply?: (min: string | null, max: string | null, showPriceOnRequest: boolean) => void;
+  onPriceUpdate?: (min: string, max: string) => void;
   isOpen?: boolean;
 }
 
@@ -43,7 +44,7 @@ const maxPriceOptions = [
   "1.800€",
 ];
 
-export function PriceDropdown({ onClose, onApply, isOpen = true }: PriceDropdownProps) {
+export function PriceDropdown({ onClose, onApply, onPriceUpdate, isOpen = true }: PriceDropdownProps) {
   const [minPrice, setMinPrice] = useState<string>("No Minimum");
   const [maxPrice, setMaxPrice] = useState<string>("No Maximum");
   const [showPriceOnRequest, setShowPriceOnRequest] = useState(false);
@@ -214,39 +215,28 @@ export function PriceDropdown({ onClose, onApply, isOpen = true }: PriceDropdown
                 if (isDisabled) return;
                 if (activeDropdown === "min") {
                   setMinPrice(price);
+                  onPriceUpdate?.(price, maxPrice);
                   setActiveDropdown("max");
                 } else if (activeDropdown === "max") {
                   setMaxPrice(price);
+                  onPriceUpdate?.(minPrice, price);
                   setActiveDropdown(null);
                 }
               }}
               disabled={isDisabled}
-              className={`flex gap-2.5 items-center justify-between px-3 py-2 rounded ${
+              className={`flex gap-2.5 items-center justify-between px-3 py-2 rounded text-left ${
                 isSelected ? "bg-bg-light" : "bg-white hover:bg-[#fdfbff]"
-              } ${isDisabled ? "opacity-40 cursor-not-allowed" : ""}`}
+              } ${isDisabled ? "opacity-40 cursor-not-allowed" : ""} ${isMax ? "flex-row-reverse text-right" : "flex-row"}` }
             >
-              <span className={`flex-1 text-sm font-medium text-black leading-[1.6] ${
-                isMax ? "text-right" : "text-left"
-              }`}>
+              <span className={`flex-1 text-sm font-medium text-black leading-[1.6]`}>
                 {price}
               </span>
               {isSelected && (
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="shrink-0"
-                >
-                  <path
-                    d="M20 6L9 17L4 12"
-                    stroke="#A540F3"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M10.5868 13.4148L7.75775 10.5868L6.34375 12.0008L10.5868 16.2438L17.6567 9.17281L16.2437 7.75781L10.5868 13.4148Z" fill="#A540F3"/>
+</svg>
+
+
               )}
             </button>
           );
@@ -257,25 +247,16 @@ export function PriceDropdown({ onClose, onApply, isOpen = true }: PriceDropdown
       {/* Checkbox */}
       <button
         onClick={() => setShowPriceOnRequest(!showPriceOnRequest)}
-        className="flex gap-2 items-center p-3 border-t border-[#f2f2f2] w-full text-left cursor-pointer hover:bg-bg-light transition-colors"
+        className="flex gap-2 items-center p-3 border-t border-[#f2f2f2] w-full text-left cursor-pointer "
       >
-        <div className="w-4 h-4 flex items-center justify-center shrink-0 border rounded-xs border-border-light">
+        <div className={`w-4 h-4 flex items-center justify-center shrink-0 border rounded-sm border-brand-purple-200 ${showPriceOnRequest ? "bg-brand-purple" : "bg-white"}`}>
           {showPriceOnRequest && (
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 16 16"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M3 8L6.5 11.5L13 5"
-                stroke="#A540F3"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+            <svg width="10" height="8" viewBox="0 0 11 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M0.5 4.75532L2.97917 7.16667L9.83333 0.5" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
+
+
           )}
         </div>
         <span className="flex-1 text-sm font-medium text-text-primary leading-[1.6]">
