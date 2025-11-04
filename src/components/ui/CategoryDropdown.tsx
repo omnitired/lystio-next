@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import categoriesData from "../categories.json";
+import { Dropdown } from "./Dropdown";
 
 interface CategoryDropdownProps {
   onClose?: () => void;
@@ -42,51 +43,8 @@ export function CategoryDropdown({ onClose, onApply, onCategoryUpdate, isOpen = 
   const [selectedSubtypes, setSelectedSubtypes] = useState<Set<string>>(new Set());
   const [allSubcategoriesSelected, setAllSubcategoriesSelected] = useState(true);
 
-  const dropdownRef = useRef<HTMLDivElement>(null);
   const rightPanelRef = useRef<HTMLDivElement>(null);
   const previousSelectedType = useRef<string | null>(null);
-  const hasAnimatedIn = useRef(false);
-
-  // Animate dropdown opening
-  useEffect(() => {
-    if (dropdownRef.current && isOpen && !hasAnimatedIn.current) {
-      gsap.fromTo(
-        dropdownRef.current,
-        {
-          opacity: 0,
-          scaleY: 0,
-          transformOrigin: "top center",
-        },
-        {
-          opacity: 1,
-          scaleY: 1,
-          duration: 0.3,
-          ease: "power2.out",
-          onComplete: () => {
-            hasAnimatedIn.current = true;
-          },
-        }
-      );
-    }
-  }, [isOpen]);
-
-  // Animate dropdown closing
-  useEffect(() => {
-    if (!isOpen && hasAnimatedIn.current && dropdownRef.current) {
-      gsap.to(dropdownRef.current, {
-        opacity: 0,
-        scaleY: 0,
-        transformOrigin: "top center",
-        duration: 0.25,
-        ease: "power2.in",
-        onComplete: () => {
-          if (onClose) {
-            onClose();
-          }
-        },
-      });
-    }
-  }, [isOpen]);
 
   // Animate when switching between categories
   useEffect(() => {
@@ -144,10 +102,7 @@ export function CategoryDropdown({ onClose, onApply, onCategoryUpdate, isOpen = 
   const currentSubtypes = categoriesData.subtypes[selectedType as keyof typeof categoriesData.subtypes] || {};
 
   return (
-    <div
-      ref={dropdownRef}
-      className="absolute top-full left-0 mt-2 bg-white rounded-2xl shadow-[0px_30px_70px_0px_rgba(0,0,0,0.25)] z-50 font-[family-name:var(--font-plus-jakarta-sans)] flex"
-    >
+    <Dropdown isOpen={isOpen} onClose={onClose} className="flex">
       {/* Left Panel - Categories */}
       <div className="flex-1 flex flex-col">
         {/* Header */}
@@ -297,6 +252,6 @@ export function CategoryDropdown({ onClose, onApply, onCategoryUpdate, isOpen = 
           </div>
         </div>
       </div>
-    </div>
+    </Dropdown>
   );
 }
