@@ -1,5 +1,8 @@
+"use client";
+
 import { useState, useRef, useEffect } from "react";
 import { gsap } from "gsap";
+import type { MapboxSuggestion, GroupedSuggestions, MapboxSearchResponse } from "@/types/mapbox";
 import locationsData from "../locations.json";
 
 interface LocationDropdownProps {
@@ -7,6 +10,9 @@ interface LocationDropdownProps {
   onApply?: (selectedLocation: string, selectedDistricts: string[]) => void;
   onLocationUpdate?: (locationName: string) => void;
   isOpen?: boolean;
+  searchResults?: MapboxSearchResponse;
+  isLoading?: boolean;
+  hasSearchQuery?: boolean;
 }
 
 interface Location {
@@ -46,6 +52,9 @@ export function LocationDropdown({
   onApply,
   onLocationUpdate,
   isOpen = true,
+  searchResults,
+  isLoading = false,
+  hasSearchQuery = false,
 }: LocationDropdownProps) {
   const locations = locationsData as Location[];
 
@@ -65,6 +74,25 @@ export function LocationDropdown({
   const rightPanelRef = useRef<HTMLDivElement>(null);
   const previousSelectedLocation = useRef<string | null>(null);
   const hasAnimatedIn = useRef(false);
+
+  // Group suggestions by feature type
+  const groupedSuggestions: GroupedSuggestions = {
+    places: [],
+    localities: [],
+    streets: [],
+  };
+
+  if (searchResults?.suggestions) {
+    for (const suggestion of searchResults.suggestions) {
+      if (suggestion.feature_type === "place") {
+        groupedSuggestions.places.push(suggestion);
+      } else if (suggestion.feature_type === "locality") {
+        groupedSuggestions.localities.push(suggestion);
+      } else if (suggestion.feature_type === "street") {
+        groupedSuggestions.streets.push(suggestion);
+      }
+    }
+  }
 
   // Animate dropdown opening
   useEffect(() => {
@@ -168,7 +196,9 @@ export function LocationDropdown({
   return (
     <div
       ref={dropdownRef}
-      className="absolute top-full left-0 mt-2 bg-white rounded-2xl shadow-[0px_30px_70px_0px_rgba(0,0,0,0.25)] z-50 font-[family-name:var(--font-plus-jakarta-sans)] flex w-[570px]"
+      className={`absolute top-full left-0 mt-2 bg-white rounded-2xl shadow-[0px_30px_70px_0px_rgba(0,0,0,0.25)] z-50 font-[family-name:var(--font-plus-jakarta-sans)] flex transition-all duration-300 ${
+        hasSearchQuery ? "w-[300px]" : "w-[570px]"
+      }`}
     >
       {/* Left Panel - Locations */}
       <div className="w-[300px] flex flex-col">
@@ -216,11 +246,153 @@ export function LocationDropdown({
 
         {/* Scrollable Content */}
         <div className="flex-1 overflow-y-auto max-h-[490px] px-3 scrollbar-hide [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-          {/* By City Section */}
-          <div className="mb-2">
-            <p className="text-sm font-medium text-text-secondary mb-2">
-              Popular Locations
-            </p>
+          {/* Search Results */}
+          {hasSearchQuery && (
+            <div className="space-y-4">
+              {/* Places */}
+              {groupedSuggestions.places.length > 0 && (
+                <div>
+                  <p className="text-sm font-medium text-text-secondary mb-2">
+                    Places
+                  </p>
+                  <div className="space-y-1">
+                    {groupedSuggestions.places.map((place) => (
+                      <button
+                        key={place.mapbox_id}
+                        onClick={() => {
+                          onLocationUpdate?.(place.name);
+                        }}
+                        className="flex items-start gap-2 px-2 py-2 rounded-lg hover:bg-[#f7f7fd] w-full text-left"
+                      >
+                        <svg
+                          width="20"
+                          height="20"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          className="shrink-0 mt-0.5"
+                        >
+                          <path
+                            d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"
+                            fill="#A440F1"
+                          />
+                        </svg>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium text-text-primary">
+                            {place.name}
+                          </p>
+                          <p className="text-xs text-text-secondary">
+                            {place.place_formatted}
+                          </p>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Localities */}
+              {groupedSuggestions.localities.length > 0 && (
+                <div>
+                  <p className="text-sm font-medium text-text-secondary mb-2">
+                    Localities
+                  </p>
+                  <div className="space-y-1">
+                    {groupedSuggestions.localities.map((locality) => (
+                      <button
+                        key={locality.mapbox_id}
+                        onClick={() => {
+                          onLocationUpdate?.(locality.name);
+                        }}
+                        className="flex items-start gap-2 px-2 py-2 rounded-lg hover:bg-[#f7f7fd] w-full text-left"
+                      >
+                        <svg
+                          width="20"
+                          height="20"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          className="shrink-0 mt-0.5"
+                        >
+                          <path
+                            d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"
+                            fill="#A440F1"
+                          />
+                        </svg>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium text-text-primary">
+                            {locality.name}
+                          </p>
+                          <p className="text-xs text-text-secondary">
+                            {locality.place_formatted}
+                          </p>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Streets */}
+              {groupedSuggestions.streets.length > 0 && (
+                <div>
+                  <p className="text-sm font-medium text-text-secondary mb-2">
+                    Streets
+                  </p>
+                  <div className="space-y-1">
+                    {groupedSuggestions.streets.map((street) => (
+                      <button
+                        key={street.mapbox_id}
+                        onClick={() => {
+                          onLocationUpdate?.(street.name);
+                        }}
+                        className="flex items-start gap-2 px-2 py-2 rounded-lg hover:bg-[#f7f7fd] w-full text-left"
+                      >
+                        <svg
+                          width="20"
+                          height="20"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          className="shrink-0 mt-0.5"
+                        >
+                          <path
+                            d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"
+                            fill="#A440F1"
+                          />
+                        </svg>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium text-text-primary">
+                            {street.name}
+                          </p>
+                          <p className="text-xs text-text-secondary">
+                            {street.place_formatted}
+                          </p>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* No Results */}
+              {!isLoading &&
+                searchResults &&
+                searchResults.suggestions.length === 0 && (
+                  <div className="text-center py-8">
+                    <p className="text-sm text-text-secondary">
+                      No results found
+                    </p>
+                  </div>
+                )}
+            </div>
+          )}
+
+          {/* Original Location List (when not searching) */}
+          {!hasSearchQuery && (
+            <>
+              {/* By City Section */}
+              <div className="mb-2">
+                <p className="text-sm font-medium text-text-secondary mb-2">
+                  Popular Locations
+                </p>
 
             {/* Popular Cities Grid */}
             <div className="grid grid-cols-3 gap-1 mb-2">
@@ -350,13 +522,16 @@ export function LocationDropdown({
                 );
               })}
             </div>
-          </div>
+              </div>
+            </>
+          )}
         </div>
       </div>
 
       {/* Right Panel - Districts */}
-      <div className="w-[270px] border-l border-border-light flex flex-col">
-        <div ref={rightPanelRef} className="flex flex-col h-full">
+      {!hasSearchQuery && (
+        <div className="w-[270px] border-l border-border-light flex flex-col">
+          <div ref={rightPanelRef} className="flex flex-col h-full">
           {/* Header */}
           <div className="flex items-center gap-3 px-3 py-3">
             <p className="text-base font-semibold text-text-primary leading-[1.2]">
@@ -438,7 +613,8 @@ export function LocationDropdown({
             })}
           </div>
         </div>
-      </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -1,4 +1,8 @@
+"use client";
+
 import { useState, useRef, useEffect, useLayoutEffect, useCallback } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { searchMapbox, generateSessionToken } from "@/lib/mapbox";
 import { PriceDropdown } from "./PriceDropdown";
 import { CategoryDropdown } from "./CategoryDropdown";
 import { LocationDropdown } from "./LocationDropdown";
@@ -51,6 +55,8 @@ export function SearchBar({
   const [selectedMaxPrice, setSelectedMaxPrice] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>(category);
   const [selectedLocation, setSelectedLocation] = useState<string>('');
+  const [debouncedLocation, setDebouncedLocation] = useState<string>('');
+  const [sessionToken] = useState(() => generateSessionToken());
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [indicatorStyle, setIndicatorStyle] = useState({ left: 0, width: 0 });
   const buttonsRef = useRef<(HTMLButtonElement | null)[]>([]);
@@ -66,6 +72,26 @@ export function SearchBar({
       });
     }
   }, [mode]);
+
+  // Debounce location input
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedLocation(selectedLocation);
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [selectedLocation]);
+
+  // Fetch search results
+  const { data: searchResults, isLoading } = useQuery({
+    queryKey: ["mapbox-search", debouncedLocation, sessionToken],
+    queryFn: () =>
+      searchMapbox({
+        query: debouncedLocation,
+        sessionToken,
+      }),
+    enabled: debouncedLocation.length > 0 && activeDropdown === "location",
+  });
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -204,13 +230,14 @@ export function SearchBar({
 
             {/* Location Dropdown */}
             {(activeDropdown === "location") && (
-              // <div className="absolute w-full h-full top-0 left-0">
-                <LocationDropdown
-                  isOpen={!isClosing && activeDropdown === "location"}
-                  onClose={handleDropdownClose}
-                  onLocationUpdate={handleLocationUpdate}
-                />
-              // </div>
+              <LocationDropdown
+                isOpen={!isClosing && activeDropdown === "location"}
+                onClose={handleDropdownClose}
+                onLocationUpdate={handleLocationUpdate}
+                searchResults={searchResults}
+                isLoading={isLoading}
+                hasSearchQuery={selectedLocation.length > 0}
+              />
             )}
           </div>
 
