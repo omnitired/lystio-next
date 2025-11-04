@@ -1,4 +1,5 @@
-import React from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
+import { PriceDropdown } from "./PriceDropdown";
 
 interface LocationTag {
   label: string;
@@ -26,8 +27,38 @@ export function SearchBar({
   onPriceClick,
   onSearch,
 }: SearchBarProps) {
+  const [activeDropdown, setActiveDropdown] = useState<"location" | "category" | "price" | null>(null);
+  const [isClosing, setIsClosing] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsClosing(true);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handlePriceClick = () => {
+    if (activeDropdown === "price") {
+      setIsClosing(true);
+    } else {
+      setActiveDropdown("price");
+      setIsClosing(false);
+    }
+    onPriceClick?.();
+  };
+
+  const handleDropdownClose = useCallback(() => {
+    setActiveDropdown(null);
+    setIsClosing(false);
+  }, []);
+
   return (
-    <div className="w-[900px] h-[69px] bg-white border border-border-light rounded-full shadow-[0px_105px_77.6px_38px_rgba(0,0,0,0.08)] overflow-hidden">
+    <div ref={dropdownRef} className="w-[900px] h-[69px] bg-white border border-border-light rounded-full shadow-[0px_105px_77.6px_38px_rgba(0,0,0,0.08)] relative">
       <div className="flex h-full items-center">
         {/* Location Section */}
         <div
@@ -103,12 +134,14 @@ export function SearchBar({
         </div>
 
         {/* Price Section + Search Button */}
-        <div className="flex-1 bg-bg-light h-full flex items-center border-l border-border-light">
+        <div className="flex-1 bg-bg-light h-full flex items-center border-l border-border-light relative">
           <div
-            onClick={onPriceClick}
-            className="flex-1 flex items-center gap-[15px] px-3 py-2 cursor-pointer hover:bg-brand-purple-light transition-colors"
+            onClick={handlePriceClick}
+            className={`flex-1 flex h-full items-center px-3 cursor-pointer transition-colors ${
+              activeDropdown === "price" ? "bg-white" : "hover:bg-white"
+            }`}
           >
-            <div className="flex-1 flex flex-col">
+            <div className="flex-1 flex flex-col justify-center h-full">
               <label className="text-xs font-medium text-text-primary leading-[1.6] mb-1">
                 Price
               </label>
@@ -153,6 +186,13 @@ export function SearchBar({
               </span>
             </button>
           </div>
+
+          {/* Price Dropdown */}
+          {(activeDropdown === "price" || isClosing) && (
+            <div className="absolute w-full h-full top-0 right-0 ">
+              <PriceDropdown isOpen={!isClosing && activeDropdown === "price"} onClose={handleDropdownClose} />
+            </div>
+          )}
         </div>
       </div>
     </div>
