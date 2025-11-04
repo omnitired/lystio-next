@@ -9,7 +9,7 @@ interface HeaderProps {
 
 export function Header({ mode = "rent", onModeChange }: HeaderProps) {
   return (
-    <header className="bg-white h-20 relative flex items-center justify-center border-b border-border-light">
+    <header className="bg-white h-20 relative flex items-center justify-center">
       {/* Logo */}
       <div className="absolute left-8 top-1/2 -translate-y-1/2">
         <div className="w-20 h-[37.36px] flex items-center justify-center">

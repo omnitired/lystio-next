@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { Header } from "@/components/ui/Header";
-import { SubNavbar } from "@/components/ui/SubNavbar";
 import { SearchBar } from "@/components/ui/SearchBar";
 import { SearchDropdown, City, State } from "@/components/ui/search-dropdown";
 
@@ -102,9 +101,6 @@ export default function Home() {
     <div className="min-h-screen bg-white relative">
       {/* Header */}
       <Header mode={headerMode} onModeChange={setHeaderMode} />
-
-      {/* Sub Navbar */}
-      <SubNavbar />
 
       {/* Main Content Area */}
       <div className="relative">
