@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import type { MapboxSuggestion, GroupedSuggestions, MapboxSearchResponse } from "@/types/mapbox";
 import { Dropdown } from "./Dropdown";
-import { useAllLocations, usePopularLocations, type Location } from "@/lib/locations";
+import { useAllLocations, usePopularLocations, useRecentSearches, type Location } from "@/lib/locations";
 
 interface LocationDropdownProps {
   onClose?: () => void;
@@ -47,6 +47,7 @@ export function LocationDropdown({
 }: LocationDropdownProps) {
   const { data: allLocations = [], isLoading: isLoadingAll } = useAllLocations();
   const { data: popularLocations = [], isLoading: isLoadingPopular } = usePopularLocations();
+  const { data: recentSearches = [] } = useRecentSearches();
 
   // Find popular cities from API
   const popularCities = popularLocations;
@@ -355,6 +356,47 @@ export function LocationDropdown({
                 </div>
               ) : (
                 <>
+                  {/* Recent Searches Section */}
+                  {recentSearches.length > 0 && (
+                    <div className="mb-4">
+                      <p className="text-sm font-medium text-text-secondary mb-2">
+                        Recent Searches
+                      </p>
+                      <div className="space-y-1">
+                        {recentSearches.slice(0, 3).map((search, index) => (
+                          <button
+                            key={`${search.mapboxId}-${index}`}
+                            onClick={() => {
+                              onLocationUpdate?.(search.name, []);
+                            }}
+                            className="flex items-start gap-2 px-2 py-2 rounded-lg hover:bg-[#f7f7fd] w-full text-left"
+                          >
+                            <svg
+                              width="20"
+                              height="20"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              className="shrink-0 mt-0.5"
+                            >
+                              <path
+                                d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"
+                                fill="#A440F1"
+                              />
+                            </svg>
+                            <div className="flex-1 min-w-0">
+                              <p className="text-sm font-medium text-text-primary">
+                                {search.name}
+                              </p>
+                              <p className="text-xs text-text-secondary capitalize">
+                                {search.type}
+                              </p>
+                            </div>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
                   {/* By City Section */}
                   <div className="mb-2">
                     <p className="text-sm font-medium text-text-secondary mb-2">

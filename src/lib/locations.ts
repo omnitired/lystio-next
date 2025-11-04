@@ -15,6 +15,13 @@ export interface Location {
   urlSegment: string;
 }
 
+export interface RecentSearch {
+  pt: [number, number];
+  name: string;
+  type: "street" | "locality" | "place";
+  mapboxId: string;
+}
+
 const CACHE_KEY_ALL = "locations_all";
 const CACHE_KEY_POPULAR = "locations_popular";
 const CACHE_DURATION = 60 * 60 * 1000; // 1 hour in milliseconds
@@ -93,5 +100,18 @@ export function usePopularLocations() {
     queryFn: fetchPopularLocations,
     staleTime: CACHE_DURATION,
     gcTime: CACHE_DURATION,
+  });
+}
+
+export async function fetchRecentSearches(): Promise<RecentSearch[]> {
+  return apiRequest<RecentSearch[]>("/geo/search/recent");
+}
+
+export function useRecentSearches() {
+  return useQuery({
+    queryKey: ["recent-searches"],
+    queryFn: fetchRecentSearches,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    gcTime: 10 * 60 * 1000, // 10 minutes
   });
 }
