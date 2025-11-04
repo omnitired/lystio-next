@@ -146,11 +146,7 @@ export function LocationDropdown({
 
   // Animate when switching between locations
   useEffect(() => {
-    if (
-      rightPanelRef.current &&
-      selectedLocation &&
-      previousSelectedLocation.current !== selectedLocation.id
-    ) {
+    if (rightPanelRef.current && selectedLocation && previousSelectedLocation.current !== selectedLocation.id) {
       if (previousSelectedLocation.current !== null) {
         gsap.fromTo(
           rightPanelRef.current,
@@ -215,7 +211,7 @@ export function LocationDropdown({
   return (
     <div
       ref={dropdownRef}
-      className={`absolute top-full left-0 mt-2 bg-white rounded-2xl shadow-[0px_30px_70px_0px_rgba(0,0,0,0.25)] z-50 font-[family-name:var(--font-plus-jakarta-sans)] flex transition-all duration-300 ${
+      className={`absolute top-full left-0 mt-2 bg-white rounded-2xl shadow-[0px_30px_70px_0px_rgba(0,0,0,0.25)] z-50 font-[family-name:var(--font-plus-jakarta-sans)] flex ${
         hasSearchQuery ? "w-[300px]" : "w-[570px]"
       }`}
     >
