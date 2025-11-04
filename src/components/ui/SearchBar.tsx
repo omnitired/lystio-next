@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { PriceDropdown } from "./PriceDropdown";
+import { CategoryDropdown } from "./CategoryDropdown";
 
 interface LocationTag {
   label: string;
@@ -31,6 +32,7 @@ export function SearchBar({
   const [isClosing, setIsClosing] = useState(false);
   const [selectedMinPrice, setSelectedMinPrice] = useState<string | null>(null);
   const [selectedMaxPrice, setSelectedMaxPrice] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string>(category);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -43,6 +45,16 @@ export function SearchBar({
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  const handleCategoryClick = () => {
+    if (activeDropdown === "category") {
+      setIsClosing(true);
+    } else {
+      setActiveDropdown("category");
+      setIsClosing(false);
+    }
+    onCategoryClick?.();
+  };
 
   const handlePriceClick = () => {
     if (activeDropdown === "price") {
@@ -62,6 +74,10 @@ export function SearchBar({
   const handlePriceUpdate = useCallback((min: string, max: string) => {
     setSelectedMinPrice(min);
     setSelectedMaxPrice(max);
+  }, []);
+
+  const handleCategoryUpdate = useCallback((categoryName: string) => {
+    setSelectedCategory(categoryName);
   }, []);
 
   const getPriceDisplayText = () => {
@@ -137,18 +153,33 @@ export function SearchBar({
         </div>
 
         {/* Category Section */}
-        <div
-          onClick={onCategoryClick}
-          className="w-[250px] h-full bg-bg-light flex items-center gap-[15px] px-3 py-2 border-l border-border-light cursor-pointer hover:bg-brand-purple-light transition-colors"
-        >
-          <div className="flex-1 flex flex-col">
-            <label className="text-xs font-medium text-text-primary leading-[1.6] mb-1">
-              Category
-            </label>
-            <span className="text-sm font-medium text-text-primary leading-[1.6]">
-              {category}
-            </span>
+        <div className="w-[250px] h-full bg-bg-light border-l border-border-light relative">
+          <div
+            onClick={handleCategoryClick}
+            className={`w-full h-full flex items-center gap-[15px] px-3 py-2 cursor-pointer transition-colors ${
+              activeDropdown === "category" ? "bg-white" : "hover:bg-brand-purple-light"
+            }`}
+          >
+            <div className="flex-1 flex flex-col">
+              <label className="text-xs font-medium text-text-primary leading-[1.6] mb-1">
+                Category
+              </label>
+              <span className="text-sm font-medium text-text-primary leading-[1.6]">
+                {selectedCategory}
+              </span>
+            </div>
           </div>
+
+          {/* Category Dropdown */}
+          {(activeDropdown === "category") && (
+            <div className="absolute w-full h-full top-0 left-0">
+              <CategoryDropdown
+                isOpen={!isClosing && activeDropdown === "category"}
+                onClose={handleDropdownClose}
+                onCategoryUpdate={handleCategoryUpdate}
+              />
+            </div>
+          )}
         </div>
 
         {/* Price Section + Search Button */}

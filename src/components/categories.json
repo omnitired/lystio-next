@@ -1,0 +1,84 @@
+{
+  "types": {
+    "1": "Rooms/Co-Living",
+    "2": "Apartments",
+    "3": "Houses",
+    "4": "Plots",
+    "5": "Commercial Properties",
+    "11": "Holiday Homes",
+    "12": "New Developments",
+    "13": "Parking",
+    "20": "Office",
+    "21": "Investment Properties"
+  },
+  "subtypes": {
+    "1": { "1": "Room" },
+    "2": {
+      "46": "Cooperative Apartment",
+      "47": "Raw Attic",
+      "49": "Penthouse",
+      "50": "Other Apartment",
+      "51": "Maisonette",
+      "52": "Loft/Studio",
+      "53": "Top Floor",
+      "55": "Basement",
+      "103": "Ground Floor",
+      "200": "Apartment"
+    },
+    "3": {
+      "8": "Single Family House",
+      "9": "Multi-Family House",
+      "10": "Townhouse",
+      "11": "Farmhouse",
+      "13": "Other House",
+      "14": "Shell Construction",
+      "18": "Semi-Detached House",
+      "19": "Bungalow",
+      "20": "Villa",
+      "22": "Country House",
+      "57": "Castle/Fortress/Chalet",
+      "87": "Mountain Hut/Alpine Hut",
+      "202": "House"
+    },
+    "4": {
+      "4": "Commercial Plot",
+      "6": "Other Plot",
+      "7": "Industrial Plot",
+      "72": "Agricultural and Forestry",
+      "201": "Building Plot",
+      "203": "Plot"
+    },
+    "5": {
+      "30": "Gastronomy/Restaurant",
+      "34": "Agriculture/Forestry",
+      "62": "Shop/Retail Space",
+      "70": "Hotels/Guesthouses",
+      "77": "Warehouse/Storage Hall",
+      "143": "Exhibition Space",
+      "204": "Commercial Property"
+    },
+    "11": { "150": "Holiday Apartment/House" },
+    "13": {
+      "99": "Single Garage",
+      "100": "Parking Space",
+      "152": "Carport",
+      "153": "Double Garage",
+      "155": "Underground Garage",
+      "157": "Underground Parking Space",
+      "158": "Parking Space with Charging Station"
+    },
+    "20": {
+      "27": "Other Office",
+      "28": "Office/Practice",
+      "131": "Office Center",
+      "132": "Loft/Studio",
+      "135": "Coworking Space",
+      "136": "Shared Office"
+    },
+    "21": {
+      "114": "Investment Property",
+      "115": "Development Property",
+      "116": "Project Development"
+    }
+  }
+}
