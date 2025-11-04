@@ -1,15 +1,9 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { PriceDropdown } from "./PriceDropdown";
 import { CategoryDropdown } from "./CategoryDropdown";
-
-interface LocationTag {
-  label: string;
-  onRemove?: () => void;
-}
+import { LocationDropdown } from "./LocationDropdown";
 
 interface SearchBarProps {
-  locationTags?: LocationTag[];
-  locationPlaceholder?: string;
   category?: string;
   pricePlaceholder?: string;
   onLocationClick?: () => void;
@@ -19,8 +13,6 @@ interface SearchBarProps {
 }
 
 export function SearchBar({
-  locationTags = [],
-  locationPlaceholder = "City, District, Street, Postcode",
   category = "Apartments",
   pricePlaceholder = "Select Price Range",
   onLocationClick,
@@ -33,6 +25,7 @@ export function SearchBar({
   const [selectedMinPrice, setSelectedMinPrice] = useState<string | null>(null);
   const [selectedMaxPrice, setSelectedMaxPrice] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>(category);
+  const [selectedLocation, setSelectedLocation] = useState<string>("Vienna");
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -45,6 +38,16 @@ export function SearchBar({
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  const handleLocationClick = () => {
+    if (activeDropdown === "location") {
+      setIsClosing(true);
+    } else {
+      setActiveDropdown("location");
+      setIsClosing(false);
+    }
+    onLocationClick?.();
+  };
 
   const handleCategoryClick = () => {
     if (activeDropdown === "category") {
@@ -80,6 +83,10 @@ export function SearchBar({
     setSelectedCategory(categoryName);
   }, []);
 
+  const handleLocationUpdate = useCallback((locationName: string) => {
+    setSelectedLocation(locationName);
+  }, []);
+
   const getPriceDisplayText = () => {
     if (!selectedMinPrice && !selectedMaxPrice) {
       return pricePlaceholder;
@@ -92,65 +99,43 @@ export function SearchBar({
   };
 
   return (
-    <div ref={dropdownRef} className="w-[900px] h-[69px] bg-white border border-border-light rounded-full shadow-[0px_105px_77.6px_38px_rgba(0,0,0,0.08)] relative">
-      <div className="flex h-full items-center">
-        {/* Location Section */}
-        <div
-          onClick={onLocationClick}
-          className="w-[300px] h-full flex items-center gap-[15px] pl-6 pr-4 py-3 cursor-pointer hover:bg-bg-light transition-colors"
-        >
-          <div className="flex-1 flex flex-col min-w-0">
-            <label className="text-xs font-medium text-text-primary leading-[1.6] mb-1">
-              Location
-            </label>
-            <div className="flex items-center gap-1 w-full">
-              {locationTags.length > 0 ? (
-                <>
-                  {locationTags.map((tag, index) => (
-                    <div
-                      key={index}
-                      className="bg-brand-purple-light rounded-2xl px-1 flex items-center gap-0.5 max-w-[200px] shrink-0"
-                    >
-                      <span className="text-sm font-medium text-text-primary truncate leading-[1.6]">
-                        {tag.label}
-                      </span>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          tag.onRemove?.();
-                        }}
-                        className="w-4 h-4 shrink-0 flex items-center justify-center"
-                      >
-                        <svg
-                          width="16"
-                          height="16"
-                          viewBox="0 0 16 16"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <circle cx="8" cy="8" r="8" fill="#0E0E0E" />
-                          <path
-                            d="M5 5L11 11M5 11L11 5"
-                            stroke="white"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                          />
-                        </svg>
-                      </button>
-                    </div>
-                  ))}
-                  <span className="text-sm font-medium text-text-secondary opacity-40 truncate leading-[1.6] flex-1">
-                    {locationPlaceholder}
-                  </span>
-                </>
-              ) : (
-                <span className="text-sm font-medium text-text-secondary opacity-40 truncate leading-[1.6]">
-                  {locationPlaceholder}
+    <>
+      {/* Dark overlay when dropdown is open */}
+      {activeDropdown && (
+        <div className="fixed inset-0 bg-black/30 z-40" />
+      )}
+
+      <div ref={dropdownRef} className="w-[900px] h-[69px] bg-white border border-border-light rounded-full shadow-[0px_105px_77.6px_38px_rgba(0,0,0,0.08)] relative z-50">
+        <div className="flex h-full items-center">
+          {/* Location Section */}
+          <div className="w-[300px] h-full bg-bg-light relative">
+            <div
+              onClick={handleLocationClick}
+              className={`w-full h-full flex items-center gap-[15px] pl-6 pr-4 py-3 cursor-pointer transition-colors ${
+                activeDropdown === "location" ? "bg-white" : "hover:bg-brand-purple-light"
+              }`}
+            >
+              <div className="flex-1 flex flex-col">
+                <label className="text-xs font-medium text-text-primary leading-[1.6] mb-1">
+                  Location
+                </label>
+                <span className="text-sm font-medium text-text-primary leading-[1.6]">
+                  {selectedLocation}
                 </span>
-              )}
+              </div>
             </div>
+
+            {/* Location Dropdown */}
+            {(activeDropdown === "location") && (
+              <div className="absolute w-full h-full top-0 left-0">
+                <LocationDropdown
+                  isOpen={!isClosing && activeDropdown === "location"}
+                  onClose={handleDropdownClose}
+                  onLocationUpdate={handleLocationUpdate}
+                />
+              </div>
+            )}
           </div>
-        </div>
 
         {/* Category Section */}
         <div className="w-[250px] h-full bg-bg-light border-l border-border-light relative">
@@ -251,5 +236,6 @@ export function SearchBar({
         </div>
       </div>
     </div>
+    </>
   );
 }
