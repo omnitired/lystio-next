@@ -10,13 +10,14 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-white relative">
       {/* Header */}
-      <Header mode={headerMode} onModeChange={setHeaderMode} />
+      <Header />
 
       {/* Main Content Area */}
-      <div className="relative">
         {/* Search Bar Section */}
         <div className="bg-white pt-6 pb-6 flex flex-col items-center shadow-[0px_105px_77.6px_38px_rgba(0,0,0,0.08)] relative z-10">
           <SearchBar
+            mode={headerMode}
+            onModeChange={setHeaderMode}
             onSearch={() => console.log("Search clicked")}
           />
         </div>
@@ -25,7 +26,6 @@ export default function Home() {
         <div className="h-[calc(100vh-240px)] bg-gray-200 flex items-center justify-center">
           <p className="text-gray-500 text-lg">Map content area</p>
         </div>
-      </div>
     </div>
   );
 }

@@ -1,32 +1,71 @@
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect, useLayoutEffect, useCallback } from "react";
 import { PriceDropdown } from "./PriceDropdown";
 import { CategoryDropdown } from "./CategoryDropdown";
 import { LocationDropdown } from "./LocationDropdown";
 
+type HeaderMode = "rent" | "buy" | "ai";
+
+interface ToggleOption {
+  value: HeaderMode;
+  label: string | React.ReactNode;
+}
+
+const toggleOptions: ToggleOption[] = [
+  { value: "rent", label: "Rent" },
+  { value: "buy", label: "Buy" },
+  {
+    value: "ai",
+    label: (
+      <>
+        <span className="text-black">Lystio </span>
+        <span className="text-transparent bg-clip-text bg-gradient-to-b from-[#a540f3] to-[#5110e8] font-semibold">
+          AI
+        </span>
+      </>
+    ),
+  },
+];
+
 interface SearchBarProps {
   category?: string;
   pricePlaceholder?: string;
-  onLocationClick?: () => void;
   onCategoryClick?: () => void;
   onPriceClick?: () => void;
   onSearch?: () => void;
+  mode?: HeaderMode;
+  onModeChange?: (mode: HeaderMode) => void;
 }
 
 export function SearchBar({
   category = "Apartments",
   pricePlaceholder = "Select Price Range",
-  onLocationClick,
   onCategoryClick,
   onPriceClick,
   onSearch,
+  mode = "rent",
+  onModeChange,
 }: SearchBarProps) {
   const [activeDropdown, setActiveDropdown] = useState<"location" | "category" | "price" | null>(null);
   const [isClosing, setIsClosing] = useState(false);
   const [selectedMinPrice, setSelectedMinPrice] = useState<string | null>(null);
   const [selectedMaxPrice, setSelectedMaxPrice] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>(category);
-  const [selectedLocation, setSelectedLocation] = useState<string>("Vienna");
+  const [selectedLocation, setSelectedLocation] = useState<string>('');
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const [indicatorStyle, setIndicatorStyle] = useState({ left: 0, width: 0 });
+  const buttonsRef = useRef<(HTMLButtonElement | null)[]>([]);
+
+  useLayoutEffect(() => {
+    const activeIndex = toggleOptions.findIndex((opt) => opt.value === mode);
+    const activeButton = buttonsRef.current[activeIndex];
+
+    if (activeButton) {
+      setIndicatorStyle({
+        left: activeButton.offsetLeft,
+        width: activeButton.offsetWidth,
+      });
+    }
+  }, [mode]);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -41,12 +80,11 @@ export function SearchBar({
 
   const handleLocationClick = () => {
     if (activeDropdown === "location") {
-      setIsClosing(true);
+      // setIsClosing(true);
     } else {
       setActiveDropdown("location");
       setIsClosing(false);
     }
-    onLocationClick?.();
   };
 
   const handleCategoryClick = () => {
@@ -105,6 +143,41 @@ export function SearchBar({
         <div className="fixed inset-0 bg-black/30 z-40" />
       )}
 
+      {/* Mode Toggle - centered */}
+      <div className="flex justify-center mb-4">
+        <div className="bg-bg-light border border-border-light rounded-full p-1 flex gap-1 relative">
+          {/* Animated Indicator */}
+          {indicatorStyle.width > 0 && (
+            <div
+              className="absolute top-1 bg-white border border-white rounded-full transition-all duration-300 ease-out"
+              style={{
+                left: `${indicatorStyle.left}px`,
+                width: `${indicatorStyle.width}px`,
+                height: "calc(100% - 8px)",
+              }}
+            />
+          )}
+
+          {/* Toggle Buttons */}
+          {toggleOptions.map((option, index) => (
+            <button
+              key={option.value}
+              ref={(el) => {
+                buttonsRef.current[index] = el;
+              }}
+              onClick={() => onModeChange?.(option.value)}
+              className={`px-3 py-1 rounded-full text-sm font-medium transition-colors relative z-10 font-[family-name:var(--font-plus-jakarta-sans)] ${
+                mode === option.value
+                  ? "text-text-primary"
+                  : "text-black hover:bg-white/50"
+              }`}
+            >
+              {option.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
       <div ref={dropdownRef} className="w-[900px] h-[69px] bg-white border border-border-light rounded-full shadow-[0px_105px_77.6px_38px_rgba(0,0,0,0.08)] relative z-50">
         <div className="flex h-full items-center">
           {/* Location Section */}
@@ -119,21 +192,25 @@ export function SearchBar({
                 <label className="text-xs font-medium text-text-primary leading-[1.6] mb-1">
                   Location
                 </label>
-                <span className="text-sm font-medium text-text-primary leading-[1.6]">
-                  {selectedLocation}
-                </span>
+                <input
+                  type="text"
+                  value={selectedLocation}
+                  onChange={(e) => setSelectedLocation(e.target.value)}
+                  placeholder="Enter location..."
+                  className="text-sm font-medium text-text-primary leading-[1.6] bg-transparent border-none outline-none w-full"
+                />
               </div>
             </div>
 
             {/* Location Dropdown */}
             {(activeDropdown === "location") && (
-              <div className="absolute w-full h-full top-0 left-0">
+              // <div className="absolute w-full h-full top-0 left-0">
                 <LocationDropdown
                   isOpen={!isClosing && activeDropdown === "location"}
                   onClose={handleDropdownClose}
                   onLocationUpdate={handleLocationUpdate}
                 />
-              </div>
+              // </div>
             )}
           </div>
 
