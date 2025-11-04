@@ -56,6 +56,7 @@ export function SearchBar({
   const [selectedCategory, setSelectedCategory] = useState<string>(category);
   const [selectedLocation, setSelectedLocation] = useState<string>('');
   const [debouncedLocation, setDebouncedLocation] = useState<string>('');
+  const [isTyping, setIsTyping] = useState<boolean>(false);
   const [sessionToken] = useState(() => generateSessionToken());
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [indicatorStyle, setIndicatorStyle] = useState({ left: 0, width: 0 });
@@ -90,7 +91,7 @@ export function SearchBar({
         query: debouncedLocation,
         sessionToken,
       }),
-    enabled: debouncedLocation.length > 0 && activeDropdown === "location",
+    enabled: debouncedLocation.length > 0 && activeDropdown === "location" && isTyping,
   });
 
   useEffect(() => {
@@ -149,6 +150,7 @@ export function SearchBar({
 
   const handleLocationUpdate = useCallback((locationName: string) => {
     setSelectedLocation(locationName);
+    setIsTyping(false);
   }, []);
 
   const getPriceDisplayText = () => {
@@ -221,7 +223,10 @@ export function SearchBar({
                 <input
                   type="text"
                   value={selectedLocation}
-                  onChange={(e) => setSelectedLocation(e.target.value)}
+                  onChange={(e) => {
+                    setSelectedLocation(e.target.value);
+                    setIsTyping(true);
+                  }}
                   placeholder="Enter location..."
                   className="text-sm font-medium text-text-primary leading-[1.6] bg-transparent border-none outline-none w-full"
                 />
@@ -236,7 +241,7 @@ export function SearchBar({
                 onLocationUpdate={handleLocationUpdate}
                 searchResults={searchResults}
                 isLoading={isLoading}
-                hasSearchQuery={selectedLocation.length > 0}
+                hasSearchQuery={isTyping && selectedLocation.length > 0}
               />
             )}
           </div>
