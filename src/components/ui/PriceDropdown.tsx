@@ -4,7 +4,7 @@ import { gsap } from "gsap";
 interface PriceDropdownProps {
   onClose?: () => void;
   onApply?: (min: string | null, max: string | null, showPriceOnRequest: boolean) => void;
-  onPriceUpdate?: (min: string, max: string) => void;
+  onPriceUpdate?: (min: string, max: string, showPriceOnRequest: boolean) => void;
   isOpen?: boolean;
 }
 
@@ -146,6 +146,11 @@ export function PriceDropdown({ onClose, onApply, onPriceUpdate, isOpen = true }
     }
   }, [activeDropdown]);
 
+  // Notify parent when showPriceOnRequest changes
+  useEffect(() => {
+    onPriceUpdate?.(minPrice, maxPrice, showPriceOnRequest);
+  }, [showPriceOnRequest]);
+
   return (
     <div ref={dropdownRef} className="absolute top-full left-0 mt-2 bg-white rounded-2xl shadow-[0px_30px_70px_0px_rgba(0,0,0,0.25)] w-full max-w-[424px] z-50 font-[family-name:var(--font-plus-jakarta-sans)]">
       {/* Header */}
@@ -215,11 +220,11 @@ export function PriceDropdown({ onClose, onApply, onPriceUpdate, isOpen = true }
                 if (isDisabled) return;
                 if (activeDropdown === "min") {
                   setMinPrice(price);
-                  onPriceUpdate?.(price, maxPrice);
+                  onPriceUpdate?.(price, maxPrice, showPriceOnRequest);
                   setActiveDropdown("max");
                 } else if (activeDropdown === "max") {
                   setMaxPrice(price);
-                  onPriceUpdate?.(minPrice, price);
+                  onPriceUpdate?.(minPrice, price, showPriceOnRequest);
                   setActiveDropdown(null);
                 }
               }}

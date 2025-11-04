@@ -8,11 +8,12 @@ import locationsData from "../locations.json";
 interface LocationDropdownProps {
   onClose?: () => void;
   onApply?: (selectedLocation: string, selectedDistricts: string[]) => void;
-  onLocationUpdate?: (locationName: string) => void;
+  onLocationUpdate?: (locationName: string, locationIds: string[], locationId?: string) => void;
   isOpen?: boolean;
   searchResults?: MapboxSearchResponse;
   isLoading?: boolean;
   hasSearchQuery?: boolean;
+  selectedLocationId?: string;
 }
 
 interface Location {
@@ -55,6 +56,7 @@ export function LocationDropdown({
   searchResults,
   isLoading = false,
   hasSearchQuery = false,
+  selectedLocationId,
 }: LocationDropdownProps) {
   const locations = locationsData as Location[];
 
@@ -62,8 +64,15 @@ export function LocationDropdown({
   const popularCities = locations.slice(0, 6);
   const otherLocations = locations.slice(6);
 
-  const [selectedLocation, setSelectedLocation] = useState<Location>(
-    popularCities[0]
+  // Find initial location from prop or default to null
+  const findLocationById = (id: string): Location | null => {
+    return locations.find(loc => loc.id === id) || null;
+  };
+
+  const initialLocation = selectedLocationId ? findLocationById(selectedLocationId) : null;
+
+  const [selectedLocation, setSelectedLocation] = useState<Location | null>(
+    initialLocation
   );
   const [selectedDistricts, setSelectedDistricts] = useState<Set<string>>(
     new Set()
@@ -186,11 +195,21 @@ export function LocationDropdown({
     setSelectedLocation(location);
     setSelectedDistricts(new Set());
     setAllDistrictsSelected(true);
-    onLocationUpdate?.(location.name);
+    // Pass parent ID when all districts selected
+    onLocationUpdate?.(location.name, [location.id], location.id);
   };
 
+  // Notify parent when districts change
+  useEffect(() => {
+    if (!selectedLocation) return;
+    const locationIds = allDistrictsSelected
+      ? [selectedLocation.id] // Pass parent ID when all districts selected
+      : Array.from(selectedDistricts);
+    onLocationUpdate?.(selectedLocation.name, locationIds, selectedLocation.id);
+  }, [selectedLocation, selectedDistricts, allDistrictsSelected]);
+
   const isLocationSelected = (location: Location) => {
-    return selectedLocation.id === location.id;
+    return selectedLocation?.id === location.id;
   };
 
   return (
@@ -260,7 +279,7 @@ export function LocationDropdown({
                       <button
                         key={place.mapbox_id}
                         onClick={() => {
-                          onLocationUpdate?.(place.name);
+                          onLocationUpdate?.(place.name, []);
                         }}
                         className="flex items-start gap-2 px-2 py-2 rounded-lg hover:bg-[#f7f7fd] w-full text-left"
                       >
@@ -301,7 +320,7 @@ export function LocationDropdown({
                       <button
                         key={locality.mapbox_id}
                         onClick={() => {
-                          onLocationUpdate?.(locality.name);
+                          onLocationUpdate?.(locality.name, []);
                         }}
                         className="flex items-start gap-2 px-2 py-2 rounded-lg hover:bg-[#f7f7fd] w-full text-left"
                       >
@@ -342,7 +361,7 @@ export function LocationDropdown({
                       <button
                         key={street.mapbox_id}
                         onClick={() => {
-                          onLocationUpdate?.(street.name);
+                          onLocationUpdate?.(street.name, []);
                         }}
                         className="flex items-start gap-2 px-2 py-2 rounded-lg hover:bg-[#f7f7fd] w-full text-left"
                       >
@@ -529,7 +548,7 @@ export function LocationDropdown({
       </div>
 
       {/* Right Panel - Districts */}
-      {!hasSearchQuery && (
+      {!hasSearchQuery && selectedLocation && (
         <div className="w-[270px] border-l border-border-light flex flex-col">
           <div ref={rightPanelRef} className="flex flex-col h-full">
           {/* Header */}

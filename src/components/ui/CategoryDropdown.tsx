@@ -5,7 +5,7 @@ import categoriesData from "../categories.json";
 interface CategoryDropdownProps {
   onClose?: () => void;
   onApply?: (selectedTypes: string[], selectedSubtypes: string[]) => void;
-  onCategoryUpdate?: (categoryName: string) => void;
+  onCategoryUpdate?: (categoryName: string, typeId: string, subtypeIds: string[]) => void;
   isOpen?: boolean;
 }
 
@@ -38,7 +38,7 @@ const mockCounts: Record<string, number> = {
 };
 
 export function CategoryDropdown({ onClose, onApply, onCategoryUpdate, isOpen = true }: CategoryDropdownProps) {
-  const [selectedType, setSelectedType] = useState<string>("2"); // Default to Apartments
+  const [selectedType, setSelectedType] = useState<string>("3"); // Default to Houses
   const [selectedSubtypes, setSelectedSubtypes] = useState<Set<string>>(new Set());
   const [allSubcategoriesSelected, setAllSubcategoriesSelected] = useState(true);
 
@@ -131,6 +131,16 @@ export function CategoryDropdown({ onClose, onApply, onCategoryUpdate, isOpen = 
     }
   };
 
+  // Notify parent when subtypes change
+  useEffect(() => {
+    const typeName = categoriesData.types[selectedType as keyof typeof categoriesData.types];
+    const currentSubtypes = categoriesData.subtypes[selectedType as keyof typeof categoriesData.subtypes] || {};
+    const subtypeIds = allSubcategoriesSelected
+      ? Object.keys(currentSubtypes)
+      : Array.from(selectedSubtypes);
+    onCategoryUpdate?.(typeName, selectedType, subtypeIds);
+  }, [selectedType, selectedSubtypes, allSubcategoriesSelected]);
+
   const currentSubtypes = categoriesData.subtypes[selectedType as keyof typeof categoriesData.subtypes] || {};
 
   return (
@@ -159,7 +169,9 @@ export function CategoryDropdown({ onClose, onApply, onCategoryUpdate, isOpen = 
                   setSelectedType(typeId);
                   setSelectedSubtypes(new Set());
                   setAllSubcategoriesSelected(true);
-                  onCategoryUpdate?.(typeName);
+                  const currentSubtypes = categoriesData.subtypes[typeId as keyof typeof categoriesData.subtypes] || {};
+                  const allSubtypeIds = Object.keys(currentSubtypes);
+                  onCategoryUpdate?.(typeName, typeId, allSubtypeIds);
                 }}
                 className={`flex items-center justify-between px-3 py-2.5 h-10 ${
                   isSelected ? "bg-bg-light" : "bg-white hover:bg-[#fdfbff]"

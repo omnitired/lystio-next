@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect, useLayoutEffect, useCallback } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { searchMapbox, generateSessionToken } from "@/lib/mapbox";
+import { useSearchCount } from "@/lib/searchCount";
 import { PriceDropdown } from "./PriceDropdown";
 import { CategoryDropdown } from "./CategoryDropdown";
 import { LocationDropdown } from "./LocationDropdown";
@@ -38,16 +39,18 @@ interface SearchBarProps {
   onSearch?: () => void;
   mode?: HeaderMode;
   onModeChange?: (mode: HeaderMode) => void;
+  onCountUpdate?: (count: number | undefined) => void;
 }
 
 export function SearchBar({
-  category = "Apartments",
+  category = "Houses",
   pricePlaceholder = "Select Price Range",
   onCategoryClick,
   onPriceClick,
   onSearch,
   mode = "rent",
   onModeChange,
+  onCountUpdate,
 }: SearchBarProps) {
   const [activeDropdown, setActiveDropdown] = useState<"location" | "category" | "price" | null>(null);
   const [isClosing, setIsClosing] = useState(false);
@@ -55,12 +58,49 @@ export function SearchBar({
   const [selectedMaxPrice, setSelectedMaxPrice] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>(category);
   const [selectedLocation, setSelectedLocation] = useState<string>('');
+  const [selectedLocationId, setSelectedLocationId] = useState<string>('');
   const [debouncedLocation, setDebouncedLocation] = useState<string>('');
   const [isTyping, setIsTyping] = useState<boolean>(false);
   const [sessionToken] = useState(() => generateSessionToken());
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [indicatorStyle, setIndicatorStyle] = useState({ left: 0, width: 0 });
   const buttonsRef = useRef<(HTMLButtonElement | null)[]>([]);
+
+  // Filter states for API (initialize with Houses type and all its subtypes, no default location)
+  const [selectedTypeId, setSelectedTypeId] = useState<string>("3");
+  const [selectedSubTypeIds, setSelectedSubTypeIds] = useState<string[]>(["202", "8", "9", "10", "11", "13", "14", "18", "19", "20", "22", "57", "87"]);
+  const [selectedLocationIds, setSelectedLocationIds] = useState<string[]>([]);
+  const [showPriceOnRequest, setShowPriceOnRequest] = useState<boolean>(true);
+
+  // Helper function to convert price string to number
+  const getPriceNumber = (price: string | null): number => {
+    if (!price || price === "No Minimum" || price === "No Maximum") return 0;
+    return parseInt(price.replace(/[^0-9]/g, ""));
+  };
+
+  // Build search count params
+  const searchCountParams = selectedLocationIds.length > 0 && selectedSubTypeIds.length > 0 ? {
+    type: [parseInt(selectedTypeId)],
+    rentType: [mode === "rent" ? "rent" : "buy"],
+    subType: selectedSubTypeIds.map(id => parseInt(id)),
+    showPriceOnRequest,
+    sort: "most_recent" as const,
+    withinId: selectedLocationIds,
+    ...(mode === "rent" && selectedMinPrice && selectedMaxPrice && selectedMinPrice !== "No Minimum" && selectedMaxPrice !== "No Maximum"
+      ? { rent: [getPriceNumber(selectedMinPrice), getPriceNumber(selectedMaxPrice)] as [number, number] }
+      : {}),
+    ...(mode === "buy" && selectedMinPrice && selectedMaxPrice && selectedMinPrice !== "No Minimum" && selectedMaxPrice !== "No Maximum"
+      ? { price: [getPriceNumber(selectedMinPrice), getPriceNumber(selectedMaxPrice)] as [number, number] }
+      : {}),
+  } : null;
+
+  // Call search count API
+  const { data: searchCount } = useSearchCount(searchCountParams);
+
+  // Notify parent when count changes
+  useEffect(() => {
+    onCountUpdate?.(searchCount?.count);
+  }, [searchCount, onCountUpdate]);
 
   useLayoutEffect(() => {
     const activeIndex = toggleOptions.findIndex((opt) => opt.value === mode);
@@ -139,17 +179,24 @@ export function SearchBar({
     setIsClosing(false);
   }, []);
 
-  const handlePriceUpdate = useCallback((min: string, max: string) => {
+  const handlePriceUpdate = useCallback((min: string, max: string, showOnRequest: boolean) => {
     setSelectedMinPrice(min);
     setSelectedMaxPrice(max);
+    setShowPriceOnRequest(showOnRequest);
   }, []);
 
-  const handleCategoryUpdate = useCallback((categoryName: string) => {
+  const handleCategoryUpdate = useCallback((categoryName: string, typeId: string, subtypeIds: string[]) => {
     setSelectedCategory(categoryName);
+    setSelectedTypeId(typeId);
+    setSelectedSubTypeIds(subtypeIds);
   }, []);
 
-  const handleLocationUpdate = useCallback((locationName: string) => {
+  const handleLocationUpdate = useCallback((locationName: string, locationIds: string[], locationId?: string) => {
     setSelectedLocation(locationName);
+    setSelectedLocationIds(locationIds);
+    if (locationId) {
+      setSelectedLocationId(locationId);
+    }
     setIsTyping(false);
   }, []);
 
@@ -242,6 +289,7 @@ export function SearchBar({
                 searchResults={searchResults}
                 isLoading={isLoading}
                 hasSearchQuery={isTyping && selectedLocation.length > 0}
+                selectedLocationId={selectedLocationId}
               />
             )}
           </div>
