@@ -1,6 +1,7 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import { gsap } from "gsap";
 import { Dropdown } from "./Dropdown";
+import { useHistogram, type HistogramParams } from "@/lib/searchCount";
 
 interface PriceDropdownProps {
   onClose?: () => void;
@@ -10,45 +11,62 @@ interface PriceDropdownProps {
   initialMinPrice?: string | null;
   initialMaxPrice?: string | null;
   initialShowPriceOnRequest?: boolean;
+  histogramParams?: HistogramParams | null;
 }
 
-const priceOptions = [
-  "No Minimum",
-  "400€",
-  "500€",
-  "600€",
-  "700€",
-  "800€",
-  "900€",
-  "1.000€",
-  "1.200€",
-  "1.300€",
-  "1.400€",
-  "1.500€",
-  "1.600€",
-  "1.700€",
-  "1.800€",
-];
+// Helper to format price with proper separators
 
-const maxPriceOptions = [
-  "No Maximum",
-  "400€",
-  "500€",
-  "600€",
-  "700€",
-  "800€",
-  "900€",
-  "1.000€",
-  "1.200€",
-  "1.300€",
-  "1.400€",
-  "1.500€",
-  "1.600€",
-  "1.700€",
-  "1.800€",
-];
+const formatPrice = (price: number): string => {
+  // Convert to string and add commas every 3 digits from the right
+  const priceStr = price.toString();
+  const parts = [];
+  
+  // Process from right to left, adding commas every 3 digits
+  let i = priceStr.length;
+  while (i > 0) {
+    const start = Math.max(0, i - 3);
+    parts.unshift(priceStr.slice(start, i));
+    i = start;
+  }
+  
+  return `${parts.join(',')}€`;
+};
 
-export function PriceDropdown({ onClose, onApply, onPriceUpdate, isOpen = true, initialMinPrice, initialMaxPrice, initialShowPriceOnRequest }: PriceDropdownProps) {
+// Generate price options from range, rounded up to 20 buckets
+const generatePriceOptions = (min: number, max: number): string[] => {
+  const options = ["No Minimum"];
+  const step = (max - min) / 19; // 19 steps to create 20 buckets (0-19 inclusive)
+
+  for (let i = 0; i < 19; i++) {
+    const price = min + (step * i);
+    const roundedPrice = Math.ceil(price / 100) * 100; // Round up to nearest 100
+    options.push(formatPrice(roundedPrice));
+  }
+
+  // Add max as the last option
+  options.push(formatPrice(max));
+
+  return options;
+};
+
+const generateMaxPriceOptions = (min: number, max: number): string[] => {
+  const options = ["No Maximum"];
+  const step = (max - min) / 19; // 19 steps to create 20 buckets (0-19 inclusive)
+
+  for (let i = 0; i < 19; i++) {
+    const price = min + (step * i);
+    const roundedPrice = Math.ceil(price / 100) * 100; // Round up to nearest 100
+    options.push(formatPrice(roundedPrice));
+  }
+
+  // Add max as the last option
+  options.push(formatPrice(max));
+
+  return options;
+};
+
+export function PriceDropdown({ onClose, onApply, onPriceUpdate, isOpen = true, initialMinPrice, initialMaxPrice, initialShowPriceOnRequest, histogramParams }: PriceDropdownProps) {
+  const { data: histogramData, isLoading: isLoadingHistogram } = useHistogram(histogramParams || null);
   const [minPrice, setMinPrice] = useState<string>(initialMinPrice || "No Minimum");
   const [maxPrice, setMaxPrice] = useState<string>(initialMaxPrice || "No Maximum");
   const [showPriceOnRequest, setShowPriceOnRequest] = useState(initialShowPriceOnRequest ?? false);
@@ -56,6 +74,27 @@ export function PriceDropdown({ onClose, onApply, onPriceUpdate, isOpen = true, 
 
   const optionsListRef = useRef<HTMLDivElement>(null);
   const previousDropdownType = useRef<"min" | "max" | null>(null);
+
+  // Generate price options from histogram data
+  const priceOptions = useMemo(() => {
+    if (!histogramData?.range) {
+      return ["No Minimum", "400€", "500€", "600€", "700€", "800€", "900€", "1.000€", "1.200€", "1.300€", "1.400€", "1.500€", "1.600€", "1.700€", "1.800€"];
+    }
+    return generatePriceOptions(histogramData.range[0], histogramData.range[1]);
+  }, [histogramData]);
+
+  const maxPriceOptions = useMemo(() => {
+    if (!histogramData?.range) {
+      return ["No Maximum", "400€", "500€", "600€", "700€", "800€", "900€", "1.000€", "1.200€", "1.300€", "1.400€", "1.500€", "1.600€", "1.700€", "1.800€"];
+    }
+    return generateMaxPriceOptions(histogramData.range[0], histogramData.range[1]);
+  }, [histogramData]);
+
+  // Get max histogram value for scaling
+  const maxHistogramValue = useMemo(() => {
+    if (!histogramData?.histogram) return 0;
+    return Math.max(...histogramData.histogram);
+  }, [histogramData]);
 
   const getNumericValue = (price: string): number => {
     if (price === "No Minimum" || price === "No Maximum") return 0;
@@ -169,10 +208,15 @@ export function PriceDropdown({ onClose, onApply, onPriceUpdate, isOpen = true, 
       {/* Price Options List */}
       <div className="bg-white overflow-hidden">
         <div ref={optionsListRef} className="flex flex-col py-2 overflow-auto max-h-[300px] scrollbar-hide [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-        {(activeDropdown === "min" ? priceOptions : activeDropdown === "max" ? maxPriceOptions : []).map((price) => {
+        {(activeDropdown === "min" ? priceOptions : activeDropdown === "max" ? maxPriceOptions : []).map((price, index) => {
           const isSelected = activeDropdown === "min" ? price === minPrice : price === maxPrice;
           const isDisabled = activeDropdown ? isOptionDisabled(price, activeDropdown) : false;
           const isMax = activeDropdown === "max";
+
+          // Get histogram value for this index (skip "No Minimum/Maximum" option)
+          const histogramIndex = index - 1;
+          const histogramValue = histogramData?.histogram?.[histogramIndex] || 0;
+          const barHeight = maxHistogramValue > 0 ? (histogramValue / maxHistogramValue) * 100 : 0;
 
           return (
             <button
@@ -190,15 +234,16 @@ export function PriceDropdown({ onClose, onApply, onPriceUpdate, isOpen = true, 
                 }
               }}
               disabled={isDisabled}
-              className={`flex gap-2.5 items-center justify-between px-3 py-2 rounded text-left ${
+              className={`flex gap-2.5 items-center justify-between px-3 py-2 text-left relative ${
                 isSelected ? "bg-bg-light" : "bg-white hover:bg-[#fdfbff]"
               } ${isDisabled ? "opacity-40 cursor-not-allowed" : ""} ${isMax ? "flex-row-reverse text-right" : "flex-row"}` }
             >
-              <span className={`flex-1 text-sm font-medium text-black leading-[1.6]`}>
+
+              <span className={`flex-1 text-sm font-medium text-black leading-[1.6] relative z-10`}>
                 {price}
               </span>
               {isSelected && (
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="relative z-10">
 <path d="M10.5868 13.4148L7.75775 10.5868L6.34375 12.0008L10.5868 16.2438L17.6567 9.17281L16.2437 7.75781L10.5868 13.4148Z" fill="#A540F3"/>
 </svg>
 

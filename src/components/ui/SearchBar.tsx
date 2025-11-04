@@ -78,6 +78,16 @@ export function SearchBar({
     return parseInt(price.replace(/[^0-9]/g, ""));
   };
 
+  // Build histogram params (same as search count but without price filter)
+  const histogramParams = selectedLocationIds.length > 0 && selectedSubTypeIds.length > 0 ? {
+    type: [parseInt(selectedTypeId)],
+    rentType: [mode === "rent" ? "rent" : "buy"],
+    subType: selectedSubTypeIds.map(id => parseInt(id)),
+    showPriceOnRequest,
+    sort: "most_recent" as const,
+    withinId: selectedLocationIds,
+  } : null;
+
   // Build search count params
   const searchCountParams = selectedLocationIds.length > 0 && selectedSubTypeIds.length > 0 ? {
     type: [parseInt(selectedTypeId)],
@@ -392,6 +402,7 @@ export function SearchBar({
                 initialMinPrice={selectedMinPrice}
                 initialMaxPrice={selectedMaxPrice}
                 initialShowPriceOnRequest={showPriceOnRequest}
+                histogramParams={histogramParams}
               />
             </div>
           )}
