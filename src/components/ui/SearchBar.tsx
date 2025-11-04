@@ -108,10 +108,10 @@ export function SearchBar({
       <div ref={dropdownRef} className="w-[900px] h-[69px] bg-white border border-border-light rounded-full shadow-[0px_105px_77.6px_38px_rgba(0,0,0,0.08)] relative z-50">
         <div className="flex h-full items-center">
           {/* Location Section */}
-          <div className="w-[300px] h-full bg-bg-light relative">
+          <div className="w-[300px] h-full bg-bg-light relative rounded-l-full">
             <div
               onClick={handleLocationClick}
-              className={`w-full h-full flex items-center gap-[15px] pl-6 pr-4 py-3 cursor-pointer transition-colors ${
+              className={`w-full h-full flex items-center gap-[15px] pl-6 pr-4 py-3 cursor-pointer transition-colors rounded-l-full ${
                 activeDropdown === "location" ? "bg-white" : "hover:bg-brand-purple-light"
               }`}
             >
@@ -168,7 +168,7 @@ export function SearchBar({
         </div>
 
         {/* Price Section + Search Button */}
-        <div className="flex-1 bg-bg-light h-full flex items-center border-l border-border-light relative">
+        <div className="flex-1 bg-bg-light h-full flex items-center border-l border-border-light relative rounded-r-full">
           <div
             onClick={handlePriceClick}
             className={`flex-1 flex h-full items-center px-3 cursor-pointer transition-colors ${
