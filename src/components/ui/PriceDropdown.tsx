@@ -7,6 +7,9 @@ interface PriceDropdownProps {
   onApply?: (min: string | null, max: string | null, showPriceOnRequest: boolean) => void;
   onPriceUpdate?: (min: string, max: string, showPriceOnRequest: boolean) => void;
   isOpen?: boolean;
+  initialMinPrice?: string | null;
+  initialMaxPrice?: string | null;
+  initialShowPriceOnRequest?: boolean;
 }
 
 const priceOptions = [
@@ -45,11 +48,11 @@ const maxPriceOptions = [
   "1.800€",
 ];
 
-export function PriceDropdown({ onClose, onApply, onPriceUpdate, isOpen = true }: PriceDropdownProps) {
-  const [minPrice, setMinPrice] = useState<string>("No Minimum");
-  const [maxPrice, setMaxPrice] = useState<string>("No Maximum");
-  const [showPriceOnRequest, setShowPriceOnRequest] = useState(false);
-  const [activeDropdown, setActiveDropdown] = useState<"min" | "max" | null>("min");
+export function PriceDropdown({ onClose, onApply, onPriceUpdate, isOpen = true, initialMinPrice, initialMaxPrice, initialShowPriceOnRequest }: PriceDropdownProps) {
+  const [minPrice, setMinPrice] = useState<string>(initialMinPrice || "No Minimum");
+  const [maxPrice, setMaxPrice] = useState<string>(initialMaxPrice || "No Maximum");
+  const [showPriceOnRequest, setShowPriceOnRequest] = useState(initialShowPriceOnRequest ?? false);
+  const [activeDropdown, setActiveDropdown] = useState<"min" | "max" | null>(null);
 
   const optionsListRef = useRef<HTMLDivElement>(null);
   const previousDropdownType = useRef<"min" | "max" | null>(null);
@@ -215,7 +218,7 @@ export function PriceDropdown({ onClose, onApply, onPriceUpdate, isOpen = true }
         <div className={`w-4 h-4 flex items-center justify-center shrink-0 border rounded-sm border-brand-purple-200 ${showPriceOnRequest ? "bg-brand-purple" : "bg-white"}`}>
           {showPriceOnRequest && (
             <svg width="10" height="8" viewBox="0 0 11 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M0.5 4.75532L2.97917 7.16667L9.83333 0.5" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M0.5 4.75532L2.97917 7.16667L9.83333 0.5" stroke="white" strokeLinecap="round" strokeLinejoin="round"/>
 </svg>
 
 

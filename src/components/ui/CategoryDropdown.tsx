@@ -8,6 +8,8 @@ interface CategoryDropdownProps {
   onApply?: (selectedTypes: string[], selectedSubtypes: string[]) => void;
   onCategoryUpdate?: (categoryName: string, typeId: string, subtypeIds: string[]) => void;
   isOpen?: boolean;
+  initialTypeId?: string;
+  initialSubtypeIds?: string[];
 }
 
 // Icon mapping for each category type
@@ -38,10 +40,12 @@ const mockCounts: Record<string, number> = {
   "21": 5086,
 };
 
-export function CategoryDropdown({ onClose, onApply, onCategoryUpdate, isOpen = true }: CategoryDropdownProps) {
-  const [selectedType, setSelectedType] = useState<string>("3"); // Default to Houses
-  const [selectedSubtypes, setSelectedSubtypes] = useState<Set<string>>(new Set());
-  const [allSubcategoriesSelected, setAllSubcategoriesSelected] = useState(true);
+export function CategoryDropdown({ onClose, onApply, onCategoryUpdate, isOpen = true, initialTypeId, initialSubtypeIds }: CategoryDropdownProps) {
+  const [selectedType, setSelectedType] = useState<string>(initialTypeId || "3");
+  const [selectedSubtypes, setSelectedSubtypes] = useState<Set<string>>(
+    initialSubtypeIds && initialSubtypeIds.length > 0 ? new Set(initialSubtypeIds) : new Set()
+  );
+  const [allSubcategoriesSelected, setAllSubcategoriesSelected] = useState(!initialSubtypeIds || initialSubtypeIds.length === 0);
 
   const rightPanelRef = useRef<HTMLDivElement>(null);
   const previousSelectedType = useRef<string | null>(null);

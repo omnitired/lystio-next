@@ -7,7 +7,7 @@ export function Header() {
       {/* Logo */}
       <div className="absolute left-8 top-1/2 -translate-y-1/2">
         <div className="flex items-center justify-center">
-          <Image src="/lystio-logo.svg" alt="Lystio Logo" width={80} height={37} />
+          <Image src="/lystio-logo.svg" alt="Lystio Logo" width={80} height={38} />
         </div>
       </div>
     </header>

@@ -260,7 +260,7 @@ export function SearchBar({
             <div
               onClick={handleLocationClick}
               className={`w-full h-full flex items-center gap-[15px] pl-6 pr-4 py-3 cursor-pointer transition-colors rounded-l-full ${
-                activeDropdown === "location" ? "bg-white" : "hover:bg-brand-purple-light"
+                activeDropdown === "location" ? "bg-white" : "hover:bg-white"
               }`}
             >
               <div className="flex-1 flex flex-col">
@@ -299,7 +299,7 @@ export function SearchBar({
           <div
             onClick={handleCategoryClick}
             className={`w-full h-full flex items-center gap-[15px] px-3 py-2 cursor-pointer transition-colors ${
-              activeDropdown === "category" ? "bg-white" : "hover:bg-brand-purple-light"
+              activeDropdown === "category" ? "bg-white" : "hover:bg-white"
             }`}
           >
             <div className="flex-1 flex flex-col">
@@ -319,6 +319,8 @@ export function SearchBar({
                 isOpen={!isClosing && activeDropdown === "category"}
                 onClose={handleDropdownClose}
                 onCategoryUpdate={handleCategoryUpdate}
+                initialTypeId={selectedTypeId}
+                initialSubtypeIds={selectedSubTypeIds}
               />
             </div>
           )}
@@ -387,6 +389,9 @@ export function SearchBar({
                 isOpen={!isClosing && activeDropdown === "price"}
                 onClose={handleDropdownClose}
                 onPriceUpdate={handlePriceUpdate}
+                initialMinPrice={selectedMinPrice}
+                initialMaxPrice={selectedMaxPrice}
+                initialShowPriceOnRequest={showPriceOnRequest}
               />
             </div>
           )}

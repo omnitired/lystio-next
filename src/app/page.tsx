@@ -14,28 +14,36 @@ export default function Home() {
       <Header />
 
       {/* Main Content Area */}
-        {/* Search Bar Section */}
-        <div className="bg-white pt-6 pb-6 flex flex-col items-center shadow-[0px_105px_77.6px_38px_rgba(0,0,0,0.08)] relative z-10">
-          <SearchBar
-            mode={headerMode}
-            onModeChange={setHeaderMode}
-            onSearch={() => console.log("Search clicked")}
-            onCountUpdate={setSearchCount}
-          />
-          {/* Search Count Display */}
-          {searchCount !== undefined && (
+      {/* Search Bar Section */}
+      <div className="bg-white pt-6 pb-6 flex flex-col items-center shadow-[0px_105px_77.6px_38px_rgba(0,0,0,0.08)] relative z-10">
+        <SearchBar
+          mode={headerMode}
+          onModeChange={setHeaderMode}
+          onSearch={() => console.log("Search clicked")}
+          onCountUpdate={setSearchCount}
+        />
+        {/* Search Count Display */}
+      </div>
+
+      {/* Map or other content would go here */}
+      <div className="h-[calc(100vh-240px)] bg-gray-200 flex items-center justify-center">
+        <div className="text-gray-500 text-lg">
+          {" "}
+          
             <div className="mt-4 text-center">
               <p className="text-lg font-medium text-text-primary">
-                Found <span className="text-brand-purple font-semibold">{searchCount}</span> {searchCount === 1 ? 'property' : 'properties'}
+              <span className="text-brand-purple font-semibold">
+                  {searchCount}
+                </span>{" "}
+                {searchCount === 1 ? "property" : "properties"}
+                {" "}
+                Found{" "}
+
               </p>
             </div>
-          )}
+         
         </div>
-
-        {/* Map or other content would go here */}
-        <div className="h-[calc(100vh-240px)] bg-gray-200 flex items-center justify-center">
-          <p className="text-gray-500 text-lg">Map content area</p>
-        </div>
+      </div>
     </div>
   );
 }
