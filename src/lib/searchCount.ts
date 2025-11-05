@@ -4,10 +4,10 @@ import { apiRequest } from "./api";
 interface SearchCountParams {
   type: number[];
   rentType: string[];
-  subType: number[];
+  subType?: number[];
   showPriceOnRequest: boolean;
   sort: string;
-  withinId: string[];
+  withinId?: string[];
   rent?: [number, number];
   price?: [number, number];
 }
@@ -19,10 +19,10 @@ interface SearchCountResponse {
 export interface HistogramParams {
   type: number[];
   rentType: string[];
-  subType: number[];
+  subType?: number[];
   showPriceOnRequest: boolean;
   sort: string;
-  withinId: string[];
+  withinId?: string[];
 }
 
 export interface HistogramResponse {

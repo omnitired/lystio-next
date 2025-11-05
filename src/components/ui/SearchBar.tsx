@@ -4,7 +4,6 @@ import {
   useState,
   useRef,
   useEffect,
-  useLayoutEffect,
   useCallback,
 } from "react";
 import Image from "next/image";
@@ -18,29 +17,35 @@ import { CategoryModal } from "./CategoryModal";
 import { PriceModal } from "./PriceModal";
 import { LocationModal } from "./LocationModal";
 import { Modal } from "./Modal";
+import { ModeToggle } from "./ModeToggle";
 
 type HeaderMode = "rent" | "buy" | "ai";
 
-interface ToggleOption {
-  value: HeaderMode;
-  label: string | React.ReactNode;
+interface FilterState {
+  location: string;
+  locationId: string;
+  locationIds: string[];
+  category: string;
+  typeId: string;
+  subTypeIds: string[];
+  minPrice: string | null;
+  maxPrice: string | null;
+  showPriceOnRequest: boolean;
+  mode: HeaderMode;
 }
 
-const toggleOptions: ToggleOption[] = [
-  { value: "rent", label: "Rent" },
-  { value: "buy", label: "Buy" },
-  {
-    value: "ai",
-    label: (
-      <>
-        <span className="text-black">Lystio </span>
-        <span className="text-transparent bg-clip-text bg-gradient-to-b from-[#a540f3] to-[#5110e8] font-semibold">
-          AI
-        </span>
-      </>
-    ),
-  },
-];
+const defaultFilter: FilterState = {
+  location: "",
+  locationId: "",
+  locationIds: [],
+  category: "Apartments",
+  typeId: "2",
+  subTypeIds: [], // empty = all subcategories
+  minPrice: null,
+  maxPrice: null,
+  showPriceOnRequest: true,
+  mode: "rent",
+};
 
 interface SearchBarProps {
   category?: string;
@@ -54,7 +59,7 @@ interface SearchBarProps {
 }
 
 export function SearchBar({
-  category = "Houses",
+  category = "Apartments",
   pricePlaceholder = "Select Price Range",
   onCategoryClick,
   onPriceClick,
@@ -63,6 +68,11 @@ export function SearchBar({
   onModeChange,
   onCountUpdate,
 }: SearchBarProps) {
+  const [filter, setFilter] = useState<FilterState>({
+    ...defaultFilter,
+    category,
+    mode,
+  });
   const [activeDropdown, setActiveDropdown] = useState<
     "location" | "category" | "price" | null
   >(null);
@@ -71,37 +81,10 @@ export function SearchBar({
   const [showCategoryModal, setShowCategoryModal] = useState(false);
   const [showPriceModal, setShowPriceModal] = useState(false);
   const [showLocationModal, setShowLocationModal] = useState(false);
-  const [selectedMinPrice, setSelectedMinPrice] = useState<string | null>(null);
-  const [selectedMaxPrice, setSelectedMaxPrice] = useState<string | null>(null);
-  const [selectedCategory, setSelectedCategory] = useState<string>(category);
-  const [selectedLocation, setSelectedLocation] = useState<string>("");
-  const [selectedLocationId, setSelectedLocationId] = useState<string>("");
   const [debouncedLocation, setDebouncedLocation] = useState<string>("");
   const [isTyping, setIsTyping] = useState<boolean>(false);
   const [sessionToken] = useState(() => generateSessionToken());
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const [indicatorStyle, setIndicatorStyle] = useState({ left: 0, width: 0 });
-  const buttonsRef = useRef<(HTMLButtonElement | null)[]>([]);
-
-  // Filter states for API (initialize with Houses type and all its subtypes, no default location)
-  const [selectedTypeId, setSelectedTypeId] = useState<string>("3");
-  const [selectedSubTypeIds, setSelectedSubTypeIds] = useState<string[]>([
-    "202",
-    "8",
-    "9",
-    "10",
-    "11",
-    "13",
-    "14",
-    "18",
-    "19",
-    "20",
-    "22",
-    "57",
-    "87",
-  ]);
-  const [selectedLocationIds, setSelectedLocationIds] = useState<string[]>([]);
-  const [showPriceOnRequest, setShowPriceOnRequest] = useState<boolean>(true);
 
   // Helper function to convert price string to number
   const getPriceNumber = (price: string | null): number => {
@@ -110,54 +93,48 @@ export function SearchBar({
   };
 
   // Build histogram params (same as search count but without price filter)
-  const histogramParams =
-    selectedLocationIds.length > 0 && selectedSubTypeIds.length > 0
-      ? {
-          type: [parseInt(selectedTypeId)],
-          rentType: [mode === "rent" ? "rent" : "buy"],
-          subType: selectedSubTypeIds.map((id) => parseInt(id)),
-          showPriceOnRequest,
-          sort: "most_recent" as const,
-          withinId: selectedLocationIds,
-        }
-      : null;
+  const histogramParams = {
+    type: [parseInt(filter.typeId)],
+    rentType: [filter.mode === "rent" ? "rent" : "buy"],
+    ...(filter.subTypeIds.length > 0 ? { subType: filter.subTypeIds.map((id) => parseInt(id)) } : {}),
+    showPriceOnRequest: filter.showPriceOnRequest,
+    sort: "most_recent" as const,
+    ...(filter.locationIds.length > 0 ? { withinId: filter.locationIds } : {}),
+  };
 
   // Build search count params
-  const searchCountParams =
-    selectedLocationIds.length > 0 && selectedSubTypeIds.length > 0
+  const searchCountParams = {
+    type: [parseInt(filter.typeId)],
+    rentType: [filter.mode === "rent" ? "rent" : "buy"],
+    ...(filter.subTypeIds.length > 0 ? { subType: filter.subTypeIds.map((id) => parseInt(id)) } : {}),
+    showPriceOnRequest: filter.showPriceOnRequest,
+    sort: "most_recent" as const,
+    ...(filter.locationIds.length > 0 ? { withinId: filter.locationIds } : {}),
+    ...(filter.mode === "rent" &&
+    filter.minPrice &&
+    filter.maxPrice &&
+    filter.minPrice !== "No Minimum" &&
+    filter.maxPrice !== "No Maximum"
       ? {
-          type: [parseInt(selectedTypeId)],
-          rentType: [mode === "rent" ? "rent" : "buy"],
-          subType: selectedSubTypeIds.map((id) => parseInt(id)),
-          showPriceOnRequest,
-          sort: "most_recent" as const,
-          withinId: selectedLocationIds,
-          ...(mode === "rent" &&
-          selectedMinPrice &&
-          selectedMaxPrice &&
-          selectedMinPrice !== "No Minimum" &&
-          selectedMaxPrice !== "No Maximum"
-            ? {
-                rent: [
-                  getPriceNumber(selectedMinPrice),
-                  getPriceNumber(selectedMaxPrice),
-                ] as [number, number],
-              }
-            : {}),
-          ...(mode === "buy" &&
-          selectedMinPrice &&
-          selectedMaxPrice &&
-          selectedMinPrice !== "No Minimum" &&
-          selectedMaxPrice !== "No Maximum"
-            ? {
-                price: [
-                  getPriceNumber(selectedMinPrice),
-                  getPriceNumber(selectedMaxPrice),
-                ] as [number, number],
-              }
-            : {}),
+          rent: [
+            getPriceNumber(filter.minPrice),
+            getPriceNumber(filter.maxPrice),
+          ] as [number, number],
         }
-      : null;
+      : {}),
+    ...(filter.mode === "buy" &&
+    filter.minPrice &&
+    filter.maxPrice &&
+    filter.minPrice !== "No Minimum" &&
+    filter.maxPrice !== "No Maximum"
+      ? {
+          price: [
+            getPriceNumber(filter.minPrice),
+            getPriceNumber(filter.maxPrice),
+          ] as [number, number],
+        }
+      : {}),
+  };
 
   // Call search count API
   const { data: searchCount } = useSearchCount(searchCountParams);
@@ -167,26 +144,14 @@ export function SearchBar({
     onCountUpdate?.(searchCount?.count);
   }, [searchCount, onCountUpdate]);
 
-  useLayoutEffect(() => {
-    const activeIndex = toggleOptions.findIndex((opt) => opt.value === mode);
-    const activeButton = buttonsRef.current[activeIndex];
-
-    if (activeButton) {
-      setIndicatorStyle({
-        left: activeButton.offsetLeft,
-        width: activeButton.offsetWidth,
-      });
-    }
-  }, [mode]);
-
   // Debounce location input
   useEffect(() => {
     const timer = setTimeout(() => {
-      setDebouncedLocation(selectedLocation);
+      setDebouncedLocation(filter.location);
     }, 300);
 
     return () => clearTimeout(timer);
-  }, [selectedLocation]);
+  }, [filter.location]);
 
   // Fetch search results
   const { data: searchResults, isLoading } = useQuery({
@@ -250,47 +215,54 @@ export function SearchBar({
 
   const handlePriceUpdate = useCallback(
     (min: string, max: string, showOnRequest: boolean) => {
-      setSelectedMinPrice(min);
-      setSelectedMaxPrice(max);
-      setShowPriceOnRequest(showOnRequest);
+      setFilter((prev) => ({
+        ...prev,
+        minPrice: min,
+        maxPrice: max,
+        showPriceOnRequest: showOnRequest,
+      }));
     },
     []
   );
 
   const handleCategoryUpdate = useCallback(
     (categoryName: string, typeId: string, subtypeIds: string[]) => {
-      setSelectedCategory(categoryName);
-      setSelectedTypeId(typeId);
-      setSelectedSubTypeIds(subtypeIds);
+      setFilter((prev) => ({
+        ...prev,
+        category: categoryName,
+        typeId,
+        subTypeIds: subtypeIds,
+      }));
     },
     []
   );
 
   const handleLocationUpdate = useCallback(
     (locationName: string, locationIds: string[], locationId?: string) => {
-      setSelectedLocation(locationName);
-      setSelectedLocationIds(locationIds);
-      if (locationId) {
-        setSelectedLocationId(locationId);
-      }
+      setFilter((prev) => ({
+        ...prev,
+        location: locationName,
+        locationIds,
+        locationId: locationId || prev.locationId,
+      }));
       setIsTyping(false);
     },
     []
   );
 
   const getPriceDisplayText = () => {
-    if (!selectedMinPrice && !selectedMaxPrice) {
+    if (!filter.minPrice && !filter.maxPrice) {
       return pricePlaceholder;
     }
 
     const minText =
-      selectedMinPrice === "No Minimum"
+      filter.minPrice === "No Minimum"
         ? "0"
-        : selectedMinPrice?.replace("€", "");
+        : filter.minPrice?.replace("€", "");
     const maxText =
-      selectedMaxPrice === "No Maximum"
+      filter.maxPrice === "No Maximum"
         ? "∞"
-        : selectedMaxPrice?.replace("€", "");
+        : filter.maxPrice?.replace("€", "");
 
     return `${minText} - ${maxText} €`;
   };
@@ -302,37 +274,14 @@ export function SearchBar({
 
       {/* Mode Toggle - centered, hidden on mobile */}
       <div className="hidden mt-[-59px] md:flex justify-center mb-4">
-        <div className="bg-bg-light border border-border-light rounded-full p-1 flex gap-1 relative">
-          {/* Animated Indicator */}
-          {indicatorStyle.width > 0 && (
-            <div
-              className="absolute top-1 bg-white border border-white rounded-full transition-all duration-300 ease-out"
-              style={{
-                left: `${indicatorStyle.left}px`,
-                width: `${indicatorStyle.width}px`,
-                height: "calc(100% - 8px)",
-              }}
-            />
-          )}
-
-          {/* Toggle Buttons */}
-          {toggleOptions.map((option, index) => (
-            <button
-              key={option.value}
-              ref={(el) => {
-                buttonsRef.current[index] = el;
-              }}
-              onClick={() => onModeChange?.(option.value)}
-              className={`px-3 py-1 rounded-full text-sm font-medium transition-colors relative z-10 font-[family-name:var(--font-plus-jakarta-sans)] ${
-                mode === option.value
-                  ? "text-text-primary"
-                  : "text-black hover:bg-white/50"
-              }`}
-            >
-              {option.label}
-            </button>
-          ))}
-        </div>
+        <ModeToggle
+          mode={filter.mode}
+          onModeChange={(mode) => {
+            setFilter((prev) => ({ ...prev, mode }));
+            onModeChange?.(mode);
+          }}
+          variant="desktop"
+        />
       </div>
 
       <div
@@ -354,9 +303,9 @@ export function SearchBar({
                 </label>
                 <input
                   type="text"
-                  value={selectedLocation}
+                  value={filter.location}
                   onChange={(e) => {
-                    setSelectedLocation(e.target.value);
+                    setFilter((prev) => ({ ...prev, location: e.target.value }));
                     setIsTyping(true);
                   }}
                   placeholder="Enter location..."
@@ -373,8 +322,8 @@ export function SearchBar({
                 onLocationUpdate={handleLocationUpdate}
                 searchResults={searchResults}
                 isLoading={isLoading}
-                hasSearchQuery={isTyping && selectedLocation.length > 0}
-                selectedLocationId={selectedLocationId}
+                hasSearchQuery={isTyping && filter.location.length > 0}
+                selectedLocationId={filter.locationId}
               />
             )}
           </div>
@@ -437,7 +386,7 @@ export function SearchBar({
                   Category
                 </label>
                 <span className="text-sm font-medium text-text-primary leading-[1.6]">
-                  {selectedCategory}
+                  {filter.category}
                 </span>
               </div>
             </div>
@@ -449,8 +398,8 @@ export function SearchBar({
                   isOpen={!isClosing && activeDropdown === "category"}
                   onClose={handleDropdownClose}
                   onCategoryUpdate={handleCategoryUpdate}
-                  initialTypeId={selectedTypeId}
-                  initialSubtypeIds={selectedSubTypeIds}
+                  initialTypeId={filter.typeId}
+                  initialSubtypeIds={filter.subTypeIds}
                 />
               </div>
             )}
@@ -470,7 +419,7 @@ export function SearchBar({
                 </label>
                 <span
                   className={`text-sm font-medium text-text-primary leading-[1.6] ${
-                    !selectedMinPrice && !selectedMaxPrice ? "opacity-40" : ""
+                    !filter.minPrice && !filter.maxPrice ? "opacity-40" : ""
                   }`}
                 >
                   {getPriceDisplayText()}
@@ -498,9 +447,9 @@ export function SearchBar({
                   isOpen={!isClosing && activeDropdown === "price"}
                   onClose={handleDropdownClose}
                   onPriceUpdate={handlePriceUpdate}
-                  initialMinPrice={selectedMinPrice}
-                  initialMaxPrice={selectedMaxPrice}
-                  initialShowPriceOnRequest={showPriceOnRequest}
+                  initialMinPrice={filter.minPrice}
+                  initialMaxPrice={filter.maxPrice}
+                  initialShowPriceOnRequest={filter.showPriceOnRequest}
                   histogramParams={histogramParams}
                 />
               </div>
@@ -525,38 +474,15 @@ export function SearchBar({
           <div className="flex-1 overflow-y-auto px-6 py-2">
               {/* Mode Toggle */}
               <div className="md:flex justify-center mb-4">
-        <div className="bg-bg-light border border-border-light rounded-full p-1 flex gap-1 relative">
-          {/* Animated Indicator */}
-          {indicatorStyle.width > 0 && (
-            <div
-              className="absolute top-1 bg-white border border-white rounded-full transition-all duration-300 ease-out"
-              style={{
-                left: `${indicatorStyle.left}px`,
-                width: `${indicatorStyle.width}px`,
-                height: "calc(100% - 8px)",
-              }}
-            />
-          )}
-
-          {/* Toggle Buttons */}
-          {toggleOptions.map((option, index) => (
-            <button
-              key={option.value}
-              ref={(el) => {
-                buttonsRef.current[index] = el;
-              }}
-              onClick={() => onModeChange?.(option.value)}
-              className={`px-3 w-full py-1 rounded-full text-sm font-medium transition-colors relative z-10 font-[family-name:var(--font-plus-jakarta-sans)] ${
-                mode === option.value
-                  ? "text-text-primary"
-                  : "text-black hover:bg-white/50"
-              }`}
-            >
-              {option.label}
-            </button>
-          ))}
-        </div>
-      </div>
+                <ModeToggle
+                  mode={filter.mode}
+                  onModeChange={(mode) => {
+                    setFilter((prev) => ({ ...prev, mode }));
+                    onModeChange?.(mode);
+                  }}
+                  variant="modal"
+                />
+              </div>
 
               {/* Category Row */}
               <button
@@ -571,7 +497,7 @@ export function SearchBar({
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-xl font-normal text-brand-purple">
-                    {selectedCategory}
+                    {filter.category}
                   </span>
                   <Image src="/icons/chevron-right-purple.svg" alt="" width={24} height={24} />
                 </div>
@@ -589,12 +515,12 @@ export function SearchBar({
                 <div className="flex items-center gap-2">
                   <span
                     className={`text-xl font-normal ${
-                      !selectedMinPrice && !selectedMaxPrice
+                      !filter.minPrice && !filter.maxPrice
                         ? "text-gray-400"
                         : "text-gray-600"
                     }`}
                   >
-                    {!selectedMinPrice && !selectedMaxPrice
+                    {!filter.minPrice && !filter.maxPrice
                       ? "Any Price"
                       : getPriceDisplayText()}
                   </span>
@@ -609,8 +535,8 @@ export function SearchBar({
           isOpen={showCategoryModal}
           onClose={() => setShowCategoryModal(false)}
           onCategoryUpdate={handleCategoryUpdate}
-          initialTypeId={selectedTypeId}
-          initialSubtypeIds={selectedSubTypeIds}
+          initialTypeId={filter.typeId}
+          initialSubtypeIds={filter.subTypeIds}
         />
 
         {/* Mobile Price Modal */}
@@ -618,9 +544,9 @@ export function SearchBar({
           isOpen={showPriceModal}
           onClose={() => setShowPriceModal(false)}
           onPriceUpdate={handlePriceUpdate}
-          initialMinPrice={selectedMinPrice}
-          initialMaxPrice={selectedMaxPrice}
-          initialShowPriceOnRequest={showPriceOnRequest}
+          initialMinPrice={filter.minPrice}
+          initialMaxPrice={filter.maxPrice}
+          initialShowPriceOnRequest={filter.showPriceOnRequest}
           histogramParams={histogramParams}
         />
 
@@ -632,7 +558,7 @@ export function SearchBar({
             handleLocationUpdate(locationName, locationIds, locationId);
             setShowLocationModal(false);
           }}
-          selectedLocationId={selectedLocationId}
+          selectedLocationId={filter.locationId}
         />
       </div>
     </>

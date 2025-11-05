@@ -90,9 +90,8 @@ export function CategorySelector({
   useEffect(() => {
     if (isDropdown) {
       const typeName = categoriesData.types[selectedType as keyof typeof categoriesData.types];
-      const currentSubtypes = categoriesData.subtypes[selectedType as keyof typeof categoriesData.subtypes] || {};
       const subtypeIds = allSubcategoriesSelected
-        ? Object.keys(currentSubtypes)
+        ? []
         : Array.from(selectedSubtypes);
       onCategoryUpdate?.(typeName, selectedType, subtypeIds);
     }
@@ -134,9 +133,7 @@ export function CategorySelector({
 
                 // Update ref with new selection
                 const typeName = categoriesData.types[typeId as keyof typeof categoriesData.types];
-                const currentSubtypes = categoriesData.subtypes[typeId as keyof typeof categoriesData.subtypes] || {};
-                const allSubtypeIds = Object.keys(currentSubtypes);
-                onCategoryUpdate?.(typeName, typeId, allSubtypeIds);
+                onCategoryUpdate?.(typeName, typeId, []);
               }
             });
           } else {
@@ -146,9 +143,7 @@ export function CategorySelector({
             setAllSubcategoriesSelected(true);
 
             const typeName = categoriesData.types[typeId as keyof typeof categoriesData.types];
-            const currentSubtypes = categoriesData.subtypes[typeId as keyof typeof categoriesData.subtypes] || {};
-            const allSubtypeIds = Object.keys(currentSubtypes);
-            onCategoryUpdate?.(typeName, typeId, allSubtypeIds);
+            onCategoryUpdate?.(typeName, typeId, []);
           }
         } else {
           // Nothing expanded, just open
@@ -158,19 +153,15 @@ export function CategorySelector({
           setAllSubcategoriesSelected(true);
 
           const typeName = categoriesData.types[typeId as keyof typeof categoriesData.types];
-          const currentSubtypes = categoriesData.subtypes[typeId as keyof typeof categoriesData.subtypes] || {};
-          const allSubtypeIds = Object.keys(currentSubtypes);
-          onCategoryUpdate?.(typeName, typeId, allSubtypeIds);
+          onCategoryUpdate?.(typeName, typeId, []);
         }
       }
     } else {
       setSelectedType(typeId);
       setSelectedSubtypes(new Set());
       setAllSubcategoriesSelected(true);
-      const currentSubtypes = categoriesData.subtypes[typeId as keyof typeof categoriesData.subtypes] || {};
-      const allSubtypeIds = Object.keys(currentSubtypes);
       const typeName = categoriesData.types[typeId as keyof typeof categoriesData.types];
-      onCategoryUpdate?.(typeName, typeId, allSubtypeIds);
+      onCategoryUpdate?.(typeName, typeId, []);
     }
   };
 
@@ -200,8 +191,7 @@ export function CategorySelector({
     // For modal variant, update the ref with current selection
     if (isModal) {
       const typeName = categoriesData.types[selectedType as keyof typeof categoriesData.types];
-      const currentSubtypes = categoriesData.subtypes[selectedType as keyof typeof categoriesData.subtypes] || {};
-      const subtypeIds = newAllSelected ? Object.keys(currentSubtypes) : [];
+      const subtypeIds = newAllSelected ? [] : [];
       onCategoryUpdate?.(typeName, selectedType, subtypeIds);
     }
   };

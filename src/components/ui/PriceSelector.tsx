@@ -37,7 +37,7 @@ const generatePriceOptions = (min: number, max: number): string[] => {
     options.push(formatPrice(roundedPrice));
   }
 
-  options.push(formatPrice(max));
+  options.push(formatPrice(Math.ceil(max)));
   return options;
 };
 
@@ -51,7 +51,7 @@ const generateMaxPriceOptions = (min: number, max: number): string[] => {
     options.push(formatPrice(roundedPrice));
   }
 
-  options.push(formatPrice(max));
+  options.push(formatPrice(Math.ceil(max)));
   return options;
 };
 
@@ -70,7 +70,6 @@ export function PriceSelector({
   const [activeDropdown, setActiveDropdown] = useState<"min" | "max" | null>(null);
 
   const optionsListRef = useRef<HTMLDivElement>(null);
-  const previousDropdownType = useRef<"min" | "max" | null>(null);
 
   const priceOptions = useMemo(() => {
     if (!histogramData?.range) {
@@ -117,16 +116,13 @@ export function PriceSelector({
   };
 
   useEffect(() => {
-    if (optionsListRef.current && activeDropdown && previousDropdownType.current !== activeDropdown) {
-      if (previousDropdownType.current !== null) {
-        const direction = previousDropdownType.current === "min" ? -10 : 10;
-        gsap.fromTo(
-          optionsListRef.current,
-          { opacity: 0, y: direction },
-          { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }
-        );
-      }
-      previousDropdownType.current = activeDropdown;
+    if (optionsListRef.current && activeDropdown) {
+      // Always animate from top to bottom for consistency
+      gsap.fromTo(
+        optionsListRef.current,
+        { opacity: 0, y: -10 },
+        { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }
+      );
     }
   }, [activeDropdown]);
 
