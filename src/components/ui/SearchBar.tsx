@@ -632,9 +632,6 @@ export function SearchBar({
             handleLocationUpdate(locationName, locationIds, locationId);
             setShowLocationModal(false);
           }}
-          searchResults={searchResults}
-          isLoading={isLoading}
-          hasSearchQuery={isTyping && selectedLocation.length > 0}
           selectedLocationId={selectedLocationId}
         />
       </div>
