@@ -27,10 +27,7 @@ export function Header() {
 
       {/* Menu Icon - Mobile only */}
       <button className="md:hidden absolute right-4 top-1/2 -translate-y-1/2">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M3 4H21V6H3V4ZM3 11H21V13H3V11ZM3 18H21V20H3V18Z" fill="black"/>
-</svg>
-
+        <Image src="/icons/menu.svg" alt="Menu" width={24} height={24} />
       </button>
     </header>
   );

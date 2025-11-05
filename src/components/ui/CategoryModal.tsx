@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { gsap } from "gsap";
+import Image from "next/image";
 import categoriesData from "../categories.json";
 
 interface CategoryModalProps {
@@ -110,9 +111,7 @@ export function CategoryModal({
           onClick={onClose}
           className="p-2 hover:bg-bg-light rounded-full transition-colors"
         >
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
+          <Image src="/icons/close.svg" alt="Close" width={24} height={24} />
         </button>
       </div>
 
@@ -156,15 +155,9 @@ export function CategoryModal({
                       {mockCounts[typeId]?.toLocaleString() || "0"}
                     </span>
                   </div>
-                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                    <path
-                      d="M7.5 15L12.5 10L7.5 5"
-                      stroke={isSelected ? "#A540F3" : "#79767D"}
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
+                  <div className={isSelected ? "text-brand-purple" : "text-[#79767D]"}>
+                    <Image src="/icons/chevron-small.svg" alt="" width={20} height={20} />
+                  </div>
                 </button>
               );
             })}
@@ -185,9 +178,7 @@ export function CategoryModal({
                   : "bg-white border-brand-purple-200"
               }`}>
                 {allSubcategoriesSelected && (
-                  <svg width="12" height="10" viewBox="0 0 11 8" fill="none">
-                    <path d="M0.5 4.75532L2.97917 7.16667L9.83333 0.5" stroke="white" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
+                  <Image src="/icons/checkmark-white.svg" alt="" width={12} height={10} />
                 )}
               </div>
               <span className="text-base font-medium text-text-primary flex-1 text-left">
@@ -214,9 +205,7 @@ export function CategoryModal({
                       : "bg-white border-brand-purple-200"
                   }`}>
                     {isChecked && (
-                      <svg width="12" height="10" viewBox="0 0 11 8" fill="none">
-                        <path d="M0.5 4.75532L2.97917 7.16667L9.83333 0.5" stroke="white" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
+                      <Image src="/icons/checkmark-white.svg" alt="" width={12} height={10} />
                     )}
                   </div>
                   <span className="text-base font-medium text-text-primary flex-1 text-left">

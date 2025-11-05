@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect, useMemo } from "react";
 import { gsap } from "gsap";
+import Image from "next/image";
 import { useHistogram, type HistogramParams } from "@/lib/searchCount";
 
 interface PriceModalProps {
@@ -146,9 +147,7 @@ export function PriceModal({
           onClick={onClose}
           className="p-2 hover:bg-bg-light rounded-full transition-colors"
         >
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
+          <Image src="/icons/close.svg" alt="Close" width={24} height={24} />
         </button>
       </div>
 
@@ -223,9 +222,7 @@ export function PriceModal({
                     {price}
                   </span>
                   {isSelected && (
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                      <path d="M10.5868 13.4148L7.75775 10.5868L6.34375 12.0008L10.5868 16.2438L17.6567 9.17281L16.2437 7.75781L10.5868 13.4148Z" fill="#A540F3"/>
-                    </svg>
+                    <Image src="/icons/checkmark-purple.svg" alt="" width={24} height={24} />
                   )}
                 </button>
               );
@@ -242,9 +239,7 @@ export function PriceModal({
             showPriceOnRequest ? "bg-brand-purple" : "bg-white"
           }`}>
             {showPriceOnRequest && (
-              <svg width="12" height="10" viewBox="0 0 11 8" fill="none">
-                <path d="M0.5 4.75532L2.97917 7.16667L9.83333 0.5" stroke="white" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
+              <Image src="/icons/checkmark-white.svg" alt="" width={12} height={10} />
             )}
           </div>
           <span className="flex-1 text-base font-medium text-text-primary text-left">

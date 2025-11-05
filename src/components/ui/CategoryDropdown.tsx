@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { gsap } from "gsap";
+import Image from "next/image";
 import categoriesData from "../categories.json";
 import { Dropdown } from "./Dropdown";
 
@@ -155,21 +156,9 @@ export function CategoryDropdown({ onClose, onApply, onCategoryUpdate, isOpen = 
                   }`}>
                     {mockCounts[typeId]?.toLocaleString() || "0"}
                   </span>
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 20 20"
-                    fill="none"
-                    className="shrink-0"
-                  >
-                    <path
-                      d="M7.5 15L12.5 10L7.5 5"
-                      stroke={isSelected ? "#A540F3" : "#79767D"}
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
+                  <div className={`shrink-0 ${isSelected ? "text-brand-purple" : "text-[#79767D]"}`}>
+                    <Image src="/icons/chevron-small.svg" alt="" width={20} height={20} />
+                  </div>
                 </div>
               </button>
             );
@@ -200,14 +189,7 @@ export function CategoryDropdown({ onClose, onApply, onCategoryUpdate, isOpen = 
                   : "bg-white border-brand-purple-200"
               }`}>
                 {allSubcategoriesSelected && (
-                  <svg width="10" height="8" viewBox="0 0 11 8" fill="none">
-                    <path
-                      d="M0.5 4.75532L2.97917 7.16667L9.83333 0.5"
-                      stroke="white"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
+                  <Image src="/icons/checkmark-white.svg" alt="" width={10} height={8} />
                 )}
               </div>
               <span className="text-sm font-medium text-text-primary leading-[1.6] flex-1 text-left whitespace-nowrap">
@@ -234,14 +216,7 @@ export function CategoryDropdown({ onClose, onApply, onCategoryUpdate, isOpen = 
                       : "bg-white border-brand-purple-200"
                   }`}>
                     {isChecked && (
-                      <svg width="10" height="8" viewBox="0 0 11 8" fill="none">
-                        <path
-                          d="M0.5 4.75532L2.97917 7.16667L9.83333 0.5"
-                          stroke="white"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
+                      <Image src="/icons/checkmark-white.svg" alt="" width={10} height={8} />
                     )}
                   </div>
                   <span className="text-sm font-medium text-text-primary leading-[1.6] flex-1 text-left whitespace-nowrap">
