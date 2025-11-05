@@ -25,15 +25,27 @@ export const formatPrice = (price: number): string => {
 
 /**
  * Generate an array of formatted price options for minimum price selection
- * Creates 20 buckets from min to max, rounded up to nearest 100
+ * Ensures minimum 100 distance between stops, generates fewer stops for small ranges
  */
 export const generatePriceOptions = (min: number, max: number): string[] => {
   const options = ["No Minimum"];
-  const step = (max - min) / 19; // 19 steps to create 20 buckets (0-19 inclusive)
+  const range = max - min;
 
-  for (let i = 0; i < 19; i++) {
+  // Calculate max possible stops with 100 minimum distance
+  const maxStops = Math.floor(range / 100);
+  const numStops = Math.min(maxStops, 19); // Cap at 19 (plus min/max = 21 total)
+
+  if (numStops <= 0) {
+    // Range too small, just add max
+    options.push(formatPrice(Math.ceil(max)));
+    return options;
+  }
+
+  const step = range / (numStops + 1); // +1 to account for spacing
+
+  for (let i = 1; i <= numStops; i++) {
     const price = min + (step * i);
-    const roundedPrice = Math.ceil(price / 100) * 100; // Round up to nearest 100
+    const roundedPrice = Math.ceil(price / 100) * 100;
     options.push(formatPrice(roundedPrice));
   }
 
@@ -45,15 +57,27 @@ export const generatePriceOptions = (min: number, max: number): string[] => {
 
 /**
  * Generate an array of formatted price options for maximum price selection
- * Creates 20 buckets from min to max, rounded up to nearest 100
+ * Ensures minimum 100 distance between stops, generates fewer stops for small ranges
  */
 export const generateMaxPriceOptions = (min: number, max: number): string[] => {
   const options = ["No Maximum"];
-  const step = (max - min) / 19; // 19 steps to create 20 buckets (0-19 inclusive)
+  const range = max - min;
 
-  for (let i = 0; i < 19; i++) {
+  // Calculate max possible stops with 100 minimum distance
+  const maxStops = Math.floor(range / 100);
+  const numStops = Math.min(maxStops, 19); // Cap at 19 (plus min/max = 21 total)
+
+  if (numStops <= 0) {
+    // Range too small, just add max
+    options.push(formatPrice(Math.ceil(max)));
+    return options;
+  }
+
+  const step = range / (numStops + 1); // +1 to account for spacing
+
+  for (let i = 1; i <= numStops; i++) {
     const price = min + (step * i);
-    const roundedPrice = Math.ceil(price / 100) * 100; // Round up to nearest 100
+    const roundedPrice = Math.ceil(price / 100) * 100;
     options.push(formatPrice(roundedPrice));
   }
 
