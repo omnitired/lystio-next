@@ -97,18 +97,18 @@ export function Modal({
       {/* Overlay */}
       <div
         ref={overlayRef}
-        className="fixed inset-0 bg-black/40 z-[109]"
+        className="fixed inset-0 bg-black/40 z-109"
         onClick={handleClose}
       />
 
       {/* Modal */}
       <div
         ref={modalRef}
-        className="fixed inset-0 bg-white z-[110] flex flex-col"
+        className="fixed inset-0 bg-white z-110 flex flex-col"
         style={{ opacity: 0, transform: "translateY(100%)" }}
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-border-light">
+        <div className="flex items-center justify-between p-4">
           <h2 className="text-lg font-semibold text-text-primary">{title}</h2>
           <button
             onClick={handleClose}
