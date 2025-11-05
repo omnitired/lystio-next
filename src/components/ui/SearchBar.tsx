@@ -16,6 +16,8 @@ import { CategoryDropdown } from "./CategoryDropdown";
 import { LocationDropdown } from "./LocationDropdown";
 import { CategoryModal } from "./CategoryModal";
 import { PriceModal } from "./PriceModal";
+import { LocationModal } from "./LocationModal";
+import { Modal } from "./Modal";
 
 type HeaderMode = "rent" | "buy" | "ai";
 
@@ -68,6 +70,7 @@ export function SearchBar({
   const [showFilterModal, setShowFilterModal] = useState(false);
   const [showCategoryModal, setShowCategoryModal] = useState(false);
   const [showPriceModal, setShowPriceModal] = useState(false);
+  const [showLocationModal, setShowLocationModal] = useState(false);
   const [selectedMinPrice, setSelectedMinPrice] = useState<string | null>(null);
   const [selectedMaxPrice, setSelectedMaxPrice] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>(category);
@@ -336,9 +339,9 @@ export function SearchBar({
         ref={dropdownRef}
         className="w-full max-w-[900px] h-[67px] md:bg-white md:border md:border-border-light md:rounded-full relative z-50"
       >
-        <div className="flex h-full items-center">
-          {/* Location Section */}
-          <div className="flex-1 max-md: max-md:ml-[79px] max-md:mr-[52px] max-md:mt-[-119px] md:w-[300px] h-10 md:h-full bg-bg-light relative rounded-full md:rounded-l-full md:rounded-r-none">
+        <div className="flex h-full items-center  relative">
+          {/* Location Section - Desktop */}
+          <div className="hidden md:flex flex-1 md:w-[300px] h-10 md:h-full bg-bg-light relative rounded-full md:rounded-l-full md:rounded-r-none">
             <div
               onClick={handleLocationClick}
               className={`w-full h-full flex items-center gap-[15px] pl-6 pr-4 py-3 cursor-pointer transition-colors rounded-full md:rounded-l-full md:rounded-r-none ${
@@ -375,6 +378,51 @@ export function SearchBar({
               />
             )}
           </div>
+
+          {/* Location Section - Mobile */}
+          <div className="absolute md:hidden left-[79px] right-[52px] mt-[-119px] h-10 bg-bg-light rounded-full border-border-light border">
+            <div
+              onClick={() => setShowLocationModal(true)}
+              className="h-full flex items-center gap-[15px] px-3 py-3 cursor-pointer transition-colors rounded-full hover:bg-white"
+            >
+              <div className="flex-1 flex justify-between opacity-40">
+                <label className="text-xs font-medium text-text-primary leading-[1.6] mb-1 ">
+                City District, Street, Postcode
+                </label>
+                <Image src="/icons/search.svg" alt="" width={16} height={16} />
+              </div>
+            </div>
+          </div>
+          <div className="px-2 flex items-start justify-center gap-2 w-full md:hidden">
+          {/* Mobile Filter Button */}
+          <button
+            onClick={() => setShowFilterModal(true)}
+            className="md:hidden w-full bg-white border border-border-light rounded-lg shadow-[0px_105px_77.6px_38px_rgba(0,0,0,0.08)] h-10 flex items-center justify-center gap-2 relative z-50"
+          >
+            <Image src="/icons/filter-purple.svg" alt="" width={16} height={16} />
+            <span className="text-base font-medium text-text-primary">
+              Filters
+            </span>
+          </button>
+          <button
+          disabled
+            className="md:hidden disabled:opacity-40 w-full bg-white border border-border-light rounded-lg shadow-[0px_105px_77.6px_38px_rgba(0,0,0,0.08)] h-10 flex items-center justify-center gap-2 relative z-50"
+          >
+            <Image src="/icons/notification-purple.svg" alt="" width={16} height={16} />
+            <span className="text-base font-medium text-text-primary">
+              Create Alert
+            </span>
+          </button>
+          <button
+          disabled
+            className="md:hidden disabled:opacity-40 w-full bg-white border border-border-light rounded-lg shadow-[0px_105px_77.6px_38px_rgba(0,0,0,0.08)] h-10 flex items-center justify-center gap-2 relative z-50"
+          >
+            <Image src="/icons/map-purple.svg" alt="" width={16} height={16} />
+            <span className="text-base font-medium text-text-primary">
+              Map View
+            </span>
+          </button>
+        </div>
 
           {/* Category Section - hidden on mobile */}
           <div className="hidden md:block w-[250px] h-full bg-bg-light border-l border-border-light relative">
@@ -459,73 +507,56 @@ export function SearchBar({
             )}
           </div>
         </div>
-        <div className="px-2 flex items-center justify-center gap-2">
-          {/* Mobile Filter Button */}
-          <button
-            onClick={() => setShowFilterModal(true)}
-            className="md:hidden w-full mt-3 bg-white border border-border-light rounded-lg shadow-[0px_105px_77.6px_38px_rgba(0,0,0,0.08)] h-10 flex items-center justify-center gap-2 relative z-50"
-          >
-            <Image src="/icons/filter-purple.svg" alt="" width={16} height={16} />
-            <span className="text-base font-medium text-text-primary">
-              Filters
-            </span>
-          </button>
-          <button
-          disabled
-            className="md:hidden disabled:opacity-80 w-full mt-3 bg-white border border-border-light rounded-lg shadow-[0px_105px_77.6px_38px_rgba(0,0,0,0.08)] h-10 flex items-center justify-center gap-2 relative z-50"
-          >
-            <Image src="/icons/notification-purple.svg" alt="" width={16} height={16} />
-            <span className="text-base font-medium text-text-primary">
-              Create Alert
-            </span>
-          </button>
-          <button
-          disabled
-            className="md:hidden disabled:opacity-80 w-full mt-3 bg-white border border-border-light rounded-lg shadow-[0px_105px_77.6px_38px_rgba(0,0,0,0.08)] h-10 flex items-center justify-center gap-2 relative z-50"
-          >
-            <Image src="/icons/map-purple.svg" alt="" width={16} height={16} />
-            <span className="text-base font-medium text-text-primary">
-              Map View
-            </span>
-          </button>
-        </div>
+
 
         {/* Mobile Filter Modal */}
-        {showFilterModal && (
-          <div className="md:hidden fixed inset-0 bg-white z-[100] flex flex-col">
-            {/* Modal Header */}
-            <div className="flex items-center justify-between px-6 py-5">
-              <h2 className="text-2xl font-bold text-black">All Filters</h2>
-              <button onClick={() => setShowFilterModal(false)}>
-                <Image src="/icons/close.svg" alt="Close" width={24} height={24} />
-              </button>
-            </div>
-
-            {/* Modal Content */}
-            <div className="flex-1 overflow-y-auto px-6">
+        <Modal
+          isOpen={showFilterModal}
+          onClose={() => setShowFilterModal(false)}
+          onApply={() => {
+            onSearch?.();
+            setShowFilterModal(false);
+          }}
+          title="All Filters"
+          applyText="Search"
+          applyIcon="/icons/search-white.svg"
+        >
+          {/* Modal Content */}
+          <div className="flex-1 overflow-y-auto px-6 py-2">
               {/* Mode Toggle */}
-              <div className="bg-[#F7F7FD] rounded-[32px] p-2 flex mb-8">
-                <button
-                  onClick={() => onModeChange?.("rent")}
-                  className={`flex-1 py-3 rounded-[28px] text-lg font-semibold transition-colors ${
-                    mode === "rent"
-                      ? "bg-white text-black shadow-sm"
-                      : "text-black/60"
-                  }`}
-                >
-                  Rent
-                </button>
-                <button
-                  onClick={() => onModeChange?.("buy")}
-                  className={`flex-1 py-3 rounded-[28px] text-lg font-semibold transition-colors ${
-                    mode === "buy"
-                      ? "bg-white text-black shadow-sm"
-                      : "text-black/60"
-                  }`}
-                >
-                  Buy
-                </button>
-              </div>
+              <div className="md:flex justify-center mb-4">
+        <div className="bg-bg-light border border-border-light rounded-full p-1 flex gap-1 relative">
+          {/* Animated Indicator */}
+          {indicatorStyle.width > 0 && (
+            <div
+              className="absolute top-1 bg-white border border-white rounded-full transition-all duration-300 ease-out"
+              style={{
+                left: `${indicatorStyle.left}px`,
+                width: `${indicatorStyle.width}px`,
+                height: "calc(100% - 8px)",
+              }}
+            />
+          )}
+
+          {/* Toggle Buttons */}
+          {toggleOptions.map((option, index) => (
+            <button
+              key={option.value}
+              ref={(el) => {
+                buttonsRef.current[index] = el;
+              }}
+              onClick={() => onModeChange?.(option.value)}
+              className={`px-3 w-full py-1 rounded-full text-sm font-medium transition-colors relative z-10 font-[family-name:var(--font-plus-jakarta-sans)] ${
+                mode === option.value
+                  ? "text-text-primary"
+                  : "text-black hover:bg-white/50"
+              }`}
+            >
+              {option.label}
+            </button>
+          ))}
+        </div>
+      </div>
 
               {/* Category Row */}
               <button
@@ -571,22 +602,7 @@ export function SearchBar({
                 </div>
               </button>
             </div>
-
-            {/* Modal Footer with Search Button */}
-            <div className="px-6 py-6">
-              <button
-                onClick={() => {
-                  onSearch?.();
-                  setShowFilterModal(false);
-                }}
-                className="w-full bg-brand-purple hover:bg-brand-purple-alt transition-colors rounded-full py-4 flex items-center justify-center gap-2"
-              >
-                <Image src="/icons/search-white.svg" alt="" width={20} height={20} />
-                <span className="text-lg font-semibold text-white">Search</span>
-              </button>
-            </div>
-          </div>
-        )}
+        </Modal>
 
         {/* Mobile Category Modal */}
         <CategoryModal
@@ -606,6 +622,20 @@ export function SearchBar({
           initialMaxPrice={selectedMaxPrice}
           initialShowPriceOnRequest={showPriceOnRequest}
           histogramParams={histogramParams}
+        />
+
+        {/* Mobile Location Modal */}
+        <LocationModal
+          isOpen={showLocationModal}
+          onClose={() => setShowLocationModal(false)}
+          onLocationUpdate={(locationName, locationIds, locationId) => {
+            handleLocationUpdate(locationName, locationIds, locationId);
+            setShowLocationModal(false);
+          }}
+          searchResults={searchResults}
+          isLoading={isLoading}
+          hasSearchQuery={isTyping && selectedLocation.length > 0}
+          selectedLocationId={selectedLocationId}
         />
       </div>
     </>

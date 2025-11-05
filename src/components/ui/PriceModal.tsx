@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, useMemo } from "react";
 import { gsap } from "gsap";
 import Image from "next/image";
 import { useHistogram, type HistogramParams } from "@/lib/searchCount";
+import { Modal } from "./Modal";
 
 interface PriceModalProps {
   isOpen: boolean;
@@ -14,6 +15,7 @@ interface PriceModalProps {
 }
 
 const formatPrice = (price: number): string => {
+  if (!price) return "0€";
   const priceStr = price.toString();
   const parts = [];
 
@@ -136,21 +138,13 @@ export function PriceModal({
     onClose();
   };
 
-  if (!isOpen) return null;
-
   return (
-    <div className="fixed inset-0 bg-white z-[110] flex flex-col">
-      {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b border-border-light">
-        <h2 className="text-lg font-semibold text-text-primary">Price Range</h2>
-        <button
-          onClick={onClose}
-          className="p-2 hover:bg-bg-light rounded-full transition-colors"
-        >
-          <Image src="/icons/close.svg" alt="Close" width={24} height={24} />
-        </button>
-      </div>
-
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      onApply={handleApply}
+      title="Price Range"
+    >
       {/* Content */}
       <div className="flex-1 overflow-y-auto p-4">
         {/* Min/Max Inputs */}
@@ -247,16 +241,6 @@ export function PriceModal({
           </span>
         </button>
       </div>
-
-      {/* Footer */}
-      <div className="p-4 border-t border-border-light">
-        <button
-          onClick={handleApply}
-          className="w-full bg-brand-purple hover:bg-brand-purple-alt transition-colors rounded-full py-4 text-base font-medium text-white"
-        >
-          Apply
-        </button>
-      </div>
-    </div>
+    </Modal>
   );
 }
