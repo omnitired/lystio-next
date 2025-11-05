@@ -68,8 +68,28 @@ export const generateMaxPriceOptions = (min: number, max: number): string[] => {
  * @example getNumericValue("1,500€") // 1500
  * @example getNumericValue("No Minimum") // 0
  */
-export const getNumericValue = (price: string): number => {
-  if (price === "No Minimum" || price === "No Maximum") return 0;
+export const getNumericValue = (price: string | null): number => {
+  if (!price || price === "No Minimum" || price === "No Maximum") return 0;
   const parsed = parseInt(price.replace(/[^0-9]/g, ""), 10);
   return Number.isNaN(parsed) ? 0 : parsed;
+};
+
+/**
+ * Generate display text for price range
+ * @example getPriceDisplayText("500€", "1,000€", "Select Price Range") // "500 - 1,000 €"
+ * @example getPriceDisplayText(null, null, "Select Price Range") // "Select Price Range"
+ */
+export const getPriceDisplayText = (
+  minPrice: string | null,
+  maxPrice: string | null,
+  placeholder: string = "Select Price Range"
+): string => {
+  if (!minPrice && !maxPrice) {
+    return placeholder;
+  }
+
+  const minText = minPrice === "No Minimum" ? "0" : minPrice?.replace("€", "");
+  const maxText = maxPrice === "No Maximum" ? "∞" : maxPrice?.replace("€", "");
+
+  return `${minText} - ${maxText} €`;
 };

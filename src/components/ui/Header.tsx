@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import { Button } from "./Button";
 
 export function Header() {
   return (
@@ -26,9 +27,13 @@ export function Header() {
       </div>
 
       {/* Menu Icon - Mobile only */}
-      <button className="md:hidden absolute right-4 top-1/2 -translate-y-1/2">
-        <Image src="/icons/menu.svg" alt="Menu" width={24} height={24} />
-      </button>
+      <Button
+        variant="icon"
+        className="md:hidden absolute right-4 top-1/2 -translate-y-1/2"
+        icon="/icons/menu.svg"
+        iconWidth={24}
+        iconHeight={24}
+      />
     </header>
   );
 }

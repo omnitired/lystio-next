@@ -25,7 +25,7 @@ export default function Home() {
         </div>
 
         {/* Map or other content would go here */}
-        <div className="h-[calc(100vh-240px)] bg-gray-200 flex items-center justify-center">
+        <div className="h-screen bg-gray-200 flex items-center justify-center">
           <div className="text-gray-500 text-lg">
             {" "}
 

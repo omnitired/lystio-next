@@ -64,7 +64,7 @@ export function LocationModal({
       onClose={onClose}
       onApply={handleApply}
       title="Location"
-      applyDisabled={!locationRef.current.locationName}
+      // applyDisabled={!locationRef.current.locationName}
     >
       <LocationInput
         value={searchQuery}

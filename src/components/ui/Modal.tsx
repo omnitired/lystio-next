@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import Image from "next/image";
+import { Button } from "./Button";
 
 interface ModalProps {
   isOpen: boolean;
@@ -110,12 +111,13 @@ export function Modal({
         {/* Header */}
         <div className="flex items-center justify-between p-4">
           <h2 className="text-lg font-semibold text-text-primary">{title}</h2>
-          <button
+          <Button
+            variant="icon"
             onClick={handleClose}
-            className="p-2 hover:bg-bg-light rounded-full transition-colors"
-          >
-            <Image src="/icons/close.svg" alt="Close" width={24} height={24} />
-          </button>
+            icon="/icons/close.svg"
+            iconWidth={24}
+            iconHeight={24}
+          />
         </div>
 
         {/* Content */}
@@ -124,16 +126,17 @@ export function Modal({
         {/* Footer */}
         {showFooter && (
           <div className="p-4 border-t border-border-light">
-            <button
+            <Button
+              variant="primary"
+              fullWidth
               onClick={onApply}
               disabled={applyDisabled}
-              className="w-full bg-brand-purple hover:bg-brand-purple-alt transition-colors rounded-full py-4 text-base font-medium text-white disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              icon={applyIcon}
+              iconWidth={20}
+              iconHeight={20}
             >
-              {applyIcon && (
-                <Image src={applyIcon} alt="" width={20} height={20} />
-              )}
               {applyText}
-            </button>
+            </Button>
           </div>
         )}
       </div>

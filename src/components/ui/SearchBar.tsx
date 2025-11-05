@@ -13,12 +13,13 @@ import { useSearchCount } from "@/lib/searchCount";
 import { PriceDropdown } from "./PriceDropdown";
 import { CategoryDropdown } from "./CategoryDropdown";
 import { LocationDropdown } from "./LocationDropdown";
-import { CategoryModal } from "./CategoryModal";
-import { PriceModal } from "./PriceModal";
 import { LocationModal } from "./LocationModal";
-import { Modal } from "./Modal";
+import { MobileFilterModal } from "./MobileFilterModal";
 import { ModeToggle } from "./ModeToggle";
+import { Button } from "./Button";
 import { useFilter } from "@/contexts/FilterContext";
+import { useSearchParams } from "@/hooks/useSearchParams";
+import { getPriceDisplayText } from "@/lib/priceUtils";
 import { DEBOUNCE } from "@/lib/constants";
 
 interface SearchBarProps {
@@ -42,63 +43,14 @@ export function SearchBar({
   >(null);
   const [isClosing, setIsClosing] = useState(false);
   const [showFilterModal, setShowFilterModal] = useState(false);
-  const [showCategoryModal, setShowCategoryModal] = useState(false);
-  const [showPriceModal, setShowPriceModal] = useState(false);
   const [showLocationModal, setShowLocationModal] = useState(false);
   const [debouncedLocation, setDebouncedLocation] = useState<string>("");
   const [isTyping, setIsTyping] = useState<boolean>(false);
   const [sessionToken] = useState(() => generateSessionToken());
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Helper function to convert price string to number
-  const getPriceNumber = (price: string | null): number => {
-    if (!price || price === "No Minimum" || price === "No Maximum") return 0;
-    return parseInt(price.replace(/[^0-9]/g, ""));
-  };
-
-  // Build histogram params (same as search count but without price filter)
-  const histogramParams = {
-    type: [parseInt(filter.typeId)],
-    rentType: [filter.mode === "rent" ? "rent" : "buy"],
-    ...(filter.subTypeIds.length > 0 ? { subType: filter.subTypeIds.map((id) => parseInt(id)) } : {}),
-    showPriceOnRequest: filter.showPriceOnRequest,
-    sort: "most_recent" as const,
-    ...(filter.locationIds.length > 0 ? { withinId: filter.locationIds } : {}),
-  };
-
-  // Build search count params
-  const searchCountParams = {
-    type: [parseInt(filter.typeId)],
-    rentType: [filter.mode === "rent" ? "rent" : "buy"],
-    ...(filter.subTypeIds.length > 0 ? { subType: filter.subTypeIds.map((id) => parseInt(id)) } : {}),
-    showPriceOnRequest: filter.showPriceOnRequest,
-    sort: "most_recent" as const,
-    ...(filter.locationIds.length > 0 ? { withinId: filter.locationIds } : {}),
-    ...(filter.mode === "rent" &&
-    filter.minPrice &&
-    filter.maxPrice &&
-    filter.minPrice !== "No Minimum" &&
-    filter.maxPrice !== "No Maximum"
-      ? {
-          rent: [
-            getPriceNumber(filter.minPrice),
-            getPriceNumber(filter.maxPrice),
-          ] as [number, number],
-        }
-      : {}),
-    ...(filter.mode === "buy" &&
-    filter.minPrice &&
-    filter.maxPrice &&
-    filter.minPrice !== "No Minimum" &&
-    filter.maxPrice !== "No Maximum"
-      ? {
-          price: [
-            getPriceNumber(filter.minPrice),
-            getPriceNumber(filter.maxPrice),
-          ] as [number, number],
-        }
-      : {}),
-  };
+  // Build search params
+  const { histogramParams, searchCountParams } = useSearchParams();
 
   // Call search count API
   const { data: searchCount } = useSearchCount(searchCountParams);
@@ -185,23 +137,6 @@ export function SearchBar({
     [updateLocation]
   );
 
-  const getPriceDisplayText = () => {
-    if (!filter.minPrice && !filter.maxPrice) {
-      return pricePlaceholder;
-    }
-
-    const minText =
-      filter.minPrice === "No Minimum"
-        ? "0"
-        : filter.minPrice?.replace("€", "");
-    const maxText =
-      filter.maxPrice === "No Maximum"
-        ? "∞"
-        : filter.maxPrice?.replace("€", "");
-
-    return `${minText} - ${maxText} €`;
-  };
-
   return (
     <>
       {/* Dark overlay when dropdown is open */}
@@ -274,35 +209,42 @@ export function SearchBar({
               </div>
             </div>
           </div>
-          <div className="px-2 flex items-start justify-center gap-2 w-full md:hidden">
+          <div className="px-2 flex items-start justify-center gap-2 w-full md:hidden z-50">
           {/* Mobile Filter Button */}
-          <button
+          <Button
+            variant="secondary"
+            fullWidth
             onClick={() => setShowFilterModal(true)}
-            className="md:hidden w-full bg-white border border-border-light rounded-lg shadow-[0px_105px_77.6px_38px_rgba(0,0,0,0.08)] h-10 flex items-center justify-center gap-2 relative z-50"
+            icon="/icons/filter-purple.svg"
+            iconWidth={16}
+            iconHeight={16}
+            className="text-sm"
+            
           >
-            <Image src="/icons/filter-purple.svg" alt="" width={16} height={16} />
-            <span className="text-body">
-              Filters
-            </span>
-          </button>
-          <button
-          disabled
-            className="md:hidden disabled:opacity-40 w-full bg-white border border-border-light rounded-lg shadow-[0px_105px_77.6px_38px_rgba(0,0,0,0.08)] h-10 flex items-center justify-center gap-2 relative z-50"
+            Filters
+          </Button>
+          <Button
+            variant="secondary"
+            fullWidth
+            disabled
+            icon="/icons/notification-purple.svg"
+            iconWidth={16}
+            iconHeight={16}
+            className="text-sm"
           >
-            <Image src="/icons/notification-purple.svg" alt="" width={16} height={16} />
-            <span className="text-body">
-              Create Alert
-            </span>
-          </button>
-          <button
-          disabled
-            className="md:hidden disabled:opacity-40 w-full bg-white border border-border-light rounded-lg shadow-[0px_105px_77.6px_38px_rgba(0,0,0,0.08)] h-10 flex items-center justify-center gap-2 relative z-50"
+            Create Alert
+          </Button>
+          <Button
+            variant="secondary"
+            fullWidth
+            disabled
+            icon="/icons/map-purple.svg"
+            iconWidth={16}
+            iconHeight={16}
+            className="text-sm"
           >
-            <Image src="/icons/map-purple.svg" alt="" width={16} height={16} />
-            <span className="text-body">
-              Map View
-            </span>
-          </button>
+            Map View
+          </Button>
         </div>
 
           {/* Category Section - hidden on mobile */}
@@ -354,22 +296,23 @@ export function SearchBar({
                     !filter.minPrice && !filter.maxPrice ? "opacity-40" : ""
                   }`}
                 >
-                  {getPriceDisplayText()}
+                  {getPriceDisplayText(filter.minPrice, filter.maxPrice, pricePlaceholder)}
                 </span>
               </div>
             </div>
 
             {/* Search Button */}
             <div className="px-2 py-0 h-full flex items-center">
-              <button
+              <Button
+                variant="primary"
                 onClick={onSearch}
-                className="bg-brand-purple hover:bg-brand-purple-alt transition-colors rounded-full pl-2 pr-3 py-3 flex items-center gap-2"
+                icon="/icons/search-white.svg"
+                iconWidth={16}
+                iconHeight={16}
+                className="pl-2 pr-3 py-3"
               >
-                <Image src="/icons/search-white.svg" alt="" width={16} height={16} />
-                <span className="text-base font-medium text-white leading-[1.5]">
-                  Search
-                </span>
-              </button>
+                Search
+              </Button>
             </div>
 
             {/* Price Dropdown */}
@@ -391,84 +334,13 @@ export function SearchBar({
 
 
         {/* Mobile Filter Modal */}
-        <Modal
+        <MobileFilterModal
           isOpen={showFilterModal}
           onClose={() => setShowFilterModal(false)}
           onApply={() => {
             onSearch?.();
             setShowFilterModal(false);
           }}
-          title="All Filters"
-          applyText="Search"
-          applyIcon="/icons/search-white.svg"
-        >
-          {/* Modal Content */}
-          <div className="flex-1 overflow-y-auto px-6 py-2">
-              {/* Mode Toggle */}
-              <div className="md:flex justify-center mb-4">
-                <ModeToggle
-                  mode={filter.mode}
-                  onModeChange={setMode}
-                  variant="modal"
-                />
-              </div>
-
-              {/* Category Row */}
-              <button
-                onClick={() => setShowCategoryModal(true)}
-                className="w-full flex items-center justify-between py-5 border-b border-gray-200"
-              >
-                <div className="flex items-center gap-4">
-                  <Image src="/icons/home.svg" alt="" width={28} height={28} />
-                  <span className="text-xl font-normal text-black">
-                    Category
-                  </span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-xl font-normal text-brand-purple">
-                    {filter.category}
-                  </span>
-                  <Image src="/icons/chevron-right-purple.svg" alt="" width={24} height={24} />
-                </div>
-              </button>
-
-              {/* Price Row */}
-              <button
-                onClick={() => setShowPriceModal(true)}
-                className="w-full flex items-center justify-between py-5 border-b border-gray-200"
-              >
-                <div className="flex items-center gap-4">
-                  <Image src="/icons/euro.svg" alt="" width={28} height={28} />
-                  <span className="text-xl font-normal text-black">Price</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span
-                    className={`text-xl font-normal ${
-                      !filter.minPrice && !filter.maxPrice
-                        ? "text-gray-400"
-                        : "text-gray-600"
-                    }`}
-                  >
-                    {!filter.minPrice && !filter.maxPrice
-                      ? "Any Price"
-                      : getPriceDisplayText()}
-                  </span>
-                  <Image src="/icons/chevron-right-gray.svg" alt="" width={24} height={24} />
-                </div>
-              </button>
-            </div>
-        </Modal>
-
-        {/* Mobile Category Modal */}
-        <CategoryModal
-          isOpen={showCategoryModal}
-          onClose={() => setShowCategoryModal(false)}
-        />
-
-        {/* Mobile Price Modal */}
-        <PriceModal
-          isOpen={showPriceModal}
-          onClose={() => setShowPriceModal(false)}
           histogramParams={histogramParams}
         />
 
