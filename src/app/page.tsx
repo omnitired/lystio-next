@@ -15,7 +15,7 @@ export default function Home() {
 
       {/* Main Content Area */}
       {/* Search Bar Section */}
-      <div className="bg-white pt-6 pb-6 flex flex-col items-center shadow-[0px_105px_77.6px_38px_rgba(0,0,0,0.08)] relative z-10">
+      <div className="bg-white  pb-6 flex flex-col items-center shadow-[0px_105px_77.6px_38px_rgba(0,0,0,0.08)] relative z-10">
         <SearchBar
           mode={headerMode}
           onModeChange={setHeaderMode}
