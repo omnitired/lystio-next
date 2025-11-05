@@ -1,31 +1,28 @@
+"use client";
+
 import { useRef } from "react";
 import { type HistogramParams } from "@/lib/searchCount";
 import { Modal } from "./Modal";
 import { PriceSelector } from "./PriceSelector";
+import { useFilter } from "@/contexts/FilterContext";
 
 interface PriceModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onPriceUpdate?: (min: string, max: string, showPriceOnRequest: boolean) => void;
-  initialMinPrice?: string | null;
-  initialMaxPrice?: string | null;
-  initialShowPriceOnRequest?: boolean;
   histogramParams?: HistogramParams | null;
 }
 
 export function PriceModal({
   isOpen,
   onClose,
-  onPriceUpdate,
-  initialMinPrice,
-  initialMaxPrice,
-  initialShowPriceOnRequest,
   histogramParams
 }: PriceModalProps) {
+  const { filter, updatePrice } = useFilter();
+
   const priceRef = useRef<{ min: string; max: string; showPriceOnRequest: boolean }>({
-    min: initialMinPrice || "No Minimum",
-    max: initialMaxPrice || "No Maximum",
-    showPriceOnRequest: initialShowPriceOnRequest ?? false
+    min: filter.minPrice || "No Minimum",
+    max: filter.maxPrice || "No Maximum",
+    showPriceOnRequest: filter.showPriceOnRequest ?? false
   });
 
   const handlePriceUpdate = (min: string, max: string, showPriceOnRequest: boolean) => {
@@ -33,7 +30,7 @@ export function PriceModal({
   };
 
   const handleApply = () => {
-    onPriceUpdate?.(priceRef.current.min, priceRef.current.max, priceRef.current.showPriceOnRequest);
+    updatePrice(priceRef.current.min, priceRef.current.max, priceRef.current.showPriceOnRequest);
     onClose();
   };
 
@@ -48,9 +45,9 @@ export function PriceModal({
       <div className="flex-1 overflow-y-auto p-4">
         <PriceSelector
           onPriceUpdate={handlePriceUpdate}
-          initialMinPrice={initialMinPrice}
-          initialMaxPrice={initialMaxPrice}
-          initialShowPriceOnRequest={initialShowPriceOnRequest}
+          initialMinPrice={filter.minPrice}
+          initialMaxPrice={filter.maxPrice}
+          initialShowPriceOnRequest={filter.showPriceOnRequest}
           histogramParams={histogramParams}
           variant="modal"
         />

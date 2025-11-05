@@ -6,6 +6,8 @@ import Image from "next/image";
 import { ChevronDownIcon, ChevronUpIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import type { MapboxSearchResponse, GroupedSuggestions } from "@/types/mapbox";
 import { useAllLocations, usePopularLocations, useRecentSearches, type Location } from "@/lib/locations";
+import { cityImages } from "@/data/cityImages";
+import { Checkbox } from "./Checkbox";
 
 interface LocationSelectorProps {
   onLocationUpdate?: (locationName: string, locationIds: string[], locationId?: string) => void;
@@ -15,24 +17,6 @@ interface LocationSelectorProps {
   selectedLocationId?: string;
   variant?: "dropdown" | "modal";
 }
-
-// City images for popular locations
-const cityImages: Record<string, string> = {
-  Wien: "/cities/Vienna.png",
-  Graz: "/cities/Graz.png",
-  Linz: "/cities/Linz.png",
-  Salzburg: "/cities/Salzburg.png",
-  "Salzburg Stadt": "/cities/Salzburg.png",
-  Innsbruck: "/cities/Innsbruck.png",
-  "Klagenfurt am Wörthersee": "/cities/Klagenfurt.png",
-  Niederösterreich: "/cities/LowerAustria.png",
-  Oberösterreich: "/cities/UpperAustria.png",
-  Burgenland: "/cities/Burgenland.png",
-  Kärnten: "/cities/Carinthia.png",
-  Vorarlberg: "/cities/Vorarlberg.png",
-  Steiermark: "/cities/Styria.png",
-  Tirol: "/cities/Tyrol.png",
-};
 
 export function LocationSelector({
   onLocationUpdate,
@@ -239,7 +223,7 @@ export function LocationSelector({
                 onClick={() => {
                   onLocationUpdate?.(place.name, []);
                 }}
-                className={`flex items-start gap-${isModal ? "3" : "2"} px-${isModal ? "3" : "2"} py-${isModal ? "3" : "2"} rounded-lg hover:bg-[#f7f7fd] w-full text-left`}
+                className={`flex items-start gap-${isModal ? "3" : "2"} px-${isModal ? "3" : "2"} py-${isModal ? "3" : "2"} rounded-lg hover-surface-light w-full text-left`}
               >
                 <div className="shrink-0 mt-0.5">
                   <Image src="/icons/location-pin-purple.svg" alt="" width={20} height={20} />
@@ -271,7 +255,7 @@ export function LocationSelector({
                 onClick={() => {
                   onLocationUpdate?.(locality.name, []);
                 }}
-                className={`flex items-start gap-${isModal ? "3" : "2"} px-${isModal ? "3" : "2"} py-${isModal ? "3" : "2"} rounded-lg hover:bg-[#f7f7fd] w-full text-left`}
+                className={`flex items-start gap-${isModal ? "3" : "2"} px-${isModal ? "3" : "2"} py-${isModal ? "3" : "2"} rounded-lg hover-surface-light w-full text-left`}
               >
                 <div className="shrink-0 mt-0.5">
                   <Image src="/icons/location-pin-purple.svg" alt="" width={20} height={20} />
@@ -303,7 +287,7 @@ export function LocationSelector({
                 onClick={() => {
                   onLocationUpdate?.(street.name, []);
                 }}
-                className={`flex items-start gap-${isModal ? "3" : "2"} px-${isModal ? "3" : "2"} py-${isModal ? "3" : "2"} rounded-lg hover:bg-[#f7f7fd] w-full text-left`}
+                className={`flex items-start gap-${isModal ? "3" : "2"} px-${isModal ? "3" : "2"} py-${isModal ? "3" : "2"} rounded-lg hover-surface-light w-full text-left`}
               >
                 <div className="shrink-0 mt-0.5">
                   <Image src="/icons/location-pin-purple.svg" alt="" width={20} height={20} />
@@ -340,17 +324,10 @@ export function LocationSelector({
         onClick={toggleAllDistricts}
         className={`flex items-center gap-3 px-${isModal ? "4" : "3"} py-${isModal ? "3" : "2"} border-${isModal ? "t" : "b"} border-border-light w-full`}
       >
-        <div
-          className={`w-${isModal ? "5" : "4"} h-${isModal ? "5" : "4"} flex items-center justify-center shrink-0 border rounded ${
-            allDistrictsSelected
-              ? "bg-brand-purple border-brand-purple-200"
-              : "bg-white border-brand-purple-200"
-          }`}
-        >
-          {allDistrictsSelected && (
-            <Image src="/icons/checkmark-white.svg" alt="" width={isModal ? 12 : 10} height={isModal ? 10 : 8} />
-          )}
-        </div>
+        <Checkbox
+          checked={allDistrictsSelected}
+          variant={isModal ? "modal" : "dropdown"}
+        />
         <div className="flex-1 min-w-0">
           <p className={`${isModal ? "text-base" : "text-sm"} font-medium text-text-primary leading-normal text-left`}>
             All Districts
@@ -369,19 +346,12 @@ export function LocationSelector({
           <button
             key={district.id}
             onClick={() => toggleDistrict(district.id)}
-            className={`flex items-center gap-3 px-${isModal ? "4" : "3"} py-${isModal ? "3" : "2.5"} ${isModal ? "" : "h-10"} hover:bg-[#f7f7fd] w-full`}
+            className={`flex items-center gap-3 px-${isModal ? "4" : "3"} py-${isModal ? "3" : "2.5"} ${isModal ? "" : "h-10"} hover-surface-light w-full`}
           >
-            <div
-              className={`w-${isModal ? "5" : "4"} h-${isModal ? "5" : "4"} flex items-center justify-center shrink-0 border rounded ${
-                isChecked
-                  ? "bg-brand-purple border-brand-purple-200"
-                  : "bg-white border-brand-purple-200"
-              }`}
-            >
-              {isChecked && (
-                <Image src="/icons/checkmark-white.svg" alt="" width={isModal ? 12 : 10} height={isModal ? 10 : 8} />
-              )}
-            </div>
+            <Checkbox
+              checked={isChecked}
+              variant={isModal ? "modal" : "dropdown"}
+            />
             <span className={`${isModal ? "text-base" : "text-sm"} font-medium text-text-primary leading-normal flex-1 text-left`}>
               {district.postal_code
                 ? `${district.postal_code}, ${district.name}`
@@ -403,7 +373,7 @@ export function LocationSelector({
               <div className="bg-[#f6ecfe] rounded-full p-1">
                 <Image src="/icons/draw-area.svg" alt="Draw area" width={32} height={32} />
               </div>
-              <span className="text-base font-medium text-text-primary flex-1 text-left">
+              <span className="text-body flex-1 text-left">
                 Draw an area on the map
               </span>
               <Image src="/icons/arrow-right-purple.svg" alt="" width={24} height={24} />
@@ -436,13 +406,13 @@ export function LocationSelector({
                             onClick={() => {
                               onLocationUpdate?.(search.name, []);
                             }}
-                            className="flex items-start gap-3 px-3 py-3 rounded-lg hover:bg-[#f7f7fd] w-full text-left"
+                            className="flex items-start gap-3 px-3 py-3 rounded-lg hover-surface-light w-full text-left"
                           >
                             <div className="shrink-0 mt-0.5">
                               <Image src="/icons/location-pin-purple.svg" alt="" width={20} height={20} />
                             </div>
                             <div className="flex-1 min-w-0">
-                              <p className="text-base font-medium text-text-primary">
+                              <p className="text-body">
                                 {search.name}
                               </p>
                               <p className="text-sm text-text-secondary capitalize">
@@ -479,7 +449,7 @@ export function LocationSelector({
                                   className="w-[42px] h-[42px] rounded object-cover shrink-0"
                                 />
                                 <div className="flex flex-col items-start">
-                                  <p className="text-base font-medium text-text-primary leading-normal">
+                                  <p className="text-body leading-normal">
                                     {city.name}
                                   </p>
                                   <p className="text-sm font-medium text-text-secondary leading-[1.3]">
@@ -535,7 +505,7 @@ export function LocationSelector({
                                   className="w-[42px] h-[42px] rounded object-cover shrink-0"
                                 />
                                 <div className="flex flex-col items-start">
-                                  <p className="text-base font-medium text-text-primary leading-normal">
+                                  <p className="text-body leading-normal">
                                     {location.name}
                                   </p>
                                   <p className="text-sm font-medium text-text-secondary leading-[1.3]">
@@ -587,7 +557,7 @@ export function LocationSelector({
               <div className="bg-[#f6ecfe] rounded-full p-1">
                 <Image src="/icons/draw-area.svg" alt="Draw area" width={32} height={32} />
               </div>
-              <span className="text-sm font-medium text-text-primary flex-1 text-left">
+              <span className="text-body-sm flex-1 text-left">
                 Draw an area on the map
               </span>
               <Image src="/icons/arrow-right-purple.svg" alt="" width={24} height={24} />
@@ -620,13 +590,13 @@ export function LocationSelector({
                             onClick={() => {
                               onLocationUpdate?.(search.name, []);
                             }}
-                            className="flex items-start gap-2 px-2 py-2 rounded-lg hover:bg-[#f7f7fd] w-full text-left"
+                            className="flex items-start gap-2 px-2 py-2 rounded-lg hover-surface-light w-full text-left"
                           >
                             <div className="shrink-0 mt-0.5">
                               <Image src="/icons/location-pin-purple.svg" alt="" width={20} height={20} />
                             </div>
                             <div className="flex-1 min-w-0">
-                              <p className="text-sm font-medium text-text-primary">
+                              <p className="text-body-sm">
                                 {search.name}
                               </p>
                               <p className="text-xs text-text-secondary capitalize">
@@ -716,7 +686,7 @@ export function LocationSelector({
                                 className="w-[38px] h-[38px] rounded object-cover shrink-0"
                               />
                               <div className="flex flex-col items-start">
-                                <p className="text-sm font-medium text-text-primary leading-normal">
+                                <p className="text-body-sm leading-normal">
                                   {location.name}
                                 </p>
                                 <p className="text-[10px] font-medium text-text-secondary leading-[1.3]">

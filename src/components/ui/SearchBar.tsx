@@ -18,61 +18,25 @@ import { PriceModal } from "./PriceModal";
 import { LocationModal } from "./LocationModal";
 import { Modal } from "./Modal";
 import { ModeToggle } from "./ModeToggle";
-
-type HeaderMode = "rent" | "buy" | "ai";
-
-interface FilterState {
-  location: string;
-  locationId: string;
-  locationIds: string[];
-  category: string;
-  typeId: string;
-  subTypeIds: string[];
-  minPrice: string | null;
-  maxPrice: string | null;
-  showPriceOnRequest: boolean;
-  mode: HeaderMode;
-}
-
-const defaultFilter: FilterState = {
-  location: "",
-  locationId: "",
-  locationIds: [],
-  category: "Apartments",
-  typeId: "2",
-  subTypeIds: [], // empty = all subcategories
-  minPrice: null,
-  maxPrice: null,
-  showPriceOnRequest: true,
-  mode: "rent",
-};
+import { useFilter } from "@/contexts/FilterContext";
+import { DEBOUNCE } from "@/lib/constants";
 
 interface SearchBarProps {
-  category?: string;
   pricePlaceholder?: string;
   onCategoryClick?: () => void;
   onPriceClick?: () => void;
   onSearch?: () => void;
-  mode?: HeaderMode;
-  onModeChange?: (mode: HeaderMode) => void;
   onCountUpdate?: (count: number | undefined) => void;
 }
 
 export function SearchBar({
-  category = "Apartments",
   pricePlaceholder = "Select Price Range",
   onCategoryClick,
   onPriceClick,
   onSearch,
-  mode = "rent",
-  onModeChange,
   onCountUpdate,
 }: SearchBarProps) {
-  const [filter, setFilter] = useState<FilterState>({
-    ...defaultFilter,
-    category,
-    mode,
-  });
+  const { filter, updateLocation, updateCategory, updatePrice, setMode } = useFilter();
   const [activeDropdown, setActiveDropdown] = useState<
     "location" | "category" | "price" | null
   >(null);
@@ -148,7 +112,7 @@ export function SearchBar({
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedLocation(filter.location);
-    }, 300);
+    }, DEBOUNCE.SEARCH);
 
     return () => clearTimeout(timer);
   }, [filter.location]);
@@ -213,41 +177,12 @@ export function SearchBar({
     setIsClosing(false);
   }, []);
 
-  const handlePriceUpdate = useCallback(
-    (min: string, max: string, showOnRequest: boolean) => {
-      setFilter((prev) => ({
-        ...prev,
-        minPrice: min,
-        maxPrice: max,
-        showPriceOnRequest: showOnRequest,
-      }));
-    },
-    []
-  );
-
-  const handleCategoryUpdate = useCallback(
-    (categoryName: string, typeId: string, subtypeIds: string[]) => {
-      setFilter((prev) => ({
-        ...prev,
-        category: categoryName,
-        typeId,
-        subTypeIds: subtypeIds,
-      }));
-    },
-    []
-  );
-
-  const handleLocationUpdate = useCallback(
+  const handleLocationUpdateLocal = useCallback(
     (locationName: string, locationIds: string[], locationId?: string) => {
-      setFilter((prev) => ({
-        ...prev,
-        location: locationName,
-        locationIds,
-        locationId: locationId || prev.locationId,
-      }));
+      updateLocation(locationName, locationIds, locationId);
       setIsTyping(false);
     },
-    []
+    [updateLocation]
   );
 
   const getPriceDisplayText = () => {
@@ -276,10 +211,7 @@ export function SearchBar({
       <div className="hidden mt-[-59px] md:flex justify-center mb-4">
         <ModeToggle
           mode={filter.mode}
-          onModeChange={(mode) => {
-            setFilter((prev) => ({ ...prev, mode }));
-            onModeChange?.(mode);
-          }}
+          onModeChange={setMode}
           variant="desktop"
         />
       </div>
@@ -305,11 +237,11 @@ export function SearchBar({
                   type="text"
                   value={filter.location}
                   onChange={(e) => {
-                    setFilter((prev) => ({ ...prev, location: e.target.value }));
+                    updateLocation(e.target.value, filter.locationIds, filter.locationId);
                     setIsTyping(true);
                   }}
                   placeholder="Enter location..."
-                  className="text-sm font-medium text-text-primary leading-[1.6] bg-transparent border-none outline-none w-full"
+                  className="text-body-sm leading-[1.6] bg-transparent border-none outline-none w-full"
                 />
               </div>
             </div>
@@ -319,7 +251,7 @@ export function SearchBar({
               <LocationDropdown
                 isOpen={!isClosing && activeDropdown === "location"}
                 onClose={handleDropdownClose}
-                onLocationUpdate={handleLocationUpdate}
+                onLocationUpdate={handleLocationUpdateLocal}
                 searchResults={searchResults}
                 isLoading={isLoading}
                 hasSearchQuery={isTyping && filter.location.length > 0}
@@ -349,7 +281,7 @@ export function SearchBar({
             className="md:hidden w-full bg-white border border-border-light rounded-lg shadow-[0px_105px_77.6px_38px_rgba(0,0,0,0.08)] h-10 flex items-center justify-center gap-2 relative z-50"
           >
             <Image src="/icons/filter-purple.svg" alt="" width={16} height={16} />
-            <span className="text-base font-medium text-text-primary">
+            <span className="text-body">
               Filters
             </span>
           </button>
@@ -358,7 +290,7 @@ export function SearchBar({
             className="md:hidden disabled:opacity-40 w-full bg-white border border-border-light rounded-lg shadow-[0px_105px_77.6px_38px_rgba(0,0,0,0.08)] h-10 flex items-center justify-center gap-2 relative z-50"
           >
             <Image src="/icons/notification-purple.svg" alt="" width={16} height={16} />
-            <span className="text-base font-medium text-text-primary">
+            <span className="text-body">
               Create Alert
             </span>
           </button>
@@ -367,7 +299,7 @@ export function SearchBar({
             className="md:hidden disabled:opacity-40 w-full bg-white border border-border-light rounded-lg shadow-[0px_105px_77.6px_38px_rgba(0,0,0,0.08)] h-10 flex items-center justify-center gap-2 relative z-50"
           >
             <Image src="/icons/map-purple.svg" alt="" width={16} height={16} />
-            <span className="text-base font-medium text-text-primary">
+            <span className="text-body">
               Map View
             </span>
           </button>
@@ -385,7 +317,7 @@ export function SearchBar({
                 <label className="text-xs font-medium text-text-primary leading-[1.6] mb-1">
                   Category
                 </label>
-                <span className="text-sm font-medium text-text-primary leading-[1.6]">
+                <span className="text-body-sm leading-[1.6]">
                   {filter.category}
                 </span>
               </div>
@@ -397,7 +329,7 @@ export function SearchBar({
                 <CategoryDropdown
                   isOpen={!isClosing && activeDropdown === "category"}
                   onClose={handleDropdownClose}
-                  onCategoryUpdate={handleCategoryUpdate}
+                  onCategoryUpdate={updateCategory}
                   initialTypeId={filter.typeId}
                   initialSubtypeIds={filter.subTypeIds}
                 />
@@ -418,7 +350,7 @@ export function SearchBar({
                   Price
                 </label>
                 <span
-                  className={`text-sm font-medium text-text-primary leading-[1.6] ${
+                  className={`text-body-sm leading-[1.6] ${
                     !filter.minPrice && !filter.maxPrice ? "opacity-40" : ""
                   }`}
                 >
@@ -446,7 +378,7 @@ export function SearchBar({
                 <PriceDropdown
                   isOpen={!isClosing && activeDropdown === "price"}
                   onClose={handleDropdownClose}
-                  onPriceUpdate={handlePriceUpdate}
+                  onPriceUpdate={updatePrice}
                   initialMinPrice={filter.minPrice}
                   initialMaxPrice={filter.maxPrice}
                   initialShowPriceOnRequest={filter.showPriceOnRequest}
@@ -476,10 +408,7 @@ export function SearchBar({
               <div className="md:flex justify-center mb-4">
                 <ModeToggle
                   mode={filter.mode}
-                  onModeChange={(mode) => {
-                    setFilter((prev) => ({ ...prev, mode }));
-                    onModeChange?.(mode);
-                  }}
+                  onModeChange={setMode}
                   variant="modal"
                 />
               </div>
@@ -534,19 +463,12 @@ export function SearchBar({
         <CategoryModal
           isOpen={showCategoryModal}
           onClose={() => setShowCategoryModal(false)}
-          onCategoryUpdate={handleCategoryUpdate}
-          initialTypeId={filter.typeId}
-          initialSubtypeIds={filter.subTypeIds}
         />
 
         {/* Mobile Price Modal */}
         <PriceModal
           isOpen={showPriceModal}
           onClose={() => setShowPriceModal(false)}
-          onPriceUpdate={handlePriceUpdate}
-          initialMinPrice={filter.minPrice}
-          initialMaxPrice={filter.maxPrice}
-          initialShowPriceOnRequest={filter.showPriceOnRequest}
           histogramParams={histogramParams}
         />
 
@@ -554,11 +476,6 @@ export function SearchBar({
         <LocationModal
           isOpen={showLocationModal}
           onClose={() => setShowLocationModal(false)}
-          onLocationUpdate={(locationName, locationIds, locationId) => {
-            handleLocationUpdate(locationName, locationIds, locationId);
-            setShowLocationModal(false);
-          }}
-          selectedLocationId={filter.locationId}
         />
       </div>
     </>

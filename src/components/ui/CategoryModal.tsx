@@ -1,27 +1,26 @@
+"use client";
+
 import { useRef } from "react";
 import { Modal } from "./Modal";
 import { CategorySelector } from "./CategorySelector";
-import categoriesData from "../categories.json";
+import { useFilter } from "@/contexts/FilterContext";
+import categoriesData from "@/data/categories.json";
 
 interface CategoryModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onCategoryUpdate?: (categoryName: string, typeId: string, subtypeIds: string[]) => void;
-  initialTypeId?: string;
-  initialSubtypeIds?: string[];
 }
 
 export function CategoryModal({
   isOpen,
   onClose,
-  onCategoryUpdate,
-  initialTypeId,
-  initialSubtypeIds
 }: CategoryModalProps) {
-  const defaultTypeId = initialTypeId || "3";
+  const { filter, updateCategory } = useFilter();
+
+  const defaultTypeId = filter.typeId || "3";
   const defaultTypeName = categoriesData.types[defaultTypeId as keyof typeof categoriesData.types] || "Houses";
   const defaultSubtypes = categoriesData.subtypes[defaultTypeId as keyof typeof categoriesData.subtypes] || {};
-  const defaultSubtypeIds = initialSubtypeIds || Object.keys(defaultSubtypes);
+  const defaultSubtypeIds = filter.subTypeIds.length > 0 ? filter.subTypeIds : Object.keys(defaultSubtypes);
 
   const categoryRef = useRef<{ categoryName: string; typeId: string; subtypeIds: string[] }>({
     categoryName: defaultTypeName,
@@ -34,7 +33,7 @@ export function CategoryModal({
   };
 
   const handleApply = () => {
-    onCategoryUpdate?.(categoryRef.current.categoryName, categoryRef.current.typeId, categoryRef.current.subtypeIds);
+    updateCategory(categoryRef.current.categoryName, categoryRef.current.typeId, categoryRef.current.subtypeIds);
     onClose();
   };
 
@@ -47,8 +46,8 @@ export function CategoryModal({
     >
       <CategorySelector
         onCategoryUpdate={handleCategoryUpdate}
-        initialTypeId={initialTypeId}
-        initialSubtypeIds={initialSubtypeIds}
+        initialTypeId={filter.typeId}
+        initialSubtypeIds={filter.subTypeIds}
         variant="modal"
       />
     </Modal>

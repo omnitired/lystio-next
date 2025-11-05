@@ -1,8 +1,10 @@
 import { useState, useRef, useEffect, useMemo } from "react";
-import { gsap } from "gsap";
 import Image from "next/image";
 import { Dropdown } from "./Dropdown";
 import { useHistogram, type HistogramParams } from "@/lib/searchCount";
+import { formatPrice, generatePriceOptions, generateMaxPriceOptions, getNumericValue } from "@/lib/priceUtils";
+import { Checkbox } from "./Checkbox";
+import { useSlideAnimation } from "@/hooks/useSlideAnimation";
 
 interface PriceDropdownProps {
   onClose?: () => void;
@@ -15,57 +17,6 @@ interface PriceDropdownProps {
   histogramParams?: HistogramParams | null;
 }
 
-// Helper to format price with proper separators
-
-const formatPrice = (price: number): string => {
-  // Convert to string and add commas every 3 digits from the right
-  const priceStr = price.toString();
-  const parts = [];
-  
-  // Process from right to left, adding commas every 3 digits
-  let i = priceStr.length;
-  while (i > 0) {
-    const start = Math.max(0, i - 3);
-    parts.unshift(priceStr.slice(start, i));
-    i = start;
-  }
-  
-  return `${parts.join(',')}€`;
-};
-
-// Generate price options from range, rounded up to 20 buckets
-const generatePriceOptions = (min: number, max: number): string[] => {
-  const options = ["No Minimum"];
-  const step = (max - min) / 19; // 19 steps to create 20 buckets (0-19 inclusive)
-
-  for (let i = 0; i < 19; i++) {
-    const price = min + (step * i);
-    const roundedPrice = Math.ceil(price / 100) * 100; // Round up to nearest 100
-    options.push(formatPrice(roundedPrice));
-  }
-
-  // Add max as the last option
-  options.push(formatPrice(max));
-
-  return options;
-};
-
-const generateMaxPriceOptions = (min: number, max: number): string[] => {
-  const options = ["No Maximum"];
-  const step = (max - min) / 19; // 19 steps to create 20 buckets (0-19 inclusive)
-
-  for (let i = 0; i < 19; i++) {
-    const price = min + (step * i);
-    const roundedPrice = Math.ceil(price / 100) * 100; // Round up to nearest 100
-    options.push(formatPrice(roundedPrice));
-  }
-
-  // Add max as the last option
-  options.push(formatPrice(max));
-
-  return options;
-};
-
 export function PriceDropdown({ onClose, onApply, onPriceUpdate, isOpen = true, initialMinPrice, initialMaxPrice, initialShowPriceOnRequest, histogramParams }: PriceDropdownProps) {
   const { data: histogramData, isLoading: isLoadingHistogram } = useHistogram(histogramParams || null);
   const [minPrice, setMinPrice] = useState<string>(initialMinPrice || "No Minimum");
@@ -75,6 +26,22 @@ export function PriceDropdown({ onClose, onApply, onPriceUpdate, isOpen = true, 
 
   const optionsListRef = useRef<HTMLDivElement>(null);
   const previousDropdownType = useRef<"min" | "max" | null>(null);
+
+  // Determine animation direction based on previous dropdown type
+  const animationDirection = useMemo(() => {
+    if (!previousDropdownType.current) return "down";
+    return previousDropdownType.current === "min" ? "left" : "right";
+  }, [activeDropdown]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Animate when switching between min/max
+  useSlideAnimation(optionsListRef, activeDropdown, { direction: animationDirection });
+
+  // Update previous dropdown type after animation
+  useEffect(() => {
+    if (activeDropdown) {
+      previousDropdownType.current = activeDropdown;
+    }
+  }, [activeDropdown]);
 
   // Generate price options from histogram data
   const priceOptions = useMemo(() => {
@@ -97,11 +64,6 @@ export function PriceDropdown({ onClose, onApply, onPriceUpdate, isOpen = true, 
     return Math.max(...histogramData.histogram);
   }, [histogramData]);
 
-  const getNumericValue = (price: string): number => {
-    if (price === "No Minimum" || price === "No Maximum") return 0;
-    return parseInt(price.replace(/[^0-9]/g, ""));
-  };
-
   const isOptionDisabled = (price: string, dropdownType: "min" | "max"): boolean => {
     if (dropdownType === "max") {
       const minValue = getNumericValue(minPrice);
@@ -121,31 +83,6 @@ export function PriceDropdown({ onClose, onApply, onPriceUpdate, isOpen = true, 
 
     return false;
   };
-
-  // Animate when switching between min/max
-  useEffect(() => {
-    if (optionsListRef.current && activeDropdown && previousDropdownType.current !== activeDropdown) {
-      if (previousDropdownType.current !== null) {
-        // Animate the switch with clean slide
-        const direction = previousDropdownType.current === "min" ? -10 : 10;
-
-        gsap.fromTo(
-          optionsListRef.current,
-          {
-            opacity: 0,
-            y: direction,
-          },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.3,
-            ease: "power2.out",
-          }
-        );
-      }
-      previousDropdownType.current = activeDropdown;
-    }
-  }, [activeDropdown]);
 
   // Notify parent when showPriceOnRequest changes
   useEffect(() => {
@@ -236,7 +173,7 @@ export function PriceDropdown({ onClose, onApply, onPriceUpdate, isOpen = true, 
               }}
               disabled={isDisabled}
               className={`flex gap-2.5 items-center px-3 py-2 text-left relative ${
-                isSelected ? "bg-bg-light" : "bg-white hover:bg-[#fdfbff]"
+                isSelected ? "bg-bg-light" : "hover-purple-subtle"
               } ${isDisabled ? "opacity-40 cursor-not-allowed" : ""}` }
             >
               {/* For max dropdown: show arc on left (reversed) - positioned between options */}
@@ -288,12 +225,12 @@ export function PriceDropdown({ onClose, onApply, onPriceUpdate, isOpen = true, 
         onClick={() => setShowPriceOnRequest(!showPriceOnRequest)}
         className="flex gap-2 items-center p-3 border-t border-[#f2f2f2] w-full text-left cursor-pointer "
       >
-        <div className={`w-4 h-4 flex items-center justify-center shrink-0 border rounded-sm border-brand-purple-200 ${showPriceOnRequest ? "bg-brand-purple" : "bg-white"}`}>
-          {showPriceOnRequest && (
-            <Image src="/icons/checkmark-white.svg" alt="" width={10} height={8} />
-          )}
-        </div>
-        <span className="flex-1 text-sm font-medium text-text-primary leading-[1.6]">
+        <Checkbox
+          checked={showPriceOnRequest}
+          variant="dropdown"
+          className="rounded-sm"
+        />
+        <span className="flex-1 text-body-sm leading-[1.6]">
           Show listings with "Price on Request"
         </span>
       </button>

@@ -3,24 +3,22 @@
 import { useState, useRef, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { searchMapbox, generateSessionToken } from "@/lib/mapbox";
-import type { MapboxSearchResponse } from "@/types/mapbox";
 import { Modal } from "./Modal";
 import { LocationSelector } from "./LocationSelector";
 import { LocationInput } from "./LocationInput";
+import { useFilter } from "@/contexts/FilterContext";
+import { DEBOUNCE } from "@/lib/constants";
 
 interface LocationModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onLocationUpdate?: (locationName: string, locationIds: string[], locationId?: string) => void;
-  selectedLocationId?: string;
 }
 
 export function LocationModal({
   isOpen,
   onClose,
-  onLocationUpdate,
-  selectedLocationId,
 }: LocationModalProps) {
+  const { filter, updateLocation } = useFilter();
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
   const [sessionToken] = useState(() => generateSessionToken());
@@ -28,14 +26,14 @@ export function LocationModal({
   const locationRef = useRef<{ locationName: string; locationIds: string[]; locationId?: string }>({
     locationName: "",
     locationIds: [],
-    locationId: selectedLocationId
+    locationId: filter.locationId
   });
 
   // Debounce search query
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedQuery(searchQuery);
-    }, 300);
+    }, DEBOUNCE.SEARCH);
 
     return () => clearTimeout(timer);
   }, [searchQuery]);
@@ -56,7 +54,7 @@ export function LocationModal({
   };
 
   const handleApply = () => {
-    onLocationUpdate?.(locationRef.current.locationName, locationRef.current.locationIds, locationRef.current.locationId);
+    updateLocation(locationRef.current.locationName, locationRef.current.locationIds, locationRef.current.locationId);
     onClose();
   };
 
@@ -79,7 +77,7 @@ export function LocationModal({
         searchResults={searchResults}
         isLoading={isLoading}
         hasSearchQuery={searchQuery.length > 0}
-        selectedLocationId={selectedLocationId}
+        selectedLocationId={filter.locationId}
         variant="modal"
       />
     </Modal>

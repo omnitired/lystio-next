@@ -2,7 +2,9 @@ import { useState, useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import Image from "next/image";
 import { ChevronDownIcon, ChevronUpIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
-import categoriesData from "../categories.json";
+import categoriesData from "@/data/categories.json";
+import { mockCounts } from "@/data/mockCounts";
+import { Checkbox } from "./Checkbox";
 
 interface CategorySelectorProps {
   onCategoryUpdate?: (categoryName: string, typeId: string, subtypeIds: string[]) => void;
@@ -23,19 +25,6 @@ const categoryIcons: Record<string, string> = {
   "13": "/svg/parking.svg",
   "20": "/svg/office.svg",
   "21": "/svg/investment.svg",
-};
-
-const mockCounts: Record<string, number> = {
-  "1": 1853,
-  "2": 9547,
-  "3": 8275,
-  "4": 3012,
-  "5": 4960,
-  "11": 2638,
-  "12": 7529,
-  "13": 3741,
-  "20": 3012,
-  "21": 5086,
 };
 
 export function CategorySelector({
@@ -211,7 +200,7 @@ export function CategorySelector({
               <button
                 onClick={() => toggleCategory(typeId)}
                 className={`w-full flex items-center justify-between px-4 py-3 ${
-                  isExpanded ? "bg-bg-light" : "bg-white hover:bg-[#fdfbff]"
+                  isExpanded ? "bg-bg-light" : "hover-purple-subtle"
                 }`}
               >
                 <div className="flex items-center gap-2 flex-1 min-w-0">
@@ -252,21 +241,16 @@ export function CategorySelector({
                   {/* All Subcategories Option */}
                   <button
                     onClick={toggleAllSubcategories}
-                    className="w-full flex items-center gap-3 px-4 py-3 border-t border-border-light hover:bg-[#fdfbff]"
+                    className="w-full flex items-center gap-3 px-4 py-3 border-t border-border-light hover-purple"
                   >
-                    <div className={`w-5 h-5 flex items-center justify-center shrink-0 border rounded ${
-                      allSubcategoriesSelected
-                        ? "bg-brand-purple border-brand-purple-200"
-                        : "bg-white border-brand-purple-200"
-                    }`}>
-                      {allSubcategoriesSelected && (
-                        <Image src="/icons/checkmark-white.svg" alt="" width={12} height={10} />
-                      )}
-                    </div>
-                    <span className="text-base font-medium text-text-primary flex-1 text-left">
+                    <Checkbox
+                      checked={allSubcategoriesSelected}
+                      variant="modal"
+                    />
+                    <span className="text-body flex-1 text-left">
                       All Subcategories
                     </span>
-                    <span className="text-xs font-semibold text-text-secondary">
+                    <span className="text-caption">
                       {mockCounts[typeId]?.toLocaleString() || "0"}
                     </span>
                   </button>
@@ -279,21 +263,16 @@ export function CategorySelector({
                       <button
                         key={subtypeId}
                         onClick={() => toggleSubtype(subtypeId)}
-                        className="w-full flex items-center gap-3 px-4 py-3 hover:bg-[#fdfbff]"
+                        className="w-full flex items-center gap-3 px-4 py-3 hover-purple"
                       >
-                        <div className={`w-5 h-5 flex items-center justify-center shrink-0 border rounded ${
-                          isChecked
-                            ? "bg-brand-purple border-brand-purple-200"
-                            : "bg-white border-brand-purple-200"
-                        }`}>
-                          {isChecked && (
-                            <Image src="/icons/checkmark-white.svg" alt="" width={12} height={10} />
-                          )}
-                        </div>
-                        <span className="text-base font-medium text-text-primary flex-1 text-left">
+                        <Checkbox
+                          checked={isChecked}
+                          variant="modal"
+                        />
+                        <span className="text-body flex-1 text-left">
                           {subtypeName}
                         </span>
-                        <span className="text-xs font-semibold text-text-secondary">
+                        <span className="text-caption">
                           {Math.floor(Math.random() * 1000)}
                         </span>
                       </button>
@@ -330,7 +309,7 @@ export function CategorySelector({
                 key={typeId}
                 onClick={() => toggleCategory(typeId)}
                 className={`flex items-center justify-between px-3 py-2.5 h-10 ${
-                  isSelected ? "bg-bg-light" : "bg-white hover:bg-[#fdfbff]"
+                  isSelected ? "bg-bg-light" : "hover-purple-subtle"
                 }`}
               >
                 <div className="flex items-center gap-2 flex-1 min-w-0">
@@ -388,7 +367,7 @@ export function CategorySelector({
                   <Image src="/icons/checkmark-white.svg" alt="" width={10} height={8} />
                 )}
               </div>
-              <span className="text-sm font-medium text-text-primary leading-[1.6] flex-1 text-left whitespace-nowrap">
+              <span className="text-body-sm leading-[1.6] flex-1 text-left whitespace-nowrap">
                 All Subcategories
               </span>
               <span className="text-[10px] font-semibold text-text-secondary leading-[1.2] text-right whitespace-nowrap">
@@ -404,7 +383,7 @@ export function CategorySelector({
                 <button
                   key={subtypeId}
                   onClick={() => toggleSubtype(subtypeId)}
-                  className="flex items-center gap-2 px-3 py-2 h-10 hover:bg-[#fdfbff]"
+                  className="flex items-center gap-2 px-3 py-2 h-10 hover-purple"
                 >
                   <div className={`w-4 h-4 flex items-center justify-center shrink-0 border rounded ${
                     isChecked
@@ -415,7 +394,7 @@ export function CategorySelector({
                       <Image src="/icons/checkmark-white.svg" alt="" width={10} height={8} />
                     )}
                   </div>
-                  <span className="text-sm font-medium text-text-primary leading-[1.6] flex-1 text-left whitespace-nowrap">
+                  <span className="text-body-sm leading-[1.6] flex-1 text-left whitespace-nowrap">
                     {subtypeName}
                   </span>
                   <span className="text-[10px] font-semibold text-text-secondary leading-[1.2] text-right whitespace-nowrap">

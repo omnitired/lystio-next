@@ -1,5 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { apiRequest } from "./api";
+import { getCachedData, setCachedData } from "@/hooks/useLocalStorage";
+import { CACHE } from "./constants";
 
 export interface Location {
   name: string;
@@ -24,51 +26,9 @@ export interface RecentSearch {
 
 const CACHE_KEY_ALL = "locations_all";
 const CACHE_KEY_POPULAR = "locations_popular";
-const CACHE_DURATION = 60 * 60 * 1000; // 1 hour in milliseconds
-
-interface CachedData<T> {
-  data: T;
-  timestamp: number;
-}
-
-function getCachedData<T>(key: string): T | null {
-  if (typeof window === "undefined") return null;
-
-  try {
-    const cached = localStorage.getItem(key);
-    if (!cached) return null;
-
-    const { data, timestamp }: CachedData<T> = JSON.parse(cached);
-    const now = Date.now();
-
-    if (now - timestamp > CACHE_DURATION) {
-      localStorage.removeItem(key);
-      return null;
-    }
-
-    return data;
-  } catch (error) {
-    console.error("Error reading from cache:", error);
-    return null;
-  }
-}
-
-function setCachedData<T>(key: string, data: T): void {
-  if (typeof window === "undefined") return;
-
-  try {
-    const cacheData: CachedData<T> = {
-      data,
-      timestamp: Date.now(),
-    };
-    localStorage.setItem(key, JSON.stringify(cacheData));
-  } catch (error) {
-    console.error("Error writing to cache:", error);
-  }
-}
 
 export async function fetchAllLocations(): Promise<Location[]> {
-  const cached = getCachedData<Location[]>(CACHE_KEY_ALL);
+  const cached = getCachedData<Location[]>(CACHE_KEY_ALL, CACHE.LOCATIONS);
   if (cached) return cached;
 
   const data = await apiRequest<Location[]>("/geo/boundary");
@@ -77,7 +37,7 @@ export async function fetchAllLocations(): Promise<Location[]> {
 }
 
 export async function fetchPopularLocations(): Promise<Location[]> {
-  const cached = getCachedData<Location[]>(CACHE_KEY_POPULAR);
+  const cached = getCachedData<Location[]>(CACHE_KEY_POPULAR, CACHE.LOCATIONS);
   if (cached) return cached;
 
   const data = await apiRequest<Location[]>("/geo/boundary/popular");
@@ -89,8 +49,8 @@ export function useAllLocations() {
   return useQuery({
     queryKey: ["locations", "all"],
     queryFn: fetchAllLocations,
-    staleTime: CACHE_DURATION,
-    gcTime: CACHE_DURATION,
+    staleTime: CACHE.LOCATIONS,
+    gcTime: CACHE.LOCATIONS,
   });
 }
 
@@ -98,8 +58,8 @@ export function usePopularLocations() {
   return useQuery({
     queryKey: ["locations", "popular"],
     queryFn: fetchPopularLocations,
-    staleTime: CACHE_DURATION,
-    gcTime: CACHE_DURATION,
+    staleTime: CACHE.LOCATIONS,
+    gcTime: CACHE.LOCATIONS,
   });
 }
 
@@ -111,7 +71,7 @@ export function useRecentSearches() {
   return useQuery({
     queryKey: ["recent-searches"],
     queryFn: fetchRecentSearches,
-    staleTime: 5 * 60 * 1000, // 5 minutes
-    gcTime: 10 * 60 * 1000, // 10 minutes
+    staleTime: CACHE.RECENT_SEARCHES,
+    gcTime: CACHE.RECENT_SEARCHES * 2,
   });
 }

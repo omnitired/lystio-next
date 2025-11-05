@@ -1,7 +1,9 @@
 import { useState, useRef, useEffect, useMemo } from "react";
-import { gsap } from "gsap";
 import Image from "next/image";
 import { useHistogram, type HistogramParams } from "@/lib/searchCount";
+import { formatPrice, generatePriceOptions, generateMaxPriceOptions, getNumericValue } from "@/lib/priceUtils";
+import { Checkbox } from "./Checkbox";
+import { useSlideAnimation } from "@/hooks/useSlideAnimation";
 
 interface PriceSelectorProps {
   onPriceUpdate?: (min: string, max: string, showPriceOnRequest: boolean) => void;
@@ -11,49 +13,6 @@ interface PriceSelectorProps {
   histogramParams?: HistogramParams | null;
   variant?: "dropdown" | "modal";
 }
-
-const formatPrice = (price: number): string => {
-  if (!price) return "0€";
-  const priceStr = price.toString();
-  const parts = [];
-
-  let i = priceStr.length;
-  while (i > 0) {
-    const start = Math.max(0, i - 3);
-    parts.unshift(priceStr.slice(start, i));
-    i = start;
-  }
-
-  return `${parts.join(',')}€`;
-};
-
-const generatePriceOptions = (min: number, max: number): string[] => {
-  const options = ["No Minimum"];
-  const step = (max - min) / 19;
-
-  for (let i = 0; i < 19; i++) {
-    const price = min + (step * i);
-    const roundedPrice = Math.ceil(price / 100) * 100;
-    options.push(formatPrice(roundedPrice));
-  }
-
-  options.push(formatPrice(Math.ceil(max)));
-  return options;
-};
-
-const generateMaxPriceOptions = (min: number, max: number): string[] => {
-  const options = ["No Maximum"];
-  const step = (max - min) / 19;
-
-  for (let i = 0; i < 19; i++) {
-    const price = min + (step * i);
-    const roundedPrice = Math.ceil(price / 100) * 100;
-    options.push(formatPrice(roundedPrice));
-  }
-
-  options.push(formatPrice(Math.ceil(max)));
-  return options;
-};
 
 export function PriceSelector({
   onPriceUpdate,
@@ -70,6 +29,9 @@ export function PriceSelector({
   const [activeDropdown, setActiveDropdown] = useState<"min" | "max" | null>(null);
 
   const optionsListRef = useRef<HTMLDivElement>(null);
+
+  // Animate options list when activeDropdown changes
+  useSlideAnimation(optionsListRef, activeDropdown, { direction: "up" });
 
   const priceOptions = useMemo(() => {
     if (!histogramData?.range) {
@@ -90,11 +52,6 @@ export function PriceSelector({
     return Math.max(...histogramData.histogram);
   }, [histogramData]);
 
-  const getNumericValue = (price: string): number => {
-    if (price === "No Minimum" || price === "No Maximum") return 0;
-    return parseInt(price.replace(/[^0-9]/g, ""));
-  };
-
   const isOptionDisabled = (price: string, dropdownType: "min" | "max"): boolean => {
     if (dropdownType === "max") {
       const minValue = getNumericValue(minPrice);
@@ -114,17 +71,6 @@ export function PriceSelector({
 
     return false;
   };
-
-  useEffect(() => {
-    if (optionsListRef.current && activeDropdown) {
-      // Always animate from top to bottom for consistency
-      gsap.fromTo(
-        optionsListRef.current,
-        { opacity: 0, y: -10 },
-        { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }
-      );
-    }
-  }, [activeDropdown]);
 
   useEffect(() => {
       onPriceUpdate?.(minPrice, maxPrice, showPriceOnRequest);
@@ -207,7 +153,7 @@ export function PriceSelector({
                 }}
                 disabled={isDisabled}
                 className={`flex gap-2.5 items-center justify-between px-4 py-3 ${
-                  isSelected ? "bg-bg-light" : "bg-white hover:bg-[#fdfbff]"
+                  isSelected ? "bg-bg-light" : "hover-purple-subtle"
                 } ${isDisabled ? "opacity-40 cursor-not-allowed" : ""} ${isMax ? "flex-row-reverse" : "flex-row"}`}
               >
                 <span className=" text-base font-medium text-black">
@@ -243,7 +189,7 @@ export function PriceSelector({
                   }}
                   disabled={isDisabled}
                   className={`flex gap-2.5 items-center justify-between px-3 py-2 text-left relative ${
-                    isSelected ? "bg-bg-light" : "bg-white hover:bg-[#fdfbff]"
+                    isSelected ? "bg-bg-light" : "hover-purple-subtle"
                   } ${isDisabled ? "opacity-40 cursor-not-allowed" : ""} ${isMax ? "flex-row-reverse text-right" : "flex-row"}`}
                 >
                   <span className="flex-1 text-sm font-medium text-black leading-[1.6] relative z-10">
@@ -264,18 +210,11 @@ export function PriceSelector({
         onClick={() => setShowPriceOnRequest(!showPriceOnRequest)}
         className={`flex ${isModal ? "gap-3 items-center p-4 border border-border-light rounded-lg w-full mt-4" : "gap-2 items-center p-3 border-t border-[#f2f2f2] w-full text-left cursor-pointer"}`}
       >
-        <div className={`${isModal ? "w-5 h-5" : "w-4 h-4"} flex items-center justify-center shrink-0 border rounded-sm border-brand-purple-200 ${
-          showPriceOnRequest ? "bg-brand-purple" : "bg-white"
-        }`}>
-          {showPriceOnRequest && (
-            <Image
-              src="/icons/checkmark-white.svg"
-              alt=""
-              width={isModal ? 12 : 10}
-              height={isModal ? 10 : 8}
-            />
-          )}
-        </div>
+        <Checkbox
+          checked={showPriceOnRequest}
+          variant={isModal ? "modal" : "dropdown"}
+          className="rounded-sm"
+        />
         <span className={`flex-1 ${isModal ? "text-base" : "text-sm"} font-medium text-text-primary ${isModal ? "text-left" : "leading-[1.6]"}`}>
           Show listings with "Price on Request"
         </span>
