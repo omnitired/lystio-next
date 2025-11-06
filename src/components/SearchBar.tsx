@@ -30,6 +30,68 @@ interface SearchBarProps {
   onCountUpdate?: (count: number | undefined) => void;
 }
 
+type DropdownType = "location" | "category" | "price" | null;
+
+// Internal Components
+interface SearchSectionProps {
+  label: string;
+  isActive: boolean;
+  onClick: () => void;
+  roundedStyle?: "left" | "right" | "none";
+  children: React.ReactNode;
+  dropdown?: React.ReactNode;
+}
+
+function SearchSection({ label, isActive, onClick, roundedStyle = "none", children, dropdown }: SearchSectionProps) {
+  const roundedClass =
+    roundedStyle === "left" ? "rounded-l-full" :
+    roundedStyle === "right" ? "rounded-r-full" :
+    "";
+
+  return (
+    <div className={`flex-1 bg-bg-light h-full border-l border-border-light relative ${roundedClass} first:border-l-0`}>
+      <div
+        onClick={onClick}
+        className={`w-full h-full flex items-center gap-[15px] px-3 py-2 cursor-pointer transition-colors ${roundedClass} ${
+          isActive ? "bg-white" : "hover:bg-white"
+        }`}
+      >
+        <div className="flex-1 flex flex-col">
+          <label className="text-xs font-medium text-text-primary leading-[1.6] mb-1">
+            {label}
+          </label>
+          {children}
+        </div>
+      </div>
+      {dropdown}
+    </div>
+  );
+}
+
+interface MobileButtonProps {
+  icon: string;
+  label: string;
+  onClick?: () => void;
+  disabled?: boolean;
+}
+
+function MobileButton({ icon, label, onClick, disabled }: MobileButtonProps) {
+  return (
+    <Button
+      variant="secondary"
+      fullWidth
+      onClick={onClick}
+      disabled={disabled}
+      icon={icon}
+      iconWidth={16}
+      iconHeight={16}
+      className="text-sm"
+    >
+      {label}
+    </Button>
+  );
+}
+
 export function SearchBar({
   pricePlaceholder = "Select Price Range",
   onCategoryClick,
@@ -38,10 +100,7 @@ export function SearchBar({
   onCountUpdate,
 }: SearchBarProps) {
   const { filter, updateLocation, updateCategory, updatePrice, setMode } = useFilter();
-  const [activeDropdown, setActiveDropdown] = useState<
-    "location" | "category" | "price" | null
-  >(null);
-  const [isClosing, setIsClosing] = useState(false);
+  const [activeDropdown, setActiveDropdown] = useState<DropdownType>(null);
   const [showFilterModal, setShowFilterModal] = useState(false);
   const [showLocationModal, setShowLocationModal] = useState(false);
   const [debouncedLocation, setDebouncedLocation] = useState<string>("");
@@ -81,13 +140,14 @@ export function SearchBar({
       debouncedLocation.length > 0 && activeDropdown === "location" && isTyping,
   });
 
+  // Close dropdown on outside click
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target as Node)
       ) {
-        setIsClosing(true);
+        setActiveDropdown(null);
       }
     }
 
@@ -95,38 +155,12 @@ export function SearchBar({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const handleLocationClick = () => {
-    if (activeDropdown === "location") {
-      // setIsClosing(true);
-    } else {
-      setActiveDropdown("location");
-      setIsClosing(false);
-    }
-  };
-
-  const handleCategoryClick = () => {
-    if (activeDropdown === "category") {
-      setIsClosing(true);
-    } else {
-      setActiveDropdown("category");
-      setIsClosing(false);
-    }
-    onCategoryClick?.();
-  };
-
-  const handlePriceClick = () => {
-    if (activeDropdown === "price") {
-      setIsClosing(true);
-    } else {
-      setActiveDropdown("price");
-      setIsClosing(false);
-    }
-    onPriceClick?.();
+  const toggleDropdown = (dropdown: DropdownType) => {
+    setActiveDropdown(prev => prev === dropdown ? null : dropdown);
   };
 
   const handleDropdownClose = useCallback(() => {
     setActiveDropdown(null);
-    setIsClosing(false);
   }, []);
 
   const handleLocationUpdateLocal = useCallback(
@@ -155,11 +189,11 @@ export function SearchBar({
         ref={dropdownRef}
         className="w-full max-w-[900px] h-[67px] md:bg-white md:border md:border-border-light md:rounded-full relative z-50"
       >
-        <div className="flex h-full items-center  relative">
+        <div className="flex h-full items-center relative">
           {/* Location Section - Desktop */}
           <div className="hidden md:flex flex-1 md:w-[300px] h-10 md:h-full bg-bg-light relative rounded-full md:rounded-l-full md:rounded-r-none">
             <div
-              onClick={handleLocationClick}
+              onClick={() => toggleDropdown("location")}
               className={`w-full h-full flex items-center gap-[15px] pl-6 pr-4 py-3 cursor-pointer transition-colors rounded-full md:rounded-l-full md:rounded-r-none ${
                 activeDropdown === "location" ? "bg-white" : "hover:bg-white"
               }`}
@@ -181,10 +215,9 @@ export function SearchBar({
               </div>
             </div>
 
-            {/* Location Dropdown */}
             {activeDropdown === "location" && (
               <LocationDropdown
-                isOpen={!isClosing && activeDropdown === "location"}
+                isOpen={true}
                 onClose={handleDropdownClose}
                 onLocationUpdate={handleLocationUpdateLocal}
                 searchResults={searchResults}
@@ -202,87 +235,67 @@ export function SearchBar({
               className="h-full flex items-center gap-[15px] px-3 py-3 cursor-pointer transition-colors rounded-full hover:bg-white"
             >
               <div className="flex-1 flex justify-between opacity-40">
-                <label className="text-xs font-medium text-text-primary leading-[1.6] mb-1 ">
-                City District, Street, Postcode
+                <label className="text-xs font-medium text-text-primary leading-[1.6] mb-1">
+                  City District, Street, Postcode
                 </label>
                 <Image src="/icons/search.svg" alt="" width={16} height={16} />
               </div>
             </div>
           </div>
+
+          {/* Mobile Action Buttons */}
           <div className="px-2 flex items-start justify-center gap-2 w-full md:hidden z-50">
-          {/* Mobile Filter Button */}
-          <Button
-            variant="secondary"
-            fullWidth
-            onClick={() => setShowFilterModal(true)}
-            icon="/icons/filter-purple.svg"
-            iconWidth={16}
-            iconHeight={16}
-            className="text-sm"
-            
-          >
-            Filters
-          </Button>
-          <Button
-            variant="secondary"
-            fullWidth
-            disabled
-            icon="/icons/notification-purple.svg"
-            iconWidth={16}
-            iconHeight={16}
-            className="text-sm"
-          >
-            Create Alert
-          </Button>
-          <Button
-            variant="secondary"
-            fullWidth
-            disabled
-            icon="/icons/map-purple.svg"
-            iconWidth={16}
-            iconHeight={16}
-            className="text-sm"
-          >
-            Map View
-          </Button>
-        </div>
-
-          {/* Category Section - hidden on mobile */}
-          <div className="hidden md:block w-[250px] h-full bg-bg-light border-l border-border-light relative">
-            <div
-              onClick={handleCategoryClick}
-              className={`w-full h-full flex items-center gap-[15px] px-3 py-2 cursor-pointer transition-colors ${
-                activeDropdown === "category" ? "bg-white" : "hover:bg-white"
-              }`}
-            >
-              <div className="flex-1 flex flex-col">
-                <label className="text-xs font-medium text-text-primary leading-[1.6] mb-1">
-                  Category
-                </label>
-                <span className="text-body-sm leading-[1.6]">
-                  {filter.category}
-                </span>
-              </div>
-            </div>
-
-            {/* Category Dropdown */}
-            {activeDropdown === "category" && (
-              <div className="absolute w-full h-full top-0 left-0">
-                <CategoryDropdown
-                  isOpen={!isClosing && activeDropdown === "category"}
-                  onClose={handleDropdownClose}
-                  onCategoryUpdate={updateCategory}
-                  initialTypeId={filter.typeId}
-                  initialSubtypeIds={filter.subTypeIds}
-                />
-              </div>
-            )}
+            <MobileButton
+              icon="/icons/filter-purple.svg"
+              label="Filters"
+              onClick={() => setShowFilterModal(true)}
+            />
+            <MobileButton
+              icon="/icons/notification-purple.svg"
+              label="Create Alert"
+              disabled
+            />
+            <MobileButton
+              icon="/icons/map-purple.svg"
+              label="Map View"
+              disabled
+            />
           </div>
 
-          {/* Price Section + Search Button - hidden on mobile */}
+          {/* Category Section - Desktop */}
+          <SearchSection
+            label="Category"
+            isActive={activeDropdown === "category"}
+            onClick={() => {
+              toggleDropdown("category");
+              onCategoryClick?.();
+            }}
+            dropdown={
+              activeDropdown === "category" && (
+                <div className="absolute w-full h-full top-0 left-0">
+                  <CategoryDropdown
+                    isOpen={true}
+                    onClose={handleDropdownClose}
+                    onCategoryUpdate={updateCategory}
+                    initialTypeId={filter.typeId}
+                    initialSubtypeIds={filter.subTypeIds}
+                  />
+                </div>
+              )
+            }
+          >
+            <span className="text-body-sm leading-[1.6]">
+              {filter.category}
+            </span>
+          </SearchSection>
+
+          {/* Price Section + Search Button - Desktop */}
           <div className="hidden md:flex flex-1 bg-bg-light h-full items-center border-l border-border-light relative rounded-r-full">
             <div
-              onClick={handlePriceClick}
+              onClick={() => {
+                toggleDropdown("price");
+                onPriceClick?.();
+              }}
               className={`flex-1 flex h-full items-center px-3 cursor-pointer transition-colors ${
                 activeDropdown === "price" ? "bg-white" : "hover:bg-white"
               }`}
@@ -315,11 +328,10 @@ export function SearchBar({
               </Button>
             </div>
 
-            {/* Price Dropdown */}
             {activeDropdown === "price" && (
-              <div className="absolute w-full h-full top-0 right-0 ">
+              <div className="absolute w-full h-full top-0 right-0">
                 <PriceDropdown
-                  isOpen={!isClosing && activeDropdown === "price"}
+                  isOpen={true}
                   onClose={handleDropdownClose}
                   onPriceUpdate={updatePrice}
                   initialMinPrice={filter.minPrice}
@@ -332,8 +344,7 @@ export function SearchBar({
           </div>
         </div>
 
-
-        {/* Mobile Filter Modal */}
+        {/* Mobile Modals */}
         <MobileFilterModal
           isOpen={showFilterModal}
           onClose={() => setShowFilterModal(false)}
@@ -344,7 +355,6 @@ export function SearchBar({
           histogramParams={histogramParams}
         />
 
-        {/* Mobile Location Modal */}
         <LocationModal
           isOpen={showLocationModal}
           onClose={() => setShowLocationModal(false)}
