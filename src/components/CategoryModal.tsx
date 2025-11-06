@@ -1,10 +1,9 @@
 "use client";
 
-import { useRef } from "react";
+import { useState } from "react";
 import { Modal } from "./ui/Modal";
 import { CategorySelector } from "./CategorySelector";
 import { useFilter } from "@/contexts/FilterContext";
-import categoriesData from "@/data/categories.json";
 
 interface CategoryModalProps {
   isOpen: boolean;
@@ -16,24 +15,20 @@ export function CategoryModal({
   onClose,
 }: CategoryModalProps) {
   const { filter, updateCategory } = useFilter();
+  const { typeId, subTypeIds } = filter;
 
-  const defaultTypeId = filter.typeId || "3";
-  const defaultTypeName = categoriesData.types[defaultTypeId as keyof typeof categoriesData.types] || "Houses";
-  const defaultSubtypes = categoriesData.subtypes[defaultTypeId as keyof typeof categoriesData.subtypes] || {};
-  const defaultSubtypeIds = filter.subTypeIds.length > 0 ? filter.subTypeIds : Object.keys(defaultSubtypes);
-
-  const categoryRef = useRef<{ categoryName: string; typeId: string; subtypeIds: string[] }>({
-    categoryName: defaultTypeName,
-    typeId: defaultTypeId,
-    subtypeIds: defaultSubtypeIds
-  });
+  const [tempCategoryName, setTempCategoryName] = useState(filter.category);
+  const [tempTypeId, setTempTypeId] = useState(typeId);
+  const [tempSubtypeIds, setTempSubtypeIds] = useState(subTypeIds);
 
   const handleCategoryUpdate = (categoryName: string, typeId: string, subtypeIds: string[]) => {
-    categoryRef.current = { categoryName, typeId, subtypeIds };
+    setTempCategoryName(categoryName);
+    setTempTypeId(typeId);
+    setTempSubtypeIds(subtypeIds);
   };
 
   const handleApply = () => {
-    updateCategory(categoryRef.current.categoryName, categoryRef.current.typeId, categoryRef.current.subtypeIds);
+    updateCategory(tempCategoryName, tempTypeId, tempSubtypeIds);
     onClose();
   };
 
@@ -46,8 +41,8 @@ export function CategoryModal({
     >
       <CategorySelector
         onCategoryUpdate={handleCategoryUpdate}
-        initialTypeId={filter.typeId}
-        initialSubtypeIds={filter.subTypeIds}
+        initialTypeId={typeId}
+        initialSubtypeIds={subTypeIds}
         variant="modal"
       />
     </Modal>

@@ -50,12 +50,12 @@ export function MobileFilterModal({ isOpen, onClose, onApply, histogramParams }:
           >
             <div className="flex items-center gap-4">
               <Image src="/icons/home.svg" alt="" width={28} height={28} />
-              <span className="text-xl font-normal text-black">
+              <span className="text-md font-normal text-black">
                 Category
               </span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-xl font-normal text-brand-purple">
+              <span className="text-md font-normal text-brand-purple">
                 {filter.category}
               </span>
               <Image src="/icons/chevron-right-purple.svg" alt="" width={24} height={24} />
@@ -69,11 +69,11 @@ export function MobileFilterModal({ isOpen, onClose, onApply, histogramParams }:
           >
             <div className="flex items-center gap-4">
               <Image src="/icons/euro.svg" alt="" width={28} height={28} />
-              <span className="text-xl font-normal text-black">Price</span>
+              <span className="text-md font-normal text-black">Price</span>
             </div>
             <div className="flex items-center gap-2">
               <span
-                className={`text-xl font-normal ${
+                className={`text-md font-normal ${
                   !filter.minPrice && !filter.maxPrice
                     ? "text-gray-400"
                     : "text-gray-600"
