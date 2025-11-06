@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { gsap } from "gsap";
+import { animate } from "framer-motion";
 import Image from "next/image";
 import { ChevronDownIcon, ChevronUpIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import type { MapboxSearchResponse, GroupedSuggestions } from "@/types/mapbox";
@@ -76,10 +76,10 @@ export function LocationSelector({
   useEffect(() => {
     if (isDropdown && rightPanelRef.current && selectedLocation && previousSelectedLocation.current !== selectedLocation.id) {
       if (previousSelectedLocation.current !== null) {
-        gsap.fromTo(
+        animate(
           rightPanelRef.current,
-          { opacity: 0, x: -10 },
-          { opacity: 1, x: 0, duration: 0.3, ease: "power2.out" }
+          { opacity: [0, 1], x: [-10, 0] },
+          { duration: 0.2, ease: "easeOut" }
         );
       }
       previousSelectedLocation.current = selectedLocation.id;
@@ -91,10 +91,11 @@ export function LocationSelector({
     if (isModal && expandedLocation) {
       const ref = districtRefs.current.get(expandedLocation);
       if (ref) {
-        gsap.fromTo(
+        const scrollHeight = ref.scrollHeight;
+        animate(
           ref,
-          { opacity: 0, height: 0 },
-          { opacity: 1, height: "auto", duration: 0.3, ease: "power2.out" }
+          { opacity: [0, 1], height: [0, scrollHeight] },
+          { duration: 0.2, ease: "easeOut" }
         );
       }
     }
@@ -116,15 +117,17 @@ export function LocationSelector({
         // Closing current
         const ref = districtRefs.current.get(location.id);
         if (ref) {
-          gsap.to(ref, {
-            opacity: 0,
-            height: 0,
-            duration: 0.3,
-            ease: "power2.in",
-            onComplete: () => {
-              setExpandedLocation(null);
+          animate(
+            ref,
+            { opacity: 0, height: 0 },
+            {
+              duration: 0.2,
+              ease: "easeIn",
+              onComplete: () => {
+                setExpandedLocation(null);
+              }
             }
-          });
+          );
         } else {
           setExpandedLocation(null);
         }
@@ -133,19 +136,21 @@ export function LocationSelector({
         if (expandedLocation) {
           const prevRef = districtRefs.current.get(expandedLocation);
           if (prevRef) {
-            gsap.to(prevRef, {
-              opacity: 0,
-              height: 0,
-              duration: 0.3,
-              ease: "power2.in",
-              onComplete: () => {
-                setExpandedLocation(location.id);
-                setSelectedLocation(location);
-                setSelectedDistricts(new Set());
-                setAllDistrictsSelected(true);
-                onLocationUpdate?.(location.name, [location.id], location.id);
+            animate(
+              prevRef,
+              { opacity: 0, height: 0 },
+              {
+                duration: 0.2,
+                ease: "easeIn",
+                onComplete: () => {
+                  setExpandedLocation(location.id);
+                  setSelectedLocation(location);
+                  setSelectedDistricts(new Set());
+                  setAllDistrictsSelected(true);
+                  onLocationUpdate?.(location.name, [location.id], location.id);
+                }
               }
-            });
+            );
           } else {
             setExpandedLocation(location.id);
             setSelectedLocation(location);

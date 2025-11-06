@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { gsap } from "gsap";
+import { animate } from "framer-motion";
 import Image from "next/image";
 import { ChevronDownIcon, ChevronUpIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import categoriesData from "@/data/categories.json";
@@ -51,10 +51,10 @@ export function CategorySelector({
   useEffect(() => {
     if (isDropdown && rightPanelRef.current && selectedType && previousSelectedType.current !== selectedType) {
       if (previousSelectedType.current !== null) {
-        gsap.fromTo(
+        animate(
           rightPanelRef.current,
-          { opacity: 0, x: -10 },
-          { opacity: 1, x: 0, duration: 0.3, ease: "power2.out" }
+          { opacity: [0, 1], x: [-10, 0] },
+          { duration: 0.2, ease: "easeOut" }
         );
       }
       previousSelectedType.current = selectedType;
@@ -66,10 +66,11 @@ export function CategorySelector({
     if (isModal && expandedType) {
       const ref = subcategoryRefs.current.get(expandedType);
       if (ref) {
-        gsap.fromTo(
+        const scrollHeight = ref.scrollHeight;
+        animate(
           ref,
-          { opacity: 0, height: 0 },
-          { opacity: 1, height: "auto", duration: 0.3, ease: "power2.out" }
+          { opacity: [0, 1], height: [0, scrollHeight] },
+          { duration: 0.2, ease: "easeOut" }
         );
       }
     }
@@ -92,15 +93,17 @@ export function CategorySelector({
         // Closing current
         const ref = subcategoryRefs.current.get(typeId);
         if (ref) {
-          gsap.to(ref, {
-            opacity: 0,
-            height: 0,
-            duration: 0.3,
-            ease: "power2.in",
-            onComplete: () => {
-              setExpandedType(null);
+          animate(
+            ref,
+            { opacity: 0, height: 0 },
+            {
+              duration: 0.2,
+              ease: "easeIn",
+              onComplete: () => {
+                setExpandedType(null);
+              }
             }
-          });
+          );
         } else {
           setExpandedType(null);
         }
@@ -109,22 +112,24 @@ export function CategorySelector({
         if (expandedType) {
           const prevRef = subcategoryRefs.current.get(expandedType);
           if (prevRef) {
-            gsap.to(prevRef, {
-              opacity: 0,
-              height: 0,
-              duration: 0.3,
-              ease: "power2.in",
-              onComplete: () => {
-                setExpandedType(typeId);
-                setSelectedType(typeId);
-                setSelectedSubtypes(new Set());
-                setAllSubcategoriesSelected(true);
+            animate(
+              prevRef,
+              { opacity: 0, height: 0 },
+              {
+                duration: 0.2,
+                ease: "easeIn",
+                onComplete: () => {
+                  setExpandedType(typeId);
+                  setSelectedType(typeId);
+                  setSelectedSubtypes(new Set());
+                  setAllSubcategoriesSelected(true);
 
-                // Update ref with new selection
-                const typeName = categoriesData.types[typeId as keyof typeof categoriesData.types];
-                onCategoryUpdate?.(typeName, typeId, []);
+                  // Update ref with new selection
+                  const typeName = categoriesData.types[typeId as keyof typeof categoriesData.types];
+                  onCategoryUpdate?.(typeName, typeId, []);
+                }
               }
-            });
+            );
           } else {
             setExpandedType(typeId);
             setSelectedType(typeId);

@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { gsap } from "gsap";
+import { useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { Button } from "./Button";
 
@@ -28,118 +28,67 @@ export function Modal({
   applyIcon,
   showFooter = true,
 }: ModalProps) {
-  const modalRef = useRef<HTMLDivElement>(null);
-  const overlayRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (isOpen) {
-      // Prevent body scroll when modal is open
-      document.body.style.overflow = "hidden";
-
-      // Animate modal entrance
-      if (modalRef.current && overlayRef.current) {
-        gsap.fromTo(
-          overlayRef.current,
-          { opacity: 0 },
-          { opacity: 1, duration: 0.3, ease: "power2.out" }
-        );
-
-        gsap.fromTo(
-          modalRef.current,
-          {
-            y: "100%",
-            opacity: 0,
-          },
-          {
-            y: "0%",
-            opacity: 1,
-            duration: 0.4,
-            ease: "power3.out",
-          }
-        );
-      }
-    } else {
-      // Restore body scroll
-      document.body.style.overflow = "";
-    }
-
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [isOpen]);
-
-  const handleClose = () => {
-    if (modalRef.current && overlayRef.current) {
-      // Animate modal exit
-      gsap.to(overlayRef.current, {
-        opacity: 0,
-        duration: 0.2,
-        ease: "power2.in",
-      });
-
-      gsap.to(modalRef.current, {
-        y: "100%",
-        opacity: 0,
-        duration: 0.3,
-        ease: "power3.in",
-        onComplete: () => {
-          onClose();
-        },
-      });
-    } else {
-      onClose();
-    }
-  };
-
-  if (!isOpen) return null;
 
   return (
-    <>
-      {/* Overlay */}
-      <div
-        ref={overlayRef}
-        className="fixed inset-0 bg-black/40 z-109"
-        onClick={handleClose}
-      />
-
-      {/* Modal */}
-      <div
-        ref={modalRef}
-        className="fixed inset-0 bg-white z-110 flex flex-col"
-        style={{ opacity: 0, transform: "translateY(100%)" }}
-      >
-        {/* Header */}
-        <div className="flex items-center justify-between p-4">
-          <h2 className="text-lg font-semibold text-text-primary">{title}</h2>
-          <Button
-            variant="icon"
-            onClick={handleClose}
-            icon="/icons/close.svg"
-            iconWidth={24}
-            iconHeight={24}
+    <AnimatePresence>
+      {isOpen && (
+        <>
+          {/* Overlay */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className="fixed inset-0 bg-black/40 z-109"
+            onClick={onClose}
           />
-        </div>
 
-        {/* Content */}
-        {children}
+          {/* Modal */}
+          <motion.div
+            initial={{ y: "100%", opacity: 0 }}
+            animate={{ y: "0%", opacity: 1 }}
+            exit={{ y: "100%", opacity: 0 }}
+            transition={{
+              duration: 0.2,
+              ease: "easeOut",
+            }}
+            className="fixed inset-0 bg-white z-110 flex flex-col"
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between p-4">
+              <h2 className="text-lg font-semibold text-text-primary">{title}</h2>
+              <Button
+                variant="icon"
+                onClick={onClose}
+                icon="/icons/close.svg"
+                iconWidth={24}
+                iconHeight={24}
+              />
+            </div>
 
-        {/* Footer */}
-        {showFooter && (
-          <div className="p-4 border-t border-border-light">
-            <Button
-              variant="primary"
-              fullWidth
-              onClick={onApply}
-              disabled={applyDisabled}
-              icon={applyIcon}
-              iconWidth={20}
-              iconHeight={20}
-            >
-              {applyText}
-            </Button>
-          </div>
-        )}
-      </div>
-    </>
+            {/* Content */}
+            {children}
+
+            {/* Footer */}
+            {showFooter && (
+              <div className="p-4 border-t border-border-light">
+                <Button
+                  variant="primary"
+                  fullWidth
+                  onClick={onApply}
+                  disabled={applyDisabled}
+                  icon={applyIcon}
+                  iconWidth={20}
+                  iconHeight={20}
+                >
+                  {applyText}
+                </Button>
+              </div>
+            )}
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
   );
 }

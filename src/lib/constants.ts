@@ -19,7 +19,7 @@ export const CACHE = {
 } as const;
 
 /**
- * Animation configuration for GSAP
+ * Animation configuration
  */
 export const ANIMATION = {
   DURATION: {

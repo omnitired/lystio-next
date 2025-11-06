@@ -1,9 +1,9 @@
-import { useState, useRef, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
 import { useHistogram, type HistogramParams } from "@/lib/searchCount";
 import { formatPrice, generatePriceOptions, generateMaxPriceOptions, getNumericValue } from "@/lib/priceUtils";
 import { Checkbox } from "./Checkbox";
-import { useSlideAnimation } from "@/hooks/useSlideAnimation";
 
 interface PriceSelectorProps {
   onPriceUpdate?: (min: string, max: string, showPriceOnRequest: boolean) => void;
@@ -27,11 +27,6 @@ export function PriceSelector({
   const [maxPrice, setMaxPrice] = useState<string>(initialMaxPrice || "No Maximum");
   const [showPriceOnRequest, setShowPriceOnRequest] = useState(initialShowPriceOnRequest ?? false);
   const [activeDropdown, setActiveDropdown] = useState<"min" | "max" | null>(null);
-
-  const optionsListRef = useRef<HTMLDivElement>(null);
-
-  // Animate options list when activeDropdown changes
-  useSlideAnimation(optionsListRef, activeDropdown, { direction: "up" });
 
   const priceOptions = useMemo(() => {
     if (!histogramData?.range) {
@@ -133,16 +128,19 @@ export function PriceSelector({
       </div>
 
       {/* Price Options List */}
-      {isModal && activeDropdown && (
-        <div ref={optionsListRef} className="flex flex-col border border-border-light rounded-lg overflow-hidden">
-          {(activeDropdown === "min" ? priceOptions : maxPriceOptions).map((price, index) => {
+      <AnimatePresence>
+        {isModal && activeDropdown && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.2 }}
+            className="flex flex-col border border-border-light rounded-lg overflow-hidden"
+          >
+            {(activeDropdown === "min" ? priceOptions : maxPriceOptions).map((price, index) => {
             const isSelected = activeDropdown === "min" ? price === minPrice : price === maxPrice;
             const isDisabled = isOptionDisabled(price, activeDropdown);
             const isMax = activeDropdown === "max";
-
-            const histogramIndex = index - 1;
-            const histogramValue = histogramData?.histogram?.[histogramIndex] || 0;
-            const barHeight = maxHistogramValue > 0 ? (histogramValue / maxHistogramValue) * 100 : 0;
 
             return (
               <button
@@ -165,20 +163,25 @@ export function PriceSelector({
               </button>
             );
           })}
-        </div>
-      )}
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {isDropdown && (
         <div className="bg-white overflow-hidden">
-          <div ref={optionsListRef} className="flex flex-col py-2 overflow-auto max-h-[300px] scrollbar-hide [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-            {(activeDropdown === "min" ? priceOptions : activeDropdown === "max" ? maxPriceOptions : []).map((price, index) => {
+          <AnimatePresence>
+            {activeDropdown && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.3 }}
+                className="flex flex-col py-2 overflow-auto max-h-[300px] scrollbar-hide [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+              >
+                {(activeDropdown === "min" ? priceOptions : activeDropdown === "max" ? maxPriceOptions : []).map((price, index) => {
               const isSelected = activeDropdown === "min" ? price === minPrice : price === maxPrice;
               const isDisabled = activeDropdown ? isOptionDisabled(price, activeDropdown) : false;
               const isMax = activeDropdown === "max";
-
-              const histogramIndex = index - 1;
-              const histogramValue = histogramData?.histogram?.[histogramIndex] || 0;
-              const barHeight = maxHistogramValue > 0 ? (histogramValue / maxHistogramValue) * 100 : 0;
 
               return (
                 <button
@@ -201,7 +204,9 @@ export function PriceSelector({
                 </button>
               );
             })}
-          </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       )}
 

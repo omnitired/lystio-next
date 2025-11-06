@@ -1,5 +1,5 @@
 import { useEffect, RefObject } from "react";
-import { gsap } from "gsap";
+import { animate } from "framer-motion";
 import { ANIMATION } from "@/lib/constants";
 
 type Direction = "left" | "right" | "up" | "down";
@@ -9,14 +9,14 @@ interface UseSlideAnimationOptions {
   direction?: Direction;
   /** Animation duration in seconds */
   duration?: number;
-  /** GSAP easing function */
+  /** Easing function */
   ease?: string;
   /** Distance to slide in pixels */
   distance?: number;
 }
 
 /**
- * Hook to add GSAP slide-in animation to an element when a trigger changes
+ * Hook to add slide-in animation to an element when a trigger changes
  *
  * @param ref - React ref of the element to animate
  * @param trigger - Value that triggers the animation when it changes
@@ -46,17 +46,18 @@ export function useSlideAnimation<T extends HTMLElement>(
     const axis = direction === "left" || direction === "right" ? "x" : "y";
     const value = direction === "left" || direction === "up" ? -distance : distance;
 
-    gsap.fromTo(
+    // Convert easing to Framer Motion format
+    const frameworkEase = ease.replace("power2", "easeOut").replace("power3", "easeOut");
+
+    animate(
       ref.current,
       {
-        opacity: 0,
-        [axis]: value,
+        opacity: [0, 1],
+        [axis]: [value, 0],
       },
       {
-        opacity: 1,
-        [axis]: 0,
         duration,
-        ease,
+        ease: frameworkEase as any,
       }
     );
   }, [trigger, ref, direction, duration, ease, distance]);
