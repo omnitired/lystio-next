@@ -331,7 +331,6 @@ export function LocationSelector({
       >
         <Checkbox
           checked={allDistrictsSelected}
-          variant={isModal ? "modal" : "dropdown"}
         />
         <div className="flex-1 min-w-0">
           <p className={`${isModal ? "text-base" : "text-sm"} font-medium text-text-primary leading-normal text-left`}>
@@ -355,7 +354,6 @@ export function LocationSelector({
           >
             <Checkbox
               checked={isChecked}
-              variant={isModal ? "modal" : "dropdown"}
             />
             <span className={`${isModal ? "text-base" : "text-sm"} font-medium text-text-primary leading-normal flex-1 text-left`}>
               {district.postal_code

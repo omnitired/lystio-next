@@ -4,11 +4,11 @@ import { type HistogramParams } from "@/lib/searchCount";
 
 interface PriceDropdownProps {
   onClose?: () => void;
-  onApply?: (min: string | null, max: string | null, showPriceOnRequest: boolean) => void;
-  onPriceUpdate?: (min: string, max: string, showPriceOnRequest: boolean) => void;
+  onApply?: (min: number | null, max: number | null, showPriceOnRequest: boolean) => void;
+  onPriceUpdate?: (min: number | null, max: number | null, showPriceOnRequest: boolean) => void;
   isOpen?: boolean;
-  initialMinPrice?: string | null;
-  initialMaxPrice?: string | null;
+  initialMinPrice?: number | null;
+  initialMaxPrice?: number | null;
   initialShowPriceOnRequest?: boolean;
   histogramParams?: HistogramParams | null;
 }

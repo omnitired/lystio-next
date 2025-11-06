@@ -12,7 +12,7 @@ interface FilterContextValue {
   /** Update category filter */
   updateCategory: (name: string, typeId: string, subtypeIds: string[]) => void;
   /** Update price filter */
-  updatePrice: (min: string, max: string, showOnRequest: boolean) => void;
+  updatePrice: (min: number | null, max: number | null, showOnRequest: boolean) => void;
   /** Update search mode */
   setMode: (mode: HeaderMode) => void;
   /** Reset all filters to default */
@@ -67,7 +67,7 @@ export function FilterProvider({ children, initialFilter }: FilterProviderProps)
     }));
   }, []);
 
-  const updatePrice = useCallback((min: string, max: string, showOnRequest: boolean) => {
+  const updatePrice = useCallback((min: number | null, max: number | null, showOnRequest: boolean) => {
     setFilter((prev) => ({
       ...prev,
       minPrice: min,

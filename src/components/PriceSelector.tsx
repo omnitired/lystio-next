@@ -2,13 +2,13 @@ import { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { useHistogram, type HistogramParams } from "@/lib/searchCount";
-import { formatPrice, generatePriceOptions, generateMaxPriceOptions, getNumericValue } from "@/lib/priceUtils";
+import { formatPrice, generatePriceOptions, generateMaxPriceOptions } from "@/lib/priceUtils";
 import { Checkbox } from "./ui/Checkbox";
 
 interface PriceSelectorProps {
-  onPriceUpdate?: (min: string, max: string, showPriceOnRequest: boolean) => void;
-  initialMinPrice?: string | null;
-  initialMaxPrice?: string | null;
+  onPriceUpdate?: (min: number | null, max: number | null, showPriceOnRequest: boolean) => void;
+  initialMinPrice?: number | null;
+  initialMaxPrice?: number | null;
   initialShowPriceOnRequest?: boolean;
   histogramParams?: HistogramParams | null;
   variant?: "dropdown" | "modal";
@@ -23,55 +23,46 @@ export function PriceSelector({
   variant = "dropdown"
 }: PriceSelectorProps) {
   const { data: histogramData } = useHistogram(histogramParams || null);
-  const [minPrice, setMinPrice] = useState<string>(initialMinPrice || "No Minimum");
-  const [maxPrice, setMaxPrice] = useState<string>(initialMaxPrice || "No Maximum");
+  const [minPrice, setMinPrice] = useState<number | null>(initialMinPrice ?? null);
+  const [maxPrice, setMaxPrice] = useState<number | null>(initialMaxPrice ?? null);
   const [showPriceOnRequest, setShowPriceOnRequest] = useState(initialShowPriceOnRequest ?? false);
   const [activeDropdown, setActiveDropdown] = useState<"min" | "max" | null>(null);
 
   const priceOptions = useMemo(() => {
     if (!histogramData?.range) {
-      return ["No Minimum", "400€", "500€", "600€", "700€", "800€", "900€", "1.000€", "1.200€", "1.300€", "1.400€", "1.500€", "1.600€", "1.700€", "1.800€"];
+      return [null, 400, 500, 600, 700, 800, 900, 1000, 1200, 1300, 1400, 1500, 1600, 1700, 1800];
     }
     return generatePriceOptions(histogramData.range[0], histogramData.range[1]);
   }, [histogramData]);
 
   const maxPriceOptions = useMemo(() => {
     if (!histogramData?.range) {
-      return ["No Maximum", "400€", "500€", "600€", "700€", "800€", "900€", "1.000€", "1.200€", "1.300€", "1.400€", "1.500€", "1.600€", "1.700€", "1.800€"];
+      return [null, 400, 500, 600, 700, 800, 900, 1000, 1200, 1300, 1400, 1500, 1600, 1700, 1800];
     }
     return generateMaxPriceOptions(histogramData.range[0], histogramData.range[1]);
   }, [histogramData]);
 
-  const maxHistogramValue = useMemo(() => {
-    if (!histogramData?.histogram) return 0;
-    return Math.max(...histogramData.histogram);
-  }, [histogramData]);
-
-  const isOptionDisabled = (price: string, dropdownType: "min" | "max"): boolean => {
+  const isOptionDisabled = (price: number | null, dropdownType: "min" | "max"): boolean => {
     if (dropdownType === "max") {
-      const minValue = getNumericValue(minPrice);
-      const optionValue = getNumericValue(price);
-      if (price === "No Maximum") return false;
-      if (minPrice === "No Minimum") return false;
-      return optionValue <= minValue;
+      if (price === null) return false;
+      if (minPrice === null) return false;
+      return price <= minPrice;
     }
 
     if (dropdownType === "min") {
-      const maxValue = getNumericValue(maxPrice);
-      const optionValue = getNumericValue(price);
-      if (price === "No Minimum") return false;
-      if (maxPrice === "No Maximum") return false;
-      return optionValue >= maxValue;
+      if (price === null) return false;
+      if (maxPrice === null) return false;
+      return price >= maxPrice;
     }
 
     return false;
   };
 
   useEffect(() => {
-      onPriceUpdate?.(minPrice, maxPrice, showPriceOnRequest);
+    onPriceUpdate?.(minPrice, maxPrice, showPriceOnRequest);
   }, [showPriceOnRequest]);
 
-  const handlePriceSelect = (price: string, type: "min" | "max") => {
+  const handlePriceSelect = (price: number | null, type: "min" | "max") => {
     if (type === "min") {
       setMinPrice(price);
       onPriceUpdate?.(price, maxPrice, showPriceOnRequest);
@@ -83,6 +74,11 @@ export function PriceSelector({
     }
   };
 
+  const getDisplayText = (price: number | null, type: "min" | "max") => {
+    if (price === null) return type === "min" ? "No Minimum" : "No Maximum";
+    return formatPrice(price);
+  };
+
   const isModal = variant === "modal";
   const isDropdown = variant === "dropdown";
 
@@ -91,7 +87,7 @@ export function PriceSelector({
       {/* Min/Max Inputs */}
       <div className={`flex gap-3 ${isModal ? "mb-4" : "items-center px-3 py-2"}`}>
         <div className={`flex-1 flex flex-col gap-2 ${isDropdown ? "max-w-[200px]" : ""} relative`}>
-          <label className={`${isModal ? "text-sm" : "text-sm"} font-medium text-black ${isDropdown ? "leading-[1.6]" : ""}`}>
+          <label className={`${isModal ? "text-sm" : "text-sm"} font-medium text-black`}>
             Min
           </label>
           <button
@@ -100,16 +96,16 @@ export function PriceSelector({
               activeDropdown === "min" ? "border-2 border-brand-purple" : "border-border-light"
             } rounded-lg ${isModal ? "h-12 px-3" : "h-11 px-2.5"} flex items-center justify-between`}
           >
-            <span className={`${isModal ? "text-base" : "text-sm"} font-medium ${isDropdown ? "leading-[1.6]" : ""} ${
-              minPrice === "No Minimum" ? "text-black opacity-40" : "text-black"
+            <span className={`${isModal ? "text-base" : "text-sm"} font-medium ${
+              minPrice === null ? "text-black opacity-40" : "text-black"
             }`}>
-              {minPrice}
+              {getDisplayText(minPrice, "min")}
             </span>
           </button>
         </div>
 
         <div className={`flex-1 flex flex-col gap-2 ${isDropdown ? "max-w-[200px]" : ""} relative`}>
-          <label className={`${isModal ? "text-sm" : "text-sm"} font-medium text-black ${isDropdown ? "leading-[1.6]" : ""}`}>
+          <label className={`${isModal ? "text-sm" : "text-sm"} font-medium text-black`}>
             Max
           </label>
           <button
@@ -118,10 +114,10 @@ export function PriceSelector({
               activeDropdown === "max" ? "border-2 border-brand-purple" : "border-border-light"
             } rounded-lg ${isModal ? "h-12 px-3" : "h-11 px-2.5"} flex items-center justify-between`}
           >
-            <span className={`${isModal ? "text-base" : "text-sm"} font-medium ${isDropdown ? "leading-[1.6]" : ""} ${
-              maxPrice === "No Maximum" ? "text-black opacity-40" : "text-black"
+            <span className={`${isModal ? "text-base" : "text-sm"} font-medium ${
+              maxPrice === null ? "text-black opacity-40" : "text-black"
             }`}>
-              {maxPrice}
+              {getDisplayText(maxPrice, "max")}
             </span>
           </button>
         </div>
@@ -137,14 +133,14 @@ export function PriceSelector({
             transition={{ duration: 0.2 }}
             className="flex flex-col border border-border-light rounded-lg overflow-hidden"
           >
-            {(activeDropdown === "min" ? priceOptions : maxPriceOptions).map((price, index) => {
+            {(activeDropdown === "min" ? priceOptions : maxPriceOptions).map((price) => {
             const isSelected = activeDropdown === "min" ? price === minPrice : price === maxPrice;
             const isDisabled = isOptionDisabled(price, activeDropdown);
             const isMax = activeDropdown === "max";
 
             return (
               <button
-                key={price}
+                key={price ?? "null"}
                 onClick={() => {
                   if (isDisabled) return;
                   handlePriceSelect(price, activeDropdown);
@@ -155,7 +151,7 @@ export function PriceSelector({
                 } ${isDisabled ? "opacity-40 cursor-not-allowed" : ""} ${isMax ? "flex-row-reverse" : "flex-row"}`}
               >
                 <span className=" text-base font-medium text-black">
-                  {price}
+                  {getDisplayText(price, activeDropdown)}
                 </span>
                 {isSelected && (
                   <Image src="/icons/checkmark-purple.svg" alt="" width={24} height={24} />
@@ -178,14 +174,14 @@ export function PriceSelector({
                 transition={{ duration: 0.3 }}
                 className="flex flex-col py-2 overflow-auto max-h-[300px] scrollbar-hide [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
               >
-                {(activeDropdown === "min" ? priceOptions : activeDropdown === "max" ? maxPriceOptions : []).map((price, index) => {
+                {(activeDropdown === "min" ? priceOptions : activeDropdown === "max" ? maxPriceOptions : []).map((price) => {
               const isSelected = activeDropdown === "min" ? price === minPrice : price === maxPrice;
               const isDisabled = activeDropdown ? isOptionDisabled(price, activeDropdown) : false;
               const isMax = activeDropdown === "max";
 
               return (
                 <button
-                  key={price}
+                  key={price ?? "null"}
                   onClick={() => {
                     if (isDisabled) return;
                     handlePriceSelect(price, activeDropdown!);
@@ -196,7 +192,7 @@ export function PriceSelector({
                   } ${isDisabled ? "opacity-40 cursor-not-allowed" : ""} ${isMax ? "flex-row-reverse text-right" : "flex-row"}`}
                 >
                   <span className="flex-1 text-sm font-medium text-black leading-[1.6] relative z-10">
-                    {price}
+                    {getDisplayText(price, activeDropdown)}
                   </span>
                   {isSelected && (
                     <Image src="/icons/checkmark-purple.svg" alt="" width={24} height={24} className="relative z-10" />
@@ -217,7 +213,6 @@ export function PriceSelector({
       >
         <Checkbox
           checked={showPriceOnRequest}
-          variant={isModal ? "modal" : "dropdown"}
           className="rounded-sm"
         />
         <span className={`flex-1 ${isModal ? "text-base" : "text-sm"} font-medium text-text-primary ${isModal ? "text-left" : "leading-[1.6]"}`}>

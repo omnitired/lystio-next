@@ -19,13 +19,13 @@ export function PriceModal({
 }: PriceModalProps) {
   const { filter, updatePrice } = useFilter();
 
-  const priceRef = useRef<{ min: string; max: string; showPriceOnRequest: boolean }>({
-    min: filter.minPrice || "No Minimum",
-    max: filter.maxPrice || "No Maximum",
+  const priceRef = useRef<{ min: number | null; max: number | null; showPriceOnRequest: boolean }>({
+    min: filter.minPrice,
+    max: filter.maxPrice,
     showPriceOnRequest: filter.showPriceOnRequest ?? false
   });
 
-  const handlePriceUpdate = (min: string, max: string, showPriceOnRequest: boolean) => {
+  const handlePriceUpdate = (min: number | null, max: number | null, showPriceOnRequest: boolean) => {
     priceRef.current = { min, max, showPriceOnRequest };
   };
 

@@ -1,6 +1,5 @@
 import { useMemo } from "react";
 import { useFilter } from "@/contexts/FilterContext";
-import { getNumericValue } from "@/lib/priceUtils";
 import type { HistogramParams } from "@/lib/searchCount";
 
 export interface SearchCountParams extends HistogramParams {
@@ -38,16 +37,8 @@ export function useSearchParams() {
     };
 
     // Add price filter
-    if (
-      filter.minPrice &&
-      filter.maxPrice &&
-      filter.minPrice !== "No Minimum" &&
-      filter.maxPrice !== "No Maximum"
-    ) {
-      const priceRange: [number, number] = [
-        getNumericValue(filter.minPrice),
-        getNumericValue(filter.maxPrice),
-      ];
+    if (filter.minPrice && filter.maxPrice) {
+      const priceRange: [number, number] = [filter.minPrice, filter.maxPrice];
 
       if (filter.mode === "rent") {
         params.rent = priceRange;

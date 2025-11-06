@@ -250,7 +250,6 @@ export function CategorySelector({
                   >
                     <Checkbox
                       checked={allSubcategoriesSelected}
-                      variant="modal"
                     />
                     <span className="text-body flex-1 text-left">
                       All Subcategories
@@ -272,7 +271,6 @@ export function CategorySelector({
                       >
                         <Checkbox
                           checked={isChecked}
-                          variant="modal"
                         />
                         <span className="text-body flex-1 text-left">
                           {subtypeName}

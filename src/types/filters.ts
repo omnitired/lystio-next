@@ -20,9 +20,9 @@ export interface FilterState {
   /** Selected subtype IDs */
   subTypeIds: string[];
   /** Minimum price filter */
-  minPrice: string | null;
+  minPrice: number | null;
   /** Maximum price filter */
-  maxPrice: string | null;
+  maxPrice: number | null;
   /** Whether to show listings with "Price on Request" */
   showPriceOnRequest: boolean;
   /** Current search mode (rent/buy/ai) */
