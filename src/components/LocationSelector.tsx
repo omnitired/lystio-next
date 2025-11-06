@@ -1,13 +1,16 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
-import { animate } from "framer-motion";
-import Image from "next/image";
-import { ChevronDownIcon, ChevronUpIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import type { MapboxSearchResponse, GroupedSuggestions } from "@/types/mapbox";
 import { useAllLocations, usePopularLocations, useRecentSearches, type Location } from "@/lib/locations";
-import { cityImages } from "@/data/cityImages";
-import { Checkbox } from "./ui/Checkbox";
+import { SLIDE_ANIMATION, EXPAND_ANIMATION } from "@/lib/locationUtils";
+import { DrawAreaButton } from "./location-selector/DrawAreaButton";
+import { SectionHeader } from "./location-selector/SectionHeader";
+import { RecentSearchItem } from "./location-selector/RecentSearchItem";
+import { SearchResultsSection } from "./location-selector/SearchResultsSection";
+import { LocationCard } from "./location-selector/LocationCard";
+import { DistrictList } from "./location-selector/DistrictList";
 
 interface LocationSelectorProps {
   onLocationUpdate?: (locationName: string, locationIds: string[], locationId?: string) => void;
@@ -41,19 +44,16 @@ export function LocationSelector({
 
   const initialLocation = selectedLocationId ? findLocationById(selectedLocationId) : null;
 
-  const [expandedLocation, setExpandedLocation] = useState<string | null>(variant === "modal" ? selectedLocationId || null : null);
+  const [expandedLocation, setExpandedLocation] = useState<string | null>(
+    variant === "modal" ? selectedLocationId || null : null
+  );
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(initialLocation);
   const [selectedDistricts, setSelectedDistricts] = useState<Set<string>>(new Set());
   const [allDistrictsSelected, setAllDistrictsSelected] = useState(true);
 
-  const rightPanelRef = useRef<HTMLDivElement>(null);
-  const previousSelectedLocation = useRef<string | null>(null);
-  const districtRefs = useRef<Map<string, HTMLDivElement>>(new Map());
-
   const isModal = variant === "modal";
-  const isDropdown = variant === "dropdown";
 
-  // Group suggestions by feature type
+  // Group search suggestions by feature type
   const groupedSuggestions: GroupedSuggestions = {
     places: [],
     localities: [],
@@ -72,107 +72,32 @@ export function LocationSelector({
     }
   }
 
-  // Dropdown: animate when switching between locations (left to right)
-  useEffect(() => {
-    if (isDropdown && rightPanelRef.current && selectedLocation && previousSelectedLocation.current !== selectedLocation.id) {
-      if (previousSelectedLocation.current !== null) {
-        animate(
-          rightPanelRef.current,
-          { opacity: [0, 1], x: [-10, 0] },
-          { duration: 0.2, ease: "easeOut" }
-        );
-      }
-      previousSelectedLocation.current = selectedLocation.id;
-    }
-  }, [selectedLocation, isDropdown]);
-
-  // Modal: animate when expanding (opening animation)
-  useEffect(() => {
-    if (isModal && expandedLocation) {
-      const ref = districtRefs.current.get(expandedLocation);
-      if (ref) {
-        const scrollHeight = ref.scrollHeight;
-        animate(
-          ref,
-          { opacity: [0, 1], height: [0, scrollHeight] },
-          { duration: 0.2, ease: "easeOut" }
-        );
-      }
-    }
-  }, [expandedLocation, isModal]);
-
   // Dropdown: notify parent immediately on change
   useEffect(() => {
-    if (isDropdown && selectedLocation) {
+    if (!isModal && selectedLocation) {
       const locationIds = allDistrictsSelected
         ? [selectedLocation.id]
         : Array.from(selectedDistricts);
       onLocationUpdate?.(selectedLocation.name, locationIds, selectedLocation.id);
     }
-  }, [selectedLocation, selectedDistricts, allDistrictsSelected, isDropdown]);
+  }, [selectedLocation, selectedDistricts, allDistrictsSelected, isModal]);
 
   const toggleLocation = (location: Location) => {
     if (isModal) {
       if (expandedLocation === location.id) {
-        // Closing current
-        const ref = districtRefs.current.get(location.id);
-        if (ref) {
-          animate(
-            ref,
-            { opacity: 0, height: 0 },
-            {
-              duration: 0.2,
-              ease: "easeIn",
-              onComplete: () => {
-                setExpandedLocation(null);
-              }
-            }
-          );
-        } else {
-          setExpandedLocation(null);
-        }
+        setExpandedLocation(null);
       } else {
-        // Opening new one (possibly closing another)
-        if (expandedLocation) {
-          const prevRef = districtRefs.current.get(expandedLocation);
-          if (prevRef) {
-            animate(
-              prevRef,
-              { opacity: 0, height: 0 },
-              {
-                duration: 0.2,
-                ease: "easeIn",
-                onComplete: () => {
-                  setExpandedLocation(location.id);
-                  setSelectedLocation(location);
-                  setSelectedDistricts(new Set());
-                  setAllDistrictsSelected(true);
-                  onLocationUpdate?.(location.name, [location.id], location.id);
-                }
-              }
-            );
-          } else {
-            setExpandedLocation(location.id);
-            setSelectedLocation(location);
-            setSelectedDistricts(new Set());
-            setAllDistrictsSelected(true);
-            onLocationUpdate?.(location.name, [location.id], location.id);
-          }
-        } else {
-          // Nothing expanded, just open
-          setExpandedLocation(location.id);
-          setSelectedLocation(location);
-          setSelectedDistricts(new Set());
-          setAllDistrictsSelected(true);
-          onLocationUpdate?.(location.name, [location.id], location.id);
-        }
+        setExpandedLocation(location.id);
+        setSelectedLocation(location);
+        setSelectedDistricts(new Set());
+        setAllDistrictsSelected(true);
+        onLocationUpdate?.(location.name, [location.id], location.id);
       }
     } else {
       // Dropdown
       setSelectedLocation(location);
       setSelectedDistricts(new Set());
       setAllDistrictsSelected(true);
-      onLocationUpdate?.(location.name, [location.id], location.id);
     }
   };
 
@@ -205,113 +130,30 @@ export function LocationSelector({
     }
   };
 
-  const isLocationSelected = (location: Location) => {
-    return selectedLocation?.id === location.id;
-  };
-
-  const isLocationExpanded = (location: Location) => {
-    return expandedLocation === location.id;
+  const handleSearchResultSelect = (name: string) => {
+    onLocationUpdate?.(name, []);
   };
 
   const renderSearchResults = () => (
     <div className="space-y-4">
-      {/* Places */}
-      {groupedSuggestions.places.length > 0 && (
-        <div>
-          <p className={`${isModal ? "text-sm" : "text-sm"} font-medium text-text-secondary mb-2`}>
-            Places
-          </p>
-          <div className="space-y-1">
-            {groupedSuggestions.places.map((place) => (
-              <button
-                key={place.mapbox_id}
-                onClick={() => {
-                  onLocationUpdate?.(place.name, []);
-                }}
-                className={`flex items-start gap-${isModal ? "3" : "2"} px-${isModal ? "3" : "2"} py-${isModal ? "3" : "2"} rounded-lg hover-surface-light w-full text-left`}
-              >
-                <div className="shrink-0 mt-0.5">
-                  <Image src="/icons/location-pin-purple.svg" alt="" width={20} height={20} />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className={`${isModal ? "text-base" : "text-sm"} font-medium text-text-primary`}>
-                    {place.name}
-                  </p>
-                  <p className={`${isModal ? "text-sm" : "text-xs"} text-text-secondary`}>
-                    {place.place_formatted}
-                  </p>
-                </div>
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Localities */}
-      {groupedSuggestions.localities.length > 0 && (
-        <div>
-          <p className={`${isModal ? "text-sm" : "text-sm"} font-medium text-text-secondary mb-2`}>
-            Localities
-          </p>
-          <div className="space-y-1">
-            {groupedSuggestions.localities.map((locality) => (
-              <button
-                key={locality.mapbox_id}
-                onClick={() => {
-                  onLocationUpdate?.(locality.name, []);
-                }}
-                className={`flex items-start gap-${isModal ? "3" : "2"} px-${isModal ? "3" : "2"} py-${isModal ? "3" : "2"} rounded-lg hover-surface-light w-full text-left`}
-              >
-                <div className="shrink-0 mt-0.5">
-                  <Image src="/icons/location-pin-purple.svg" alt="" width={20} height={20} />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className={`${isModal ? "text-base" : "text-sm"} font-medium text-text-primary`}>
-                    {locality.name}
-                  </p>
-                  <p className={`${isModal ? "text-sm" : "text-xs"} text-text-secondary`}>
-                    {locality.place_formatted}
-                  </p>
-                </div>
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Streets */}
-      {groupedSuggestions.streets.length > 0 && (
-        <div>
-          <p className={`${isModal ? "text-sm" : "text-sm"} font-medium text-text-secondary mb-2`}>
-            Streets
-          </p>
-          <div className="space-y-1">
-            {groupedSuggestions.streets.map((street) => (
-              <button
-                key={street.mapbox_id}
-                onClick={() => {
-                  onLocationUpdate?.(street.name, []);
-                }}
-                className={`flex items-start gap-${isModal ? "3" : "2"} px-${isModal ? "3" : "2"} py-${isModal ? "3" : "2"} rounded-lg hover-surface-light w-full text-left`}
-              >
-                <div className="shrink-0 mt-0.5">
-                  <Image src="/icons/location-pin-purple.svg" alt="" width={20} height={20} />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className={`${isModal ? "text-base" : "text-sm"} font-medium text-text-primary`}>
-                    {street.name}
-                  </p>
-                  <p className={`${isModal ? "text-sm" : "text-xs"} text-text-secondary`}>
-                    {street.place_formatted}
-                  </p>
-                </div>
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* No Results */}
+      <SearchResultsSection
+        title="Places"
+        results={groupedSuggestions.places}
+        onSelect={handleSearchResultSelect}
+        variant={variant}
+      />
+      <SearchResultsSection
+        title="Localities"
+        results={groupedSuggestions.localities}
+        onSelect={handleSearchResultSelect}
+        variant={variant}
+      />
+      <SearchResultsSection
+        title="Streets"
+        results={groupedSuggestions.streets}
+        onSelect={handleSearchResultSelect}
+        variant={variant}
+      />
       {!isLoading && searchResults && searchResults.suggestions.length === 0 && (
         <div className="text-center py-8">
           <p className={`${isModal ? "text-base" : "text-sm"} text-text-secondary`}>
@@ -322,227 +164,156 @@ export function LocationSelector({
     </div>
   );
 
-  const renderDistricts = (location: Location) => (
-    <>
-      {/* All Districts Option */}
-      <button
-        onClick={toggleAllDistricts}
-        className={`flex items-center gap-3 px-${isModal ? "4" : "3"} py-${isModal ? "3" : "2"} border-${isModal ? "t" : "b"} border-border-light w-full`}
-      >
-        <Checkbox
-          checked={allDistrictsSelected}
-        />
-        <div className="flex-1 min-w-0">
-          <p className={`${isModal ? "text-base" : "text-sm"} font-medium text-text-primary leading-normal text-left`}>
-            All Districts
-          </p>
-          <p className={`${isModal ? "text-sm" : "text-xs"} font-medium text-text-primary opacity-60 leading-normal text-left`}>
-            {location.children.length} Districts
+  const renderLocations = () => {
+    if (isLoadingAll || isLoadingPopular) {
+      return (
+        <div className="text-center py-8">
+          <p className={`${isModal ? "text-base" : "text-sm"} text-text-secondary`}>
+            Loading locations...
           </p>
         </div>
-      </button>
+      );
+    }
 
-      {/* Individual Districts */}
-      {location.children.map((district) => {
-        const isChecked = !allDistrictsSelected && selectedDistricts.has(district.id);
+    return (
+      <>
+        {/* Recent Searches */}
+        {recentSearches.length > 0 && (
+          <div className={isModal ? "mb-6" : "mb-4"}>
+            <p className="text-sm font-medium text-text-secondary mb-2">
+              Recent Searches
+            </p>
+            <div className="space-y-1">
+              {recentSearches.slice(0, 3).map((search, index) => (
+                <RecentSearchItem
+                  key={`${search.mapboxId}-${index}`}
+                  search={search}
+                  onClick={() => handleSearchResultSelect(search.name)}
+                  variant={variant}
+                />
+              ))}
+            </div>
+          </div>
+        )}
 
-        return (
-          <button
-            key={district.id}
-            onClick={() => toggleDistrict(district.id)}
-            className={`flex items-center gap-3 px-${isModal ? "4" : "3"} py-${isModal ? "3" : "2.5"} ${isModal ? "" : "h-10"} hover-surface-light w-full`}
-          >
-            <Checkbox
-              checked={isChecked}
-            />
-            <span className={`${isModal ? "text-base" : "text-sm"} font-medium text-text-primary leading-normal flex-1 text-left`}>
-              {district.postal_code
-                ? `${district.postal_code}, ${district.name}`
-                : district.name}
-            </span>
-          </button>
-        );
-      })}
-    </>
-  );
+        {/* Popular Locations */}
+        <div className={isModal ? "mb-6" : "mb-2"}>
+          <p className="text-sm font-medium text-text-secondary mb-2">
+            Popular Locations
+          </p>
+          {isModal ? (
+            // Modal: Collapsible list
+            <div className="flex flex-col">
+              {popularCities.map((city) => {
+                const isExpanded = expandedLocation === city.id;
+                return (
+                  <div key={city.id} className="border-b border-border-light">
+                    <LocationCard
+                      location={city}
+                      isSelected={false}
+                      isExpanded={isExpanded}
+                      onClick={() => toggleLocation(city)}
+                      variant="modal"
+                    />
+                    <AnimatePresence>
+                      {isExpanded && (
+                        <motion.div
+                          {...EXPAND_ANIMATION}
+                          className="bg-white overflow-hidden"
+                        >
+                          <DistrictList
+                            location={city}
+                            allDistrictsSelected={allDistrictsSelected}
+                            selectedDistricts={selectedDistricts}
+                            onToggleAll={toggleAllDistricts}
+                            onToggleDistrict={toggleDistrict}
+                            variant="modal"
+                          />
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            // Dropdown: Grid
+            <div className="grid grid-cols-3 gap-1 mb-2">
+              {popularCities.map((city) => (
+                <LocationCard
+                  key={city.id}
+                  location={city}
+                  isSelected={selectedLocation?.id === city.id}
+                  onClick={() => toggleLocation(city)}
+                  variant="dropdown"
+                  showChevron={false}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Other Locations */}
+        <div>
+          <p className="text-sm font-medium text-text-secondary mb-2">
+            Other Locations
+          </p>
+          <div className="flex flex-col">
+            {otherLocations.map((location) => {
+              if (isModal) {
+                const isExpanded = expandedLocation === location.id;
+                return (
+                  <div key={location.id} className="border-b border-border-light">
+                    <LocationCard
+                      location={location}
+                      isSelected={false}
+                      isExpanded={isExpanded}
+                      onClick={() => toggleLocation(location)}
+                      variant="modal"
+                    />
+                    <AnimatePresence>
+                      {isExpanded && (
+                        <motion.div
+                          {...EXPAND_ANIMATION}
+                          className="bg-white overflow-hidden"
+                        >
+                          <DistrictList
+                            location={location}
+                            allDistrictsSelected={allDistrictsSelected}
+                            selectedDistricts={selectedDistricts}
+                            onToggleAll={toggleAllDistricts}
+                            onToggleDistrict={toggleDistrict}
+                            variant="modal"
+                          />
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                );
+              } else {
+                return (
+                  <LocationCard
+                    key={location.id}
+                    location={location}
+                    isSelected={selectedLocation?.id === location.id}
+                    onClick={() => toggleLocation(location)}
+                    variant="dropdown"
+                  />
+                );
+              }
+            })}
+          </div>
+        </div>
+      </>
+    );
+  };
 
   if (isModal) {
     return (
       <div className="flex-1 overflow-hidden flex flex-col">
-        {/* Draw Area Button - only show when not searching */}
-        {!hasSearchQuery && (
-          <div className="px-4 py-3 border-b border-border-light">
-            <button className="w-full flex items-center gap-3 px-3 py-3 border border-[#eee7ff] rounded-xl hover:border-brand-purple transition-colors">
-              <div className="bg-[#f6ecfe] rounded-full p-1">
-                <Image src="/icons/draw-area.svg" alt="Draw area" width={32} height={32} />
-              </div>
-              <span className="text-body flex-1 text-left">
-                Draw an area on the map
-              </span>
-              <Image src="/icons/arrow-right-purple.svg" alt="" width={24} height={24} />
-            </button>
-          </div>
-        )}
-
-        {/* Scrollable Content */}
+        {!hasSearchQuery && <DrawAreaButton variant="modal" />}
         <div className="flex-1 overflow-y-auto p-4">
-          {hasSearchQuery ? (
-            renderSearchResults()
-          ) : (
-            <>
-              {isLoadingAll || isLoadingPopular ? (
-                <div className="text-center py-8">
-                  <p className="text-base text-text-secondary">Loading locations...</p>
-                </div>
-              ) : (
-                <>
-                  {/* Recent Searches */}
-                  {recentSearches.length > 0 && (
-                    <div className="mb-6">
-                      <p className="text-sm font-medium text-text-secondary mb-3">
-                        Recent Searches
-                      </p>
-                      <div className="space-y-1">
-                        {recentSearches.slice(0, 3).map((search, index) => (
-                          <button
-                            key={`${search.mapboxId}-${index}`}
-                            onClick={() => {
-                              onLocationUpdate?.(search.name, []);
-                            }}
-                            className="flex items-start gap-3 px-3 py-3 rounded-lg hover-surface-light w-full text-left"
-                          >
-                            <div className="shrink-0 mt-0.5">
-                              <Image src="/icons/location-pin-purple.svg" alt="" width={20} height={20} />
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <p className="text-body">
-                                {search.name}
-                              </p>
-                              <p className="text-sm text-text-secondary capitalize">
-                                {search.type}
-                              </p>
-                            </div>
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Popular Locations - Collapsible */}
-                  <div className="mb-6">
-                    <p className="text-sm font-medium text-text-secondary mb-3">
-                      Popular Locations
-                    </p>
-                    <div className="flex flex-col">
-                      {popularCities.map((city) => {
-                        const isExpanded = isLocationExpanded(city);
-                        return (
-                          <div key={city.id} className="border-b border-border-light">
-                            {/* City Header */}
-                            <button
-                              onClick={() => toggleLocation(city)}
-                              className={`w-full flex items-center justify-between px-3 py-3 rounded-lg ${
-                                isExpanded ? "bg-[#fdfbff]" : "bg-white"
-                              }`}
-                            >
-                              <div className="flex items-center gap-3">
-                                <img
-                                  src={cityImages[city.name] || "/cities/Vienna.png"}
-                                  alt={city.name}
-                                  className="w-[42px] h-[42px] rounded object-cover shrink-0"
-                                />
-                                <div className="flex flex-col items-start">
-                                  <p className="text-body leading-normal">
-                                    {city.name}
-                                  </p>
-                                  <p className="text-sm font-medium text-text-secondary leading-[1.3]">
-                                    {city.children.length} Districts
-                                  </p>
-                                </div>
-                              </div>
-                              {isExpanded ? (
-                                <ChevronUpIcon className="w-6 h-6 text-brand-purple shrink-0" />
-                              ) : (
-                                <ChevronDownIcon className="w-6 h-6 text-[#79767D] shrink-0" />
-                              )}
-                            </button>
-
-                            {/* Districts */}
-                            {isExpanded && (
-                              <div
-                                ref={(el) => {
-                                  if (el) districtRefs.current.set(city.id, el);
-                                }}
-                                className="bg-white overflow-hidden"
-                              >
-                                {renderDistricts(city)}
-                              </div>
-                            )}
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-
-                  {/* Other Locations - Collapsible */}
-                  <div>
-                    <p className="text-sm font-medium text-text-secondary mb-3">
-                      Other Locations
-                    </p>
-                    <div className="flex flex-col">
-                      {otherLocations.map((location) => {
-                        const isExpanded = isLocationExpanded(location);
-                        return (
-                          <div key={location.id} className="border-b border-border-light">
-                            {/* Location Header */}
-                            <button
-                              onClick={() => toggleLocation(location)}
-                              className={`w-full flex items-center justify-between px-3 py-3 rounded-lg ${
-                                isExpanded ? "bg-[#fdfbff]" : "bg-white"
-                              }`}
-                            >
-                              <div className="flex items-center gap-3">
-                                <img
-                                  src={cityImages[location.name] || "/cities/LowerAustria.png"}
-                                  alt={location.name}
-                                  className="w-[42px] h-[42px] rounded object-cover shrink-0"
-                                />
-                                <div className="flex flex-col items-start">
-                                  <p className="text-body leading-normal">
-                                    {location.name}
-                                  </p>
-                                  <p className="text-sm font-medium text-text-secondary leading-[1.3]">
-                                    {location.children.length} Districts
-                                  </p>
-                                </div>
-                              </div>
-                              {isExpanded ? (
-                                <ChevronUpIcon className="w-6 h-6 text-brand-purple shrink-0" />
-                              ) : (
-                                <ChevronDownIcon className="w-6 h-6 text-[#79767D] shrink-0" />
-                              )}
-                            </button>
-
-                            {/* Districts */}
-                            {isExpanded && (
-                              <div
-                                ref={(el) => {
-                                  if (el) districtRefs.current.set(location.id, el);
-                                }}
-                                className="bg-white overflow-hidden"
-                              >
-                                {renderDistricts(location)}
-                              </div>
-                            )}
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                </>
-              )}
-            </>
-          )}
+          {hasSearchQuery ? renderSearchResults() : renderLocations()}
         </div>
       </div>
     );
@@ -553,179 +324,28 @@ export function LocationSelector({
     <div className="flex">
       {/* Left Panel - Locations */}
       <div className="w-[300px] flex flex-col">
-        {/* Draw Area Button - only show when not searching */}
-        {!hasSearchQuery && (
-          <div className="px-3 py-2">
-            <button className="w-full flex items-center gap-2 px-2 py-2 border border-[#eee7ff] rounded-xl hover:border-brand-purple transition-colors">
-              <div className="bg-[#f6ecfe] rounded-full p-1">
-                <Image src="/icons/draw-area.svg" alt="Draw area" width={32} height={32} />
-              </div>
-              <span className="text-body-sm flex-1 text-left">
-                Draw an area on the map
-              </span>
-              <Image src="/icons/arrow-right-purple.svg" alt="" width={24} height={24} />
-            </button>
-          </div>
-        )}
-
-        {/* Scrollable Content */}
+        {!hasSearchQuery && <DrawAreaButton variant="dropdown" />}
         <div className="flex-1 overflow-y-auto max-h-[490px] px-3 scrollbar-hide [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-          {hasSearchQuery ? (
-            renderSearchResults()
-          ) : (
-            <>
-              {isLoadingAll || isLoadingPopular ? (
-                <div className="text-center py-8">
-                  <p className="text-sm text-text-secondary">Loading locations...</p>
-                </div>
-              ) : (
-                <>
-                  {/* Recent Searches */}
-                  {recentSearches.length > 0 && (
-                    <div className="mb-4">
-                      <p className="text-sm font-medium text-text-secondary mb-2">
-                        Recent Searches
-                      </p>
-                      <div className="space-y-1">
-                        {recentSearches.slice(0, 3).map((search, index) => (
-                          <button
-                            key={`${search.mapboxId}-${index}`}
-                            onClick={() => {
-                              onLocationUpdate?.(search.name, []);
-                            }}
-                            className="flex items-start gap-2 px-2 py-2 rounded-lg hover-surface-light w-full text-left"
-                          >
-                            <div className="shrink-0 mt-0.5">
-                              <Image src="/icons/location-pin-purple.svg" alt="" width={20} height={20} />
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <p className="text-body-sm">
-                                {search.name}
-                              </p>
-                              <p className="text-xs text-text-secondary capitalize">
-                                {search.type}
-                              </p>
-                            </div>
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Popular Locations */}
-                  <div className="mb-2">
-                    <p className="text-sm font-medium text-text-secondary mb-2">
-                      Popular Locations
-                    </p>
-                    <div className="grid grid-cols-3 gap-1 mb-2">
-                      {popularCities.map((city) => {
-                        const isSelected = isLocationSelected(city);
-                        return (
-                          <button
-                            key={city.id}
-                            onClick={() => toggleLocation(city)}
-                            className={`flex flex-col p-1 rounded-md border ${
-                              isSelected ? "border-brand-purple" : "border-transparent"
-                            }`}
-                          >
-                            <div className="relative h-20 w-full rounded overflow-hidden mb-1">
-                              <img
-                                src={cityImages[city.name] || "/cities/Vienna.png"}
-                                alt={city.name}
-                                className="w-full h-full object-cover"
-                              />
-                              {isSelected && (
-                                <div className="absolute top-0.5 right-0.5">
-                                  <Image src="/icons/checkmark-circle-white.svg" alt="" width={16} height={16} />
-                                </div>
-                              )}
-                            </div>
-                            <div className="w-full">
-                              <p
-                                className={`text-sm font-medium leading-normal overflow-hidden text-ellipsis whitespace-nowrap ${
-                                  isSelected ? "text-text-primary" : "text-text-primary"
-                                }`}
-                              >
-                                {city.name}
-                              </p>
-                              <p
-                                className={`text-[10px] font-medium leading-[1.3] overflow-hidden text-ellipsis whitespace-nowrap ${
-                                  isSelected
-                                    ? "text-brand-purple"
-                                    : "text-text-secondary"
-                                }`}
-                              >
-                                {isSelected
-                                  ? "All Districts"
-                                  : `${city.children.length} Districts`}
-                              </p>
-                            </div>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-
-                  {/* Other Locations */}
-                  <div>
-                    <p className="text-sm font-medium text-text-secondary mb-2">
-                      Other Locations
-                    </p>
-                    <div className="flex flex-col">
-                      {otherLocations.map((location) => {
-                        const isSelected = isLocationSelected(location);
-                        return (
-                          <button
-                            key={location.id}
-                            onClick={() => toggleLocation(location)}
-                            className={`flex items-center justify-between px-2 py-2 rounded-lg w-full ${
-                              isSelected ? "bg-[#fdfbff]" : "bg-white"
-                            }`}
-                          >
-                            <div className="flex items-center gap-2">
-                              <img
-                                src={cityImages[location.name] || "/cities/LowerAustria.png"}
-                                alt={location.name}
-                                className="w-[38px] h-[38px] rounded object-cover shrink-0"
-                              />
-                              <div className="flex flex-col items-start">
-                                <p className="text-body-sm leading-normal">
-                                  {location.name}
-                                </p>
-                                <p className="text-[10px] font-medium text-text-secondary leading-[1.3]">
-                                  {location.children.length} Districts
-                                </p>
-                              </div>
-                            </div>
-                            <ChevronRightIcon className="w-6 h-6 text-[#79767D] shrink-0" />
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-                </>
-              )}
-            </>
-          )}
+          {hasSearchQuery ? renderSearchResults() : renderLocations()}
         </div>
       </div>
 
       {/* Right Panel - Districts */}
       {!hasSearchQuery && selectedLocation && (
         <div className="w-[270px] border-l border-border-light flex flex-col">
-          <div ref={rightPanelRef} className="flex flex-col h-full">
-            {/* Header */}
-            <div className="flex items-center gap-3 px-3 py-3">
-              <p className="text-base font-semibold text-text-primary leading-normal">
-                {selectedLocation.name}
-              </p>
-            </div>
-
-            {/* Districts List */}
+          <motion.div key={selectedLocation.id} {...SLIDE_ANIMATION} className="flex flex-col h-full">
+            <SectionHeader title={selectedLocation.name} />
             <div className="flex-1 overflow-y-auto max-h-[520px] scrollbar-hide [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-              {renderDistricts(selectedLocation)}
+              <DistrictList
+                location={selectedLocation}
+                allDistrictsSelected={allDistrictsSelected}
+                selectedDistricts={selectedDistricts}
+                onToggleAll={toggleAllDistricts}
+                onToggleDistrict={toggleDistrict}
+                variant="dropdown"
+              />
             </div>
-          </div>
+          </motion.div>
         </div>
       )}
     </div>

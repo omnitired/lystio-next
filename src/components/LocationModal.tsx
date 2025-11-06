@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { searchMapbox, generateSessionToken } from "@/lib/mapbox";
 import { Modal } from "./ui/Modal";
@@ -23,12 +23,6 @@ export function LocationModal({
   const [debouncedQuery, setDebouncedQuery] = useState("");
   const [sessionToken] = useState(() => generateSessionToken());
 
-  const locationRef = useRef<{ locationName: string; locationIds: string[]; locationId?: string }>({
-    locationName: "",
-    locationIds: [],
-    locationId: filter.locationId
-  });
-
   // Debounce search query
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -50,11 +44,7 @@ export function LocationModal({
   });
 
   const handleLocationUpdate = (locationName: string, locationIds: string[], locationId?: string) => {
-    locationRef.current = { locationName, locationIds, locationId };
-  };
-
-  const handleApply = () => {
-    updateLocation(locationRef.current.locationName, locationRef.current.locationIds, locationRef.current.locationId);
+    updateLocation(locationName, locationIds, locationId);
     onClose();
   };
 
@@ -62,9 +52,8 @@ export function LocationModal({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      onApply={handleApply}
       title="Location"
-      // applyDisabled={!locationRef.current.locationName}
+      showFooter={false}
     >
       <LocationInput
         value={searchQuery}
