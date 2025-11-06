@@ -1,6 +1,7 @@
 import Image from "next/image";
 
-export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "primary" | "secondary" | "icon";
   fullWidth?: boolean;
   icon?: string;
@@ -30,11 +31,14 @@ export function Button({
   disabled,
   ...props
 }: ButtonProps) {
-  const baseStyles = "transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed";
+  const baseStyles =
+    "transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed";
 
   const variantStyles = {
-    primary: "bg-brand-purple hover:bg-brand-purple-alt text-white rounded-full font-medium",
-    secondary: "bg-white border border-border-light rounded-lg hover:bg-bg-light",
+    primary:
+      "bg-brand-purple hover:bg-brand-purple-alt text-white rounded-full font-medium",
+    secondary:
+      "bg-white border border-border-light rounded-lg hover:bg-bg-light",
     icon: "p-2 hover:bg-bg-light rounded-full",
   };
 
@@ -52,14 +56,11 @@ export function Button({
 
   const widthClass = fullWidth ? "w-full" : "";
 
-  const combinedClassName = `${baseStyles} ${variantStyles[variant]} ${sizeStyles[variant]} ${textStyles[variant]} ${widthClass} ${className}`.trim();
+  const combinedClassName =
+    `${baseStyles} ${variantStyles[variant]} ${sizeStyles[variant]} ${textStyles[variant]} ${widthClass} ${className}`.trim();
 
   return (
-    <button
-      className={combinedClassName}
-      disabled={disabled}
-      {...props}
-    >
+    <button className={combinedClassName} disabled={disabled} {...props}>
       {icon && iconPosition === "left" && (
         <Image src={icon} alt="" width={iconWidth} height={iconHeight} />
       )}

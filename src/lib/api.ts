@@ -1,4 +1,5 @@
-const API_URL = process.env.NEXT_PUBLIC_LYSTIO_API_URL || "https://api.lystio.co";
+const API_URL =
+  process.env.NEXT_PUBLIC_LYSTIO_API_URL || "https://api.lystio.co";
 
 export interface ApiOptions extends RequestInit {
   params?: Record<string, string | number | boolean>;
@@ -6,7 +7,7 @@ export interface ApiOptions extends RequestInit {
 
 export async function apiRequest<T>(
   endpoint: string,
-  options: ApiOptions = {}
+  options: ApiOptions = {},
 ): Promise<T> {
   const { params, ...fetchOptions } = options;
 

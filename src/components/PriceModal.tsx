@@ -15,16 +15,22 @@ interface PriceModalProps {
 export function PriceModal({
   isOpen,
   onClose,
-  histogramParams
+  histogramParams,
 }: PriceModalProps) {
   const { filter, updatePrice } = useFilter();
   const { minPrice, maxPrice, showPriceOnRequest } = filter;
 
   const [tempMin, setTempMin] = useState(minPrice);
   const [tempMax, setTempMax] = useState(maxPrice);
-  const [tempShowPriceOnRequest, setTempShowPriceOnRequest] = useState(showPriceOnRequest ?? false);
+  const [tempShowPriceOnRequest, setTempShowPriceOnRequest] = useState(
+    showPriceOnRequest ?? false,
+  );
 
-  const handlePriceUpdate = (min: number | null, max: number | null, showOnRequest: boolean) => {
+  const handlePriceUpdate = (
+    min: number | null,
+    max: number | null,
+    showOnRequest: boolean,
+  ) => {
     setTempMin(min);
     setTempMax(max);
     setTempShowPriceOnRequest(showOnRequest);

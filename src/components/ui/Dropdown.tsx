@@ -8,7 +8,12 @@ interface DropdownProps {
   className?: string;
 }
 
-export function Dropdown({ isOpen, onClose, children, className = "" }: DropdownProps) {
+export function Dropdown({
+  isOpen,
+  onClose,
+  children,
+  className = "",
+}: DropdownProps) {
   return (
     <AnimatePresence onExitComplete={onClose}>
       {isOpen && (

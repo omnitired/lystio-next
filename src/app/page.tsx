@@ -28,19 +28,14 @@ export default function Home() {
         <div className="h-screen bg-gray-200 flex items-center justify-center">
           <div className="text-gray-500 text-lg">
             {" "}
-
-              <div className="mt-4 text-center">
-                <p className="text-lg font-medium text-text-primary">
+            <div className="mt-4 text-center">
+              <p className="text-lg font-medium text-text-primary">
                 <span className="text-brand-purple font-semibold">
-                    {searchCount}
-                  </span>{" "}
-                  {searchCount === 1 ? "property" : "properties"}
-                  {" "}
-                  Found{" "}
-
-                </p>
-              </div>
-
+                  {searchCount}
+                </span>{" "}
+                {searchCount === 1 ? "property" : "properties"} Found{" "}
+              </p>
+            </div>
           </div>
         </div>
       </div>

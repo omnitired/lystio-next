@@ -7,7 +7,11 @@ interface RecentSearchItemProps {
   variant: "dropdown" | "modal";
 }
 
-export function RecentSearchItem({ search, onClick, variant }: RecentSearchItemProps) {
+export function RecentSearchItem({
+  search,
+  onClick,
+  variant,
+}: RecentSearchItemProps) {
   const isModal = variant === "modal";
 
   return (
@@ -18,13 +22,18 @@ export function RecentSearchItem({ search, onClick, variant }: RecentSearchItemP
       } rounded-lg hover-surface-light w-full text-left`}
     >
       <div className="shrink-0 mt-0.5">
-        <Image src="/icons/location-pin-purple.svg" alt="" width={20} height={20} />
+        <Image
+          src="/icons/location-pin-purple.svg"
+          alt=""
+          width={20}
+          height={20}
+        />
       </div>
       <div className="flex-1 min-w-0">
-        <p className={isModal ? "text-body" : "text-body-sm"}>
-          {search.name}
-        </p>
-        <p className={`${isModal ? "text-sm" : "text-xs"} text-text-secondary capitalize`}>
+        <p className={isModal ? "text-body" : "text-body-sm"}>{search.name}</p>
+        <p
+          className={`${isModal ? "text-sm" : "text-xs"} text-text-secondary capitalize`}
+        >
           {search.type}
         </p>
       </div>

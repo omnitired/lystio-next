@@ -31,7 +31,7 @@ interface UseSlideAnimationOptions {
 export function useSlideAnimation<T extends HTMLElement>(
   ref: RefObject<T | null>,
   trigger: unknown,
-  options: UseSlideAnimationOptions = {}
+  options: UseSlideAnimationOptions = {},
 ) {
   const {
     direction = "left",
@@ -44,10 +44,13 @@ export function useSlideAnimation<T extends HTMLElement>(
     if (!ref.current || !trigger) return;
 
     const axis = direction === "left" || direction === "right" ? "x" : "y";
-    const value = direction === "left" || direction === "up" ? -distance : distance;
+    const value =
+      direction === "left" || direction === "up" ? -distance : distance;
 
     // Convert easing to Framer Motion format
-    const frameworkEase = ease.replace("power2", "easeOut").replace("power3", "easeOut");
+    const frameworkEase = ease
+      .replace("power2", "easeOut")
+      .replace("power3", "easeOut");
 
     animate(
       ref.current,
@@ -58,7 +61,7 @@ export function useSlideAnimation<T extends HTMLElement>(
       {
         duration,
         ease: frameworkEase as any,
-      }
+      },
     );
   }, [trigger, ref, direction, duration, ease, distance]);
 }

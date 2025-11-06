@@ -1,1493 +1,1493 @@
 [
   {
-      "name": "Wien",
-      "altName": "Wien",
-      "id": "osm:b4:-109166",
-      "children": [
-          {
-              "name": "1. - Innere Stadt",
-              "altName": "1010 Wien",
-              "id": "osm:b4:-109166:b9:-1990592",
-              "postal_code": "1010",
-              "urlSegment": "innere-stadt-1010"
-          },
-          {
-              "name": "2. - Leopoldstadt",
-              "altName": "1020 Wien",
-              "id": "osm:b4:-109166:b9:-1990594",
-              "postal_code": "1020",
-              "urlSegment": "leopoldstadt-1020"
-          },
-          {
-              "name": "3. - Landstraße",
-              "altName": "1030 Wien",
-              "id": "osm:b4:-109166:b9:-1991416",
-              "postal_code": "1030",
-              "urlSegment": "landstrasse-1030"
-          },
-          {
-              "name": "4. - Wieden",
-              "altName": "1040 Wien",
-              "id": "osm:b4:-109166:b9:-1991443",
-              "postal_code": "1040",
-              "urlSegment": "wieden-1040"
-          },
-          {
-              "name": "5. - Margareten",
-              "altName": "1050 Wien",
-              "id": "osm:b4:-109166:b9:-1991440",
-              "postal_code": "1050",
-              "urlSegment": "margareten-1050"
-          },
-          {
-              "name": "6. - Mariahilf",
-              "altName": "1060 Wien",
-              "id": "osm:b4:-109166:b9:-1990595",
-              "postal_code": "1060",
-              "urlSegment": "mariahilf-1060"
-          },
-          {
-              "name": "7. - Neubau",
-              "altName": "1070 Wien",
-              "id": "osm:b4:-109166:b9:-1990597",
-              "postal_code": "1070",
-              "urlSegment": "neubau-1070"
-          },
-          {
-              "name": "8. - Josefstadt",
-              "altName": "1080 Wien",
-              "id": "osm:b4:-109166:b9:-1990593",
-              "postal_code": "1080",
-              "urlSegment": "josefstadt-1080"
-          },
-          {
-              "name": "9. - Alsergrund",
-              "altName": "1090 Wien",
-              "id": "osm:b4:-109166:b9:-1990590",
-              "postal_code": "1090",
-              "urlSegment": "alsergrund-1090"
-          },
-          {
-              "name": "10. - Favoriten",
-              "altName": "1100 Wien",
-              "id": "osm:b4:-109166:b9:-1991436",
-              "postal_code": "1100",
-              "urlSegment": "favoriten-1100"
-          },
-          {
-              "name": "11. - Simmering",
-              "altName": "1110 Wien",
-              "id": "osm:b4:-109166:b9:-1991442",
-              "postal_code": "1110",
-              "urlSegment": "simmering-1110"
-          },
-          {
-              "name": "12. - Meidling",
-              "altName": "1120 Wien",
-              "id": "osm:b4:-109166:b9:-1990596",
-              "postal_code": "1120",
-              "urlSegment": "meidling-1120"
-          },
-          {
-              "name": "13. - Hietzing",
-              "altName": "1130 Wien",
-              "id": "osm:b4:-109166:b9:-1990591",
-              "postal_code": "1130",
-              "urlSegment": "hietzing-1130"
-          },
-          {
-              "name": "14. - Penzing",
-              "altName": "1140 Wien",
-              "id": "osm:b4:-109166:b9:-1990598",
-              "postal_code": "1140",
-              "urlSegment": "penzing-1140"
-          },
-          {
-              "name": "15. - Rudolfsheim-Fünfhaus",
-              "altName": "1150 Wien",
-              "id": "osm:b4:-109166:b9:-1990599",
-              "postal_code": "1150",
-              "urlSegment": "rudolfsheim-fuenfhaus-1150"
-          },
-          {
-              "name": "16. - Ottakring",
-              "altName": "1160 Wien",
-              "id": "osm:b4:-109166:b9:-1991441",
-              "postal_code": "1160",
-              "urlSegment": "ottakring-1160"
-          },
-          {
-              "name": "17. - Hernals",
-              "altName": "1170 Wien",
-              "id": "osm:b4:-109166:b9:-1991438",
-              "postal_code": "1170",
-              "urlSegment": "hernals-1170"
-          },
-          {
-              "name": "18. - Währing",
-              "altName": "1180 Wien",
-              "id": "osm:b4:-109166:b9:-1990600",
-              "postal_code": "1180",
-              "urlSegment": "waehring-1180"
-          },
-          {
-              "name": "19. - Döbling",
-              "altName": "1190 Wien",
-              "id": "osm:b4:-109166:b9:-1991435",
-              "postal_code": "1190",
-              "urlSegment": "doebling-1190"
-          },
-          {
-              "name": "20. - Brigittenau",
-              "altName": "1200 Wien",
-              "id": "osm:b4:-109166:b9:-1991433",
-              "postal_code": "1200",
-              "urlSegment": "brigittenau-1200"
-          },
-          {
-              "name": "21. - Floridsdorf",
-              "altName": "1210 Wien",
-              "id": "osm:b4:-109166:b9:-1991437",
-              "postal_code": "1210",
-              "urlSegment": "floridsdorf-1210"
-          },
-          {
-              "name": "22. - Donaustadt",
-              "altName": "1220 Wien",
-              "id": "osm:b4:-109166:b9:-1991434",
-              "postal_code": "1220",
-              "urlSegment": "donaustadt-1220"
-          },
-          {
-              "name": "23. - Liesing",
-              "altName": "1230 Wien",
-              "id": "osm:b4:-109166:b9:-1991439",
-              "postal_code": "1230",
-              "urlSegment": "liesing-1230"
-          }
-      ],
-      "urlSegment": "wien"
+    "name": "Wien",
+    "altName": "Wien",
+    "id": "osm:b4:-109166",
+    "children": [
+      {
+        "name": "1. - Innere Stadt",
+        "altName": "1010 Wien",
+        "id": "osm:b4:-109166:b9:-1990592",
+        "postal_code": "1010",
+        "urlSegment": "innere-stadt-1010"
+      },
+      {
+        "name": "2. - Leopoldstadt",
+        "altName": "1020 Wien",
+        "id": "osm:b4:-109166:b9:-1990594",
+        "postal_code": "1020",
+        "urlSegment": "leopoldstadt-1020"
+      },
+      {
+        "name": "3. - Landstraße",
+        "altName": "1030 Wien",
+        "id": "osm:b4:-109166:b9:-1991416",
+        "postal_code": "1030",
+        "urlSegment": "landstrasse-1030"
+      },
+      {
+        "name": "4. - Wieden",
+        "altName": "1040 Wien",
+        "id": "osm:b4:-109166:b9:-1991443",
+        "postal_code": "1040",
+        "urlSegment": "wieden-1040"
+      },
+      {
+        "name": "5. - Margareten",
+        "altName": "1050 Wien",
+        "id": "osm:b4:-109166:b9:-1991440",
+        "postal_code": "1050",
+        "urlSegment": "margareten-1050"
+      },
+      {
+        "name": "6. - Mariahilf",
+        "altName": "1060 Wien",
+        "id": "osm:b4:-109166:b9:-1990595",
+        "postal_code": "1060",
+        "urlSegment": "mariahilf-1060"
+      },
+      {
+        "name": "7. - Neubau",
+        "altName": "1070 Wien",
+        "id": "osm:b4:-109166:b9:-1990597",
+        "postal_code": "1070",
+        "urlSegment": "neubau-1070"
+      },
+      {
+        "name": "8. - Josefstadt",
+        "altName": "1080 Wien",
+        "id": "osm:b4:-109166:b9:-1990593",
+        "postal_code": "1080",
+        "urlSegment": "josefstadt-1080"
+      },
+      {
+        "name": "9. - Alsergrund",
+        "altName": "1090 Wien",
+        "id": "osm:b4:-109166:b9:-1990590",
+        "postal_code": "1090",
+        "urlSegment": "alsergrund-1090"
+      },
+      {
+        "name": "10. - Favoriten",
+        "altName": "1100 Wien",
+        "id": "osm:b4:-109166:b9:-1991436",
+        "postal_code": "1100",
+        "urlSegment": "favoriten-1100"
+      },
+      {
+        "name": "11. - Simmering",
+        "altName": "1110 Wien",
+        "id": "osm:b4:-109166:b9:-1991442",
+        "postal_code": "1110",
+        "urlSegment": "simmering-1110"
+      },
+      {
+        "name": "12. - Meidling",
+        "altName": "1120 Wien",
+        "id": "osm:b4:-109166:b9:-1990596",
+        "postal_code": "1120",
+        "urlSegment": "meidling-1120"
+      },
+      {
+        "name": "13. - Hietzing",
+        "altName": "1130 Wien",
+        "id": "osm:b4:-109166:b9:-1990591",
+        "postal_code": "1130",
+        "urlSegment": "hietzing-1130"
+      },
+      {
+        "name": "14. - Penzing",
+        "altName": "1140 Wien",
+        "id": "osm:b4:-109166:b9:-1990598",
+        "postal_code": "1140",
+        "urlSegment": "penzing-1140"
+      },
+      {
+        "name": "15. - Rudolfsheim-Fünfhaus",
+        "altName": "1150 Wien",
+        "id": "osm:b4:-109166:b9:-1990599",
+        "postal_code": "1150",
+        "urlSegment": "rudolfsheim-fuenfhaus-1150"
+      },
+      {
+        "name": "16. - Ottakring",
+        "altName": "1160 Wien",
+        "id": "osm:b4:-109166:b9:-1991441",
+        "postal_code": "1160",
+        "urlSegment": "ottakring-1160"
+      },
+      {
+        "name": "17. - Hernals",
+        "altName": "1170 Wien",
+        "id": "osm:b4:-109166:b9:-1991438",
+        "postal_code": "1170",
+        "urlSegment": "hernals-1170"
+      },
+      {
+        "name": "18. - Währing",
+        "altName": "1180 Wien",
+        "id": "osm:b4:-109166:b9:-1990600",
+        "postal_code": "1180",
+        "urlSegment": "waehring-1180"
+      },
+      {
+        "name": "19. - Döbling",
+        "altName": "1190 Wien",
+        "id": "osm:b4:-109166:b9:-1991435",
+        "postal_code": "1190",
+        "urlSegment": "doebling-1190"
+      },
+      {
+        "name": "20. - Brigittenau",
+        "altName": "1200 Wien",
+        "id": "osm:b4:-109166:b9:-1991433",
+        "postal_code": "1200",
+        "urlSegment": "brigittenau-1200"
+      },
+      {
+        "name": "21. - Floridsdorf",
+        "altName": "1210 Wien",
+        "id": "osm:b4:-109166:b9:-1991437",
+        "postal_code": "1210",
+        "urlSegment": "floridsdorf-1210"
+      },
+      {
+        "name": "22. - Donaustadt",
+        "altName": "1220 Wien",
+        "id": "osm:b4:-109166:b9:-1991434",
+        "postal_code": "1220",
+        "urlSegment": "donaustadt-1220"
+      },
+      {
+        "name": "23. - Liesing",
+        "altName": "1230 Wien",
+        "id": "osm:b4:-109166:b9:-1991439",
+        "postal_code": "1230",
+        "urlSegment": "liesing-1230"
+      }
+    ],
+    "urlSegment": "wien"
   },
   {
-      "name": "Niederösterreich",
-      "altName": "Niederösterreich",
-      "id": "osm:b4:-77189",
-      "children": [
-          {
-              "name": "Amstetten",
-              "altName": "Amstetten",
-              "id": "osm:b4:-77189:b6:-128099",
-              "postal_code": "",
-              "urlSegment": "amstetten"
-          },
-          {
-              "name": "Bruck an der Leitha",
-              "altName": "Bruck an der Leitha",
-              "id": "osm:b4:-77189:b6:-112050",
-              "postal_code": "",
-              "urlSegment": "bruck-an-der-leitha"
-          },
-          {
-              "name": "Baden",
-              "altName": "Baden",
-              "id": "osm:b4:-77189:b6:-105088",
-              "postal_code": "",
-              "urlSegment": "baden"
-          },
-          {
-              "name": "Gmünd",
-              "altName": "Gmünd",
-              "id": "osm:b4:-77189:b6:-446967",
-              "postal_code": "",
-              "urlSegment": "gmuend"
-          },
-          {
-              "name": "Gänserndorf",
-              "altName": "Gänserndorf",
-              "id": "osm:b4:-77189:b6:-104072",
-              "postal_code": "",
-              "urlSegment": "gaenserndorf"
-          },
-          {
-              "name": "Hollabrunn",
-              "altName": "Hollabrunn",
-              "id": "osm:b4:-77189:b6:-103095",
-              "postal_code": "",
-              "urlSegment": "hollabrunn"
-          },
-          {
-              "name": "Horn",
-              "altName": "Horn",
-              "id": "osm:b4:-77189:b6:-105949",
-              "postal_code": "",
-              "urlSegment": "horn"
-          },
-          {
-              "name": "Korneuburg",
-              "altName": "Korneuburg",
-              "id": "osm:b4:-77189:b6:-106740",
-              "postal_code": "",
-              "urlSegment": "korneuburg"
-          },
-          {
-              "name": "Krems",
-              "altName": "Krems",
-              "id": "osm:b4:-77189:b6:-114684",
-              "postal_code": "",
-              "urlSegment": "krems"
-          },
-          {
-              "name": "Krems an der Donau",
-              "altName": "Krems an der Donau",
-              "id": "osm:b4:-77189:b6:-130944",
-              "postal_code": "",
-              "urlSegment": "krems-an-der-donau"
-          },
-          {
-              "name": "Lilienfeld",
-              "altName": "Lilienfeld",
-              "id": "osm:b4:-77189:b6:-112678",
-              "postal_code": "",
-              "urlSegment": "lilienfeld"
-          },
-          {
-              "name": "Mödling",
-              "altName": "Mödling",
-              "id": "osm:b4:-77189:b6:-111858",
-              "postal_code": "",
-              "urlSegment": "moedling"
-          },
-          {
-              "name": "Melk",
-              "altName": "Melk",
-              "id": "osm:b4:-77189:b6:-114629",
-              "postal_code": "",
-              "urlSegment": "melk"
-          },
-          {
-              "name": "Mistelbach",
-              "altName": "Mistelbach",
-              "id": "osm:b4:-77189:b6:-104883",
-              "postal_code": "",
-              "urlSegment": "mistelbach"
-          },
-          {
-              "name": "Neunkirchen",
-              "altName": "Neunkirchen",
-              "id": "osm:b4:-77189:b6:-110525",
-              "postal_code": "",
-              "urlSegment": "neunkirchen"
-          },
-          {
-              "name": "St. Pölten",
-              "altName": "St. Pölten",
-              "id": "osm:b4:-77189:b6:-134351",
-              "postal_code": "",
-              "urlSegment": "st-poelten"
-          },
-          {
-              "name": "St. Pölten-Land",
-              "altName": "St. Pölten-Land",
-              "id": "osm:b4:-77189:b6:-63619",
-              "postal_code": "",
-              "urlSegment": "st-poelten-land"
-          },
-          {
-              "name": "Scheibbs",
-              "altName": "Scheibbs",
-              "id": "osm:b4:-77189:b6:-112705",
-              "postal_code": "",
-              "urlSegment": "scheibbs"
-          },
-          {
-              "name": "Tulln",
-              "altName": "Tulln",
-              "id": "osm:b4:-77189:b6:-106250",
-              "postal_code": "",
-              "urlSegment": "tulln"
-          },
-          {
-              "name": "Wiener Neustadt-Land",
-              "altName": "Wiener Neustadt-Land",
-              "id": "osm:b4:-77189:b6:-106447",
-              "postal_code": "",
-              "urlSegment": "wiener-neustadt-land"
-          },
-          {
-              "name": "Wiener Neustadt",
-              "altName": "Wiener Neustadt",
-              "id": "osm:b4:-77189:b6:-110451",
-              "postal_code": "",
-              "urlSegment": "wiener-neustadt"
-          },
-          {
-              "name": "Waidhofen an der Thaya",
-              "altName": "Waidhofen an der Thaya",
-              "id": "osm:b4:-77189:b6:-446160",
-              "postal_code": "",
-              "urlSegment": "waidhofen-an-der-thaya"
-          },
-          {
-              "name": "Waidhofen an der Ybbs",
-              "altName": "Waidhofen an der Ybbs",
-              "id": "osm:b4:-77189:b6:-131937",
-              "postal_code": "",
-              "urlSegment": "waidhofen-an-der-ybbs"
-          },
-          {
-              "name": "Zwettl",
-              "altName": "Zwettl",
-              "id": "osm:b4:-77189:b6:-446158",
-              "postal_code": "",
-              "urlSegment": "zwettl"
-          }
-      ],
-      "urlSegment": "niederoesterreich"
+    "name": "Niederösterreich",
+    "altName": "Niederösterreich",
+    "id": "osm:b4:-77189",
+    "children": [
+      {
+        "name": "Amstetten",
+        "altName": "Amstetten",
+        "id": "osm:b4:-77189:b6:-128099",
+        "postal_code": "",
+        "urlSegment": "amstetten"
+      },
+      {
+        "name": "Bruck an der Leitha",
+        "altName": "Bruck an der Leitha",
+        "id": "osm:b4:-77189:b6:-112050",
+        "postal_code": "",
+        "urlSegment": "bruck-an-der-leitha"
+      },
+      {
+        "name": "Baden",
+        "altName": "Baden",
+        "id": "osm:b4:-77189:b6:-105088",
+        "postal_code": "",
+        "urlSegment": "baden"
+      },
+      {
+        "name": "Gmünd",
+        "altName": "Gmünd",
+        "id": "osm:b4:-77189:b6:-446967",
+        "postal_code": "",
+        "urlSegment": "gmuend"
+      },
+      {
+        "name": "Gänserndorf",
+        "altName": "Gänserndorf",
+        "id": "osm:b4:-77189:b6:-104072",
+        "postal_code": "",
+        "urlSegment": "gaenserndorf"
+      },
+      {
+        "name": "Hollabrunn",
+        "altName": "Hollabrunn",
+        "id": "osm:b4:-77189:b6:-103095",
+        "postal_code": "",
+        "urlSegment": "hollabrunn"
+      },
+      {
+        "name": "Horn",
+        "altName": "Horn",
+        "id": "osm:b4:-77189:b6:-105949",
+        "postal_code": "",
+        "urlSegment": "horn"
+      },
+      {
+        "name": "Korneuburg",
+        "altName": "Korneuburg",
+        "id": "osm:b4:-77189:b6:-106740",
+        "postal_code": "",
+        "urlSegment": "korneuburg"
+      },
+      {
+        "name": "Krems",
+        "altName": "Krems",
+        "id": "osm:b4:-77189:b6:-114684",
+        "postal_code": "",
+        "urlSegment": "krems"
+      },
+      {
+        "name": "Krems an der Donau",
+        "altName": "Krems an der Donau",
+        "id": "osm:b4:-77189:b6:-130944",
+        "postal_code": "",
+        "urlSegment": "krems-an-der-donau"
+      },
+      {
+        "name": "Lilienfeld",
+        "altName": "Lilienfeld",
+        "id": "osm:b4:-77189:b6:-112678",
+        "postal_code": "",
+        "urlSegment": "lilienfeld"
+      },
+      {
+        "name": "Mödling",
+        "altName": "Mödling",
+        "id": "osm:b4:-77189:b6:-111858",
+        "postal_code": "",
+        "urlSegment": "moedling"
+      },
+      {
+        "name": "Melk",
+        "altName": "Melk",
+        "id": "osm:b4:-77189:b6:-114629",
+        "postal_code": "",
+        "urlSegment": "melk"
+      },
+      {
+        "name": "Mistelbach",
+        "altName": "Mistelbach",
+        "id": "osm:b4:-77189:b6:-104883",
+        "postal_code": "",
+        "urlSegment": "mistelbach"
+      },
+      {
+        "name": "Neunkirchen",
+        "altName": "Neunkirchen",
+        "id": "osm:b4:-77189:b6:-110525",
+        "postal_code": "",
+        "urlSegment": "neunkirchen"
+      },
+      {
+        "name": "St. Pölten",
+        "altName": "St. Pölten",
+        "id": "osm:b4:-77189:b6:-134351",
+        "postal_code": "",
+        "urlSegment": "st-poelten"
+      },
+      {
+        "name": "St. Pölten-Land",
+        "altName": "St. Pölten-Land",
+        "id": "osm:b4:-77189:b6:-63619",
+        "postal_code": "",
+        "urlSegment": "st-poelten-land"
+      },
+      {
+        "name": "Scheibbs",
+        "altName": "Scheibbs",
+        "id": "osm:b4:-77189:b6:-112705",
+        "postal_code": "",
+        "urlSegment": "scheibbs"
+      },
+      {
+        "name": "Tulln",
+        "altName": "Tulln",
+        "id": "osm:b4:-77189:b6:-106250",
+        "postal_code": "",
+        "urlSegment": "tulln"
+      },
+      {
+        "name": "Wiener Neustadt-Land",
+        "altName": "Wiener Neustadt-Land",
+        "id": "osm:b4:-77189:b6:-106447",
+        "postal_code": "",
+        "urlSegment": "wiener-neustadt-land"
+      },
+      {
+        "name": "Wiener Neustadt",
+        "altName": "Wiener Neustadt",
+        "id": "osm:b4:-77189:b6:-110451",
+        "postal_code": "",
+        "urlSegment": "wiener-neustadt"
+      },
+      {
+        "name": "Waidhofen an der Thaya",
+        "altName": "Waidhofen an der Thaya",
+        "id": "osm:b4:-77189:b6:-446160",
+        "postal_code": "",
+        "urlSegment": "waidhofen-an-der-thaya"
+      },
+      {
+        "name": "Waidhofen an der Ybbs",
+        "altName": "Waidhofen an der Ybbs",
+        "id": "osm:b4:-77189:b6:-131937",
+        "postal_code": "",
+        "urlSegment": "waidhofen-an-der-ybbs"
+      },
+      {
+        "name": "Zwettl",
+        "altName": "Zwettl",
+        "id": "osm:b4:-77189:b6:-446158",
+        "postal_code": "",
+        "urlSegment": "zwettl"
+      }
+    ],
+    "urlSegment": "niederoesterreich"
   },
   {
-      "name": "Burgenland",
-      "altName": "Burgenland",
-      "id": "osm:b4:-76909",
-      "children": [
-          {
-              "name": "Eisenstadt",
-              "altName": "Eisenstadt",
-              "id": "osm:b4:-76909:b6:-79747",
-              "postal_code": "",
-              "urlSegment": "eisenstadt"
-          },
-          {
-              "name": "Rust",
-              "altName": "Rust",
-              "id": "osm:b4:-76909:b6:-78752",
-              "postal_code": "7071",
-              "urlSegment": "rust-7071"
-          },
-          {
-              "name": "Eisenstadt-Umgebung",
-              "altName": "Eisenstadt-Umgebung",
-              "id": "osm:b4:-76909:b6:-103816",
-              "postal_code": "",
-              "urlSegment": "eisenstadt-umgebung"
-          },
-          {
-              "name": "Güssing",
-              "altName": "Güssing",
-              "id": "osm:b4:-76909:b6:-109543",
-              "postal_code": "",
-              "urlSegment": "guessing"
-          },
-          {
-              "name": "Jennersdorf",
-              "altName": "Jennersdorf",
-              "id": "osm:b4:-76909:b6:-109793",
-              "postal_code": "",
-              "urlSegment": "jennersdorf"
-          },
-          {
-              "name": "Mattersburg",
-              "altName": "Mattersburg",
-              "id": "osm:b4:-76909:b6:-106097",
-              "postal_code": "",
-              "urlSegment": "mattersburg"
-          },
-          {
-              "name": "Neusiedl am See",
-              "altName": "Neusiedl am See",
-              "id": "osm:b4:-76909:b6:-78829",
-              "postal_code": "",
-              "urlSegment": "neusiedl-am-see"
-          },
-          {
-              "name": "Oberpullendorf",
-              "altName": "Oberpullendorf",
-              "id": "osm:b4:-76909:b6:-109411",
-              "postal_code": "",
-              "urlSegment": "oberpullendorf"
-          },
-          {
-              "name": "Oberwart",
-              "altName": "Oberwart",
-              "id": "osm:b4:-76909:b6:-110268",
-              "postal_code": "",
-              "urlSegment": "oberwart"
-          }
-      ],
-      "urlSegment": "burgenland"
+    "name": "Burgenland",
+    "altName": "Burgenland",
+    "id": "osm:b4:-76909",
+    "children": [
+      {
+        "name": "Eisenstadt",
+        "altName": "Eisenstadt",
+        "id": "osm:b4:-76909:b6:-79747",
+        "postal_code": "",
+        "urlSegment": "eisenstadt"
+      },
+      {
+        "name": "Rust",
+        "altName": "Rust",
+        "id": "osm:b4:-76909:b6:-78752",
+        "postal_code": "7071",
+        "urlSegment": "rust-7071"
+      },
+      {
+        "name": "Eisenstadt-Umgebung",
+        "altName": "Eisenstadt-Umgebung",
+        "id": "osm:b4:-76909:b6:-103816",
+        "postal_code": "",
+        "urlSegment": "eisenstadt-umgebung"
+      },
+      {
+        "name": "Güssing",
+        "altName": "Güssing",
+        "id": "osm:b4:-76909:b6:-109543",
+        "postal_code": "",
+        "urlSegment": "guessing"
+      },
+      {
+        "name": "Jennersdorf",
+        "altName": "Jennersdorf",
+        "id": "osm:b4:-76909:b6:-109793",
+        "postal_code": "",
+        "urlSegment": "jennersdorf"
+      },
+      {
+        "name": "Mattersburg",
+        "altName": "Mattersburg",
+        "id": "osm:b4:-76909:b6:-106097",
+        "postal_code": "",
+        "urlSegment": "mattersburg"
+      },
+      {
+        "name": "Neusiedl am See",
+        "altName": "Neusiedl am See",
+        "id": "osm:b4:-76909:b6:-78829",
+        "postal_code": "",
+        "urlSegment": "neusiedl-am-see"
+      },
+      {
+        "name": "Oberpullendorf",
+        "altName": "Oberpullendorf",
+        "id": "osm:b4:-76909:b6:-109411",
+        "postal_code": "",
+        "urlSegment": "oberpullendorf"
+      },
+      {
+        "name": "Oberwart",
+        "altName": "Oberwart",
+        "id": "osm:b4:-76909:b6:-110268",
+        "postal_code": "",
+        "urlSegment": "oberwart"
+      }
+    ],
+    "urlSegment": "burgenland"
   },
   {
-      "name": "Oberösterreich",
-      "altName": "Oberösterreich",
-      "id": "osm:b4:-102303",
-      "children": [
-          {
-              "name": "Braunau",
-              "altName": "Braunau",
-              "id": "osm:b4:-102303:b6:-417294",
-              "postal_code": "",
-              "urlSegment": "braunau"
-          },
-          {
-              "name": "Eferding",
-              "altName": "Eferding",
-              "id": "osm:b4:-102303:b6:-86256",
-              "postal_code": "",
-              "urlSegment": "eferding"
-          },
-          {
-              "name": "Freistadt",
-              "altName": "Freistadt",
-              "id": "osm:b4:-102303:b6:-422468",
-              "postal_code": "",
-              "urlSegment": "freistadt"
-          },
-          {
-              "name": "Gmunden",
-              "altName": "Gmunden",
-              "id": "osm:b4:-102303:b6:-63349",
-              "postal_code": "",
-              "urlSegment": "gmunden"
-          },
-          {
-              "name": "Grieskirchen",
-              "altName": "Grieskirchen",
-              "id": "osm:b4:-102303:b6:-88553",
-              "postal_code": "",
-              "urlSegment": "grieskirchen"
-          },
-          {
-              "name": "Kirchdorf",
-              "altName": "Kirchdorf",
-              "id": "osm:b4:-102303:b6:-63163",
-              "postal_code": "",
-              "urlSegment": "kirchdorf"
-          },
-          {
-              "name": "Linz",
-              "altName": "Linz",
-              "id": "osm:b4:-102303:b6:-86708",
-              "postal_code": "",
-              "urlSegment": "linz"
-          },
-          {
-              "name": "Linz-Land",
-              "altName": "Linz-Land",
-              "id": "osm:b4:-102303:b6:-86309",
-              "postal_code": "",
-              "urlSegment": "linz-land"
-          },
-          {
-              "name": "Perg",
-              "altName": "Perg",
-              "id": "osm:b4:-102303:b6:-128117",
-              "postal_code": "",
-              "urlSegment": "perg"
-          },
-          {
-              "name": "Ried",
-              "altName": "Ried",
-              "id": "osm:b4:-102303:b6:-421817",
-              "postal_code": "",
-              "urlSegment": "ried"
-          },
-          {
-              "name": "Rohrbach",
-              "altName": "Rohrbach",
-              "id": "osm:b4:-102303:b6:-107941",
-              "postal_code": "",
-              "urlSegment": "rohrbach"
-          },
-          {
-              "name": "Schärding",
-              "altName": "Schärding",
-              "id": "osm:b4:-102303:b6:-419452",
-              "postal_code": "",
-              "urlSegment": "schaerding"
-          },
-          {
-              "name": "Steyr-Land",
-              "altName": "Steyr-Land",
-              "id": "osm:b4:-102303:b6:-86459",
-              "postal_code": "",
-              "urlSegment": "steyr-land"
-          },
-          {
-              "name": "Steyr",
-              "altName": "Steyr",
-              "id": "osm:b4:-102303:b6:-90143",
-              "postal_code": "4400",
-              "urlSegment": "steyr-4400"
-          },
-          {
-              "name": "Urfahr-Umgebung",
-              "altName": "Urfahr-Umgebung",
-              "id": "osm:b4:-102303:b6:-86257",
-              "postal_code": "",
-              "urlSegment": "urfahr-umgebung"
-          },
-          {
-              "name": "Vöcklabruck",
-              "altName": "Vöcklabruck",
-              "id": "osm:b4:-102303:b6:-102302",
-              "postal_code": "",
-              "urlSegment": "voecklabruck"
-          },
-          {
-              "name": "Wels",
-              "altName": "Wels",
-              "id": "osm:b4:-102303:b6:-63175",
-              "postal_code": "4600",
-              "urlSegment": "wels-4600"
-          },
-          {
-              "name": "Wels-Land",
-              "altName": "Wels-Land",
-              "id": "osm:b4:-102303:b6:-64917",
-              "postal_code": "",
-              "urlSegment": "wels-land"
-          }
-      ],
-      "urlSegment": "oberoesterreich"
+    "name": "Oberösterreich",
+    "altName": "Oberösterreich",
+    "id": "osm:b4:-102303",
+    "children": [
+      {
+        "name": "Braunau",
+        "altName": "Braunau",
+        "id": "osm:b4:-102303:b6:-417294",
+        "postal_code": "",
+        "urlSegment": "braunau"
+      },
+      {
+        "name": "Eferding",
+        "altName": "Eferding",
+        "id": "osm:b4:-102303:b6:-86256",
+        "postal_code": "",
+        "urlSegment": "eferding"
+      },
+      {
+        "name": "Freistadt",
+        "altName": "Freistadt",
+        "id": "osm:b4:-102303:b6:-422468",
+        "postal_code": "",
+        "urlSegment": "freistadt"
+      },
+      {
+        "name": "Gmunden",
+        "altName": "Gmunden",
+        "id": "osm:b4:-102303:b6:-63349",
+        "postal_code": "",
+        "urlSegment": "gmunden"
+      },
+      {
+        "name": "Grieskirchen",
+        "altName": "Grieskirchen",
+        "id": "osm:b4:-102303:b6:-88553",
+        "postal_code": "",
+        "urlSegment": "grieskirchen"
+      },
+      {
+        "name": "Kirchdorf",
+        "altName": "Kirchdorf",
+        "id": "osm:b4:-102303:b6:-63163",
+        "postal_code": "",
+        "urlSegment": "kirchdorf"
+      },
+      {
+        "name": "Linz",
+        "altName": "Linz",
+        "id": "osm:b4:-102303:b6:-86708",
+        "postal_code": "",
+        "urlSegment": "linz"
+      },
+      {
+        "name": "Linz-Land",
+        "altName": "Linz-Land",
+        "id": "osm:b4:-102303:b6:-86309",
+        "postal_code": "",
+        "urlSegment": "linz-land"
+      },
+      {
+        "name": "Perg",
+        "altName": "Perg",
+        "id": "osm:b4:-102303:b6:-128117",
+        "postal_code": "",
+        "urlSegment": "perg"
+      },
+      {
+        "name": "Ried",
+        "altName": "Ried",
+        "id": "osm:b4:-102303:b6:-421817",
+        "postal_code": "",
+        "urlSegment": "ried"
+      },
+      {
+        "name": "Rohrbach",
+        "altName": "Rohrbach",
+        "id": "osm:b4:-102303:b6:-107941",
+        "postal_code": "",
+        "urlSegment": "rohrbach"
+      },
+      {
+        "name": "Schärding",
+        "altName": "Schärding",
+        "id": "osm:b4:-102303:b6:-419452",
+        "postal_code": "",
+        "urlSegment": "schaerding"
+      },
+      {
+        "name": "Steyr-Land",
+        "altName": "Steyr-Land",
+        "id": "osm:b4:-102303:b6:-86459",
+        "postal_code": "",
+        "urlSegment": "steyr-land"
+      },
+      {
+        "name": "Steyr",
+        "altName": "Steyr",
+        "id": "osm:b4:-102303:b6:-90143",
+        "postal_code": "4400",
+        "urlSegment": "steyr-4400"
+      },
+      {
+        "name": "Urfahr-Umgebung",
+        "altName": "Urfahr-Umgebung",
+        "id": "osm:b4:-102303:b6:-86257",
+        "postal_code": "",
+        "urlSegment": "urfahr-umgebung"
+      },
+      {
+        "name": "Vöcklabruck",
+        "altName": "Vöcklabruck",
+        "id": "osm:b4:-102303:b6:-102302",
+        "postal_code": "",
+        "urlSegment": "voecklabruck"
+      },
+      {
+        "name": "Wels",
+        "altName": "Wels",
+        "id": "osm:b4:-102303:b6:-63175",
+        "postal_code": "4600",
+        "urlSegment": "wels-4600"
+      },
+      {
+        "name": "Wels-Land",
+        "altName": "Wels-Land",
+        "id": "osm:b4:-102303:b6:-64917",
+        "postal_code": "",
+        "urlSegment": "wels-land"
+      }
+    ],
+    "urlSegment": "oberoesterreich"
   },
   {
-      "name": "Linz",
-      "altName": "Linz",
-      "id": "osm:b6:-86708",
-      "children": [
-          {
-              "name": "Bindermichl-Keferfeld",
-              "altName": "Bindermichl-Keferfeld",
-              "id": "osm:b6:-86708:b10:-7338679",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Bulgariplatz",
-              "altName": "Bulgariplatz",
-              "id": "osm:b6:-86708:b10:-7338681",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Dornach-Auhof",
-              "altName": "Dornach-Auhof",
-              "id": "osm:b6:-86708:b10:-7338684",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Ebelsberg",
-              "altName": "Ebelsberg",
-              "id": "osm:b6:-86708:b10:-7338674",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Franckviertel",
-              "altName": "Franckviertel",
-              "id": "osm:b6:-86708:b10:-7338682",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Froschberg",
-              "altName": "Froschberg",
-              "id": "osm:b6:-86708:b10:-7338680",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Industriegebiet-Hafen",
-              "altName": "Industriegebiet-Hafen",
-              "id": "osm:b6:-86708:b10:-7338675",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Innere Stadt",
-              "altName": "Innere Stadt",
-              "id": "osm:b6:-86708:b10:-7338687",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Kaplanhof",
-              "altName": "Kaplanhof",
-              "id": "osm:b6:-86708:b10:-7338683",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Kleinmünchen-Auwiesen",
-              "altName": "Kleinmünchen-Auwiesen",
-              "id": "osm:b6:-86708:b10:-7338676",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Neue Heimat",
-              "altName": "Neue Heimat",
-              "id": "osm:b6:-86708:b10:-7338677",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Pichling",
-              "altName": "Pichling",
-              "id": "osm:b6:-86708:b10:-7338673",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Pöstlingberg",
-              "altName": "Pöstlingberg",
-              "id": "osm:b6:-86708:b10:-7338672",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Spallerhof",
-              "altName": "Spallerhof",
-              "id": "osm:b6:-86708:b10:-7338678",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "St. Magdalena",
-              "altName": "St. Magdalena",
-              "id": "osm:b6:-86708:b10:-7338685",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Urfahr",
-              "altName": "Urfahr",
-              "id": "osm:b6:-86708:b10:-7338686",
-              "postal_code": "",
-              "urlSegment": null
-          }
-      ],
-      "urlSegment": "oberoesterreich/linz"
+    "name": "Linz",
+    "altName": "Linz",
+    "id": "osm:b6:-86708",
+    "children": [
+      {
+        "name": "Bindermichl-Keferfeld",
+        "altName": "Bindermichl-Keferfeld",
+        "id": "osm:b6:-86708:b10:-7338679",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Bulgariplatz",
+        "altName": "Bulgariplatz",
+        "id": "osm:b6:-86708:b10:-7338681",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Dornach-Auhof",
+        "altName": "Dornach-Auhof",
+        "id": "osm:b6:-86708:b10:-7338684",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Ebelsberg",
+        "altName": "Ebelsberg",
+        "id": "osm:b6:-86708:b10:-7338674",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Franckviertel",
+        "altName": "Franckviertel",
+        "id": "osm:b6:-86708:b10:-7338682",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Froschberg",
+        "altName": "Froschberg",
+        "id": "osm:b6:-86708:b10:-7338680",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Industriegebiet-Hafen",
+        "altName": "Industriegebiet-Hafen",
+        "id": "osm:b6:-86708:b10:-7338675",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Innere Stadt",
+        "altName": "Innere Stadt",
+        "id": "osm:b6:-86708:b10:-7338687",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Kaplanhof",
+        "altName": "Kaplanhof",
+        "id": "osm:b6:-86708:b10:-7338683",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Kleinmünchen-Auwiesen",
+        "altName": "Kleinmünchen-Auwiesen",
+        "id": "osm:b6:-86708:b10:-7338676",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Neue Heimat",
+        "altName": "Neue Heimat",
+        "id": "osm:b6:-86708:b10:-7338677",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Pichling",
+        "altName": "Pichling",
+        "id": "osm:b6:-86708:b10:-7338673",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Pöstlingberg",
+        "altName": "Pöstlingberg",
+        "id": "osm:b6:-86708:b10:-7338672",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Spallerhof",
+        "altName": "Spallerhof",
+        "id": "osm:b6:-86708:b10:-7338678",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "St. Magdalena",
+        "altName": "St. Magdalena",
+        "id": "osm:b6:-86708:b10:-7338685",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Urfahr",
+        "altName": "Urfahr",
+        "id": "osm:b6:-86708:b10:-7338686",
+        "postal_code": "",
+        "urlSegment": null
+      }
+    ],
+    "urlSegment": "oberoesterreich/linz"
   },
   {
-      "name": "Steiermark",
-      "altName": "Steiermark",
-      "id": "osm:b4:-35183",
-      "children": [
-          {
-              "name": "Graz",
-              "altName": "Graz",
-              "id": "osm:b4:-35183:b6:-34719",
-              "postal_code": "",
-              "urlSegment": "graz"
-          },
-          {
-              "name": "Bruck-Mürzzuschlag",
-              "altName": "Bruck-Mürzzuschlag",
-              "id": "osm:b4:-35183:b6:-2661074",
-              "postal_code": "",
-              "urlSegment": "bruck-muerzzuschlag"
-          },
-          {
-              "name": "Deutschlandsberg",
-              "altName": "Deutschlandsberg",
-              "id": "osm:b4:-35183:b6:-35202",
-              "postal_code": "",
-              "urlSegment": "deutschlandsberg"
-          },
-          {
-              "name": "Graz-Umgebung",
-              "altName": "Graz-Umgebung",
-              "id": "osm:b4:-35183:b6:-34676",
-              "postal_code": "",
-              "urlSegment": "graz-umgebung"
-          },
-          {
-              "name": "Hartberg-Fürstenfeld",
-              "altName": "Hartberg-Fürstenfeld",
-              "id": "osm:b4:-35183:b6:-2661100",
-              "postal_code": "",
-              "urlSegment": "hartberg-fuerstenfeld"
-          },
-          {
-              "name": "Leibnitz",
-              "altName": "Leibnitz",
-              "id": "osm:b4:-35183:b6:-36182",
-              "postal_code": "",
-              "urlSegment": "leibnitz"
-          },
-          {
-              "name": "Liezen",
-              "altName": "Liezen",
-              "id": "osm:b4:-35183:b6:-50587",
-              "postal_code": "",
-              "urlSegment": "liezen"
-          },
-          {
-              "name": "Leoben",
-              "altName": "Leoben",
-              "id": "osm:b4:-35183:b6:-49964",
-              "postal_code": "",
-              "urlSegment": "leoben"
-          },
-          {
-              "name": "Murtal",
-              "altName": "Murtal",
-              "id": "osm:b4:-35183:b6:-37894",
-              "postal_code": "",
-              "urlSegment": "murtal"
-          },
-          {
-              "name": "Murau",
-              "altName": "Murau",
-              "id": "osm:b4:-35183:b6:-50802",
-              "postal_code": "",
-              "urlSegment": "murau"
-          },
-          {
-              "name": "Südoststeiermark",
-              "altName": "Südoststeiermark",
-              "id": "osm:b4:-35183:b6:-2661101",
-              "postal_code": "",
-              "urlSegment": "suedoststeiermark"
-          },
-          {
-              "name": "Voitsberg",
-              "altName": "Voitsberg",
-              "id": "osm:b4:-35183:b6:-51331",
-              "postal_code": "",
-              "urlSegment": "voitsberg"
-          },
-          {
-              "name": "Weiz",
-              "altName": "Weiz",
-              "id": "osm:b4:-35183:b6:-52123",
-              "postal_code": "",
-              "urlSegment": "weiz"
-          }
-      ],
-      "urlSegment": "steiermark"
+    "name": "Steiermark",
+    "altName": "Steiermark",
+    "id": "osm:b4:-35183",
+    "children": [
+      {
+        "name": "Graz",
+        "altName": "Graz",
+        "id": "osm:b4:-35183:b6:-34719",
+        "postal_code": "",
+        "urlSegment": "graz"
+      },
+      {
+        "name": "Bruck-Mürzzuschlag",
+        "altName": "Bruck-Mürzzuschlag",
+        "id": "osm:b4:-35183:b6:-2661074",
+        "postal_code": "",
+        "urlSegment": "bruck-muerzzuschlag"
+      },
+      {
+        "name": "Deutschlandsberg",
+        "altName": "Deutschlandsberg",
+        "id": "osm:b4:-35183:b6:-35202",
+        "postal_code": "",
+        "urlSegment": "deutschlandsberg"
+      },
+      {
+        "name": "Graz-Umgebung",
+        "altName": "Graz-Umgebung",
+        "id": "osm:b4:-35183:b6:-34676",
+        "postal_code": "",
+        "urlSegment": "graz-umgebung"
+      },
+      {
+        "name": "Hartberg-Fürstenfeld",
+        "altName": "Hartberg-Fürstenfeld",
+        "id": "osm:b4:-35183:b6:-2661100",
+        "postal_code": "",
+        "urlSegment": "hartberg-fuerstenfeld"
+      },
+      {
+        "name": "Leibnitz",
+        "altName": "Leibnitz",
+        "id": "osm:b4:-35183:b6:-36182",
+        "postal_code": "",
+        "urlSegment": "leibnitz"
+      },
+      {
+        "name": "Liezen",
+        "altName": "Liezen",
+        "id": "osm:b4:-35183:b6:-50587",
+        "postal_code": "",
+        "urlSegment": "liezen"
+      },
+      {
+        "name": "Leoben",
+        "altName": "Leoben",
+        "id": "osm:b4:-35183:b6:-49964",
+        "postal_code": "",
+        "urlSegment": "leoben"
+      },
+      {
+        "name": "Murtal",
+        "altName": "Murtal",
+        "id": "osm:b4:-35183:b6:-37894",
+        "postal_code": "",
+        "urlSegment": "murtal"
+      },
+      {
+        "name": "Murau",
+        "altName": "Murau",
+        "id": "osm:b4:-35183:b6:-50802",
+        "postal_code": "",
+        "urlSegment": "murau"
+      },
+      {
+        "name": "Südoststeiermark",
+        "altName": "Südoststeiermark",
+        "id": "osm:b4:-35183:b6:-2661101",
+        "postal_code": "",
+        "urlSegment": "suedoststeiermark"
+      },
+      {
+        "name": "Voitsberg",
+        "altName": "Voitsberg",
+        "id": "osm:b4:-35183:b6:-51331",
+        "postal_code": "",
+        "urlSegment": "voitsberg"
+      },
+      {
+        "name": "Weiz",
+        "altName": "Weiz",
+        "id": "osm:b4:-35183:b6:-52123",
+        "postal_code": "",
+        "urlSegment": "weiz"
+      }
+    ],
+    "urlSegment": "steiermark"
   },
   {
-      "name": "Graz",
-      "altName": "Graz",
-      "id": "osm:b6:-34719",
-      "children": [
-          {
-              "name": "Andritz",
-              "altName": "Andritz",
-              "id": "osm:b6:-34719:b9:-102639",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Eggenberg",
-              "altName": "Eggenberg",
-              "id": "osm:b6:-34719:b9:-102653",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Geidorf",
-              "altName": "Geidorf",
-              "id": "osm:b6:-34719:b9:-102572",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Gösting",
-              "altName": "Gösting",
-              "id": "osm:b6:-34719:b9:-102648",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Gries",
-              "altName": "Gries",
-              "id": "osm:b6:-34719:b9:-102590",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Innere Stadt",
-              "altName": "Innere Stadt",
-              "id": "osm:b6:-34719:b9:-102537",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Jakomini",
-              "altName": "Jakomini",
-              "id": "osm:b6:-34719:b9:-102593",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Lend",
-              "altName": "Lend",
-              "id": "osm:b6:-34719:b9:-102586",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Liebenau",
-              "altName": "Liebenau",
-              "id": "osm:b6:-34719:b9:-102546",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Mariatrost",
-              "altName": "Mariatrost",
-              "id": "osm:b6:-34719:b9:-102628",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Puntigam",
-              "altName": "Puntigam",
-              "id": "osm:b6:-34719:b9:-102662",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Ries",
-              "altName": "Ries",
-              "id": "osm:b6:-34719:b9:-102615",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Sankt Leonhard",
-              "altName": "Sankt Leonhard",
-              "id": "osm:b6:-34719:b9:-102553",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Sankt Peter",
-              "altName": "Sankt Peter",
-              "id": "osm:b6:-34719:b9:-102600",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Straßgang",
-              "altName": "Straßgang",
-              "id": "osm:b6:-34719:b9:-102661",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Waltendorf",
-              "altName": "Waltendorf",
-              "id": "osm:b6:-34719:b9:-102614",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Wetzelsdorf",
-              "altName": "Wetzelsdorf",
-              "id": "osm:b6:-34719:b9:-102660",
-              "postal_code": "8052",
-              "urlSegment": null
-          }
-      ],
-      "urlSegment": "steiermark/graz"
+    "name": "Graz",
+    "altName": "Graz",
+    "id": "osm:b6:-34719",
+    "children": [
+      {
+        "name": "Andritz",
+        "altName": "Andritz",
+        "id": "osm:b6:-34719:b9:-102639",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Eggenberg",
+        "altName": "Eggenberg",
+        "id": "osm:b6:-34719:b9:-102653",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Geidorf",
+        "altName": "Geidorf",
+        "id": "osm:b6:-34719:b9:-102572",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Gösting",
+        "altName": "Gösting",
+        "id": "osm:b6:-34719:b9:-102648",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Gries",
+        "altName": "Gries",
+        "id": "osm:b6:-34719:b9:-102590",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Innere Stadt",
+        "altName": "Innere Stadt",
+        "id": "osm:b6:-34719:b9:-102537",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Jakomini",
+        "altName": "Jakomini",
+        "id": "osm:b6:-34719:b9:-102593",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Lend",
+        "altName": "Lend",
+        "id": "osm:b6:-34719:b9:-102586",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Liebenau",
+        "altName": "Liebenau",
+        "id": "osm:b6:-34719:b9:-102546",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Mariatrost",
+        "altName": "Mariatrost",
+        "id": "osm:b6:-34719:b9:-102628",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Puntigam",
+        "altName": "Puntigam",
+        "id": "osm:b6:-34719:b9:-102662",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Ries",
+        "altName": "Ries",
+        "id": "osm:b6:-34719:b9:-102615",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Sankt Leonhard",
+        "altName": "Sankt Leonhard",
+        "id": "osm:b6:-34719:b9:-102553",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Sankt Peter",
+        "altName": "Sankt Peter",
+        "id": "osm:b6:-34719:b9:-102600",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Straßgang",
+        "altName": "Straßgang",
+        "id": "osm:b6:-34719:b9:-102661",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Waltendorf",
+        "altName": "Waltendorf",
+        "id": "osm:b6:-34719:b9:-102614",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Wetzelsdorf",
+        "altName": "Wetzelsdorf",
+        "id": "osm:b6:-34719:b9:-102660",
+        "postal_code": "8052",
+        "urlSegment": null
+      }
+    ],
+    "urlSegment": "steiermark/graz"
   },
   {
-      "name": "Salzburg",
-      "altName": "Salzburg",
-      "id": "osm:b4:-86539",
-      "children": [
-          {
-              "name": "Hallein",
-              "altName": "Hallein",
-              "id": "osm:b4:-86539:b6:-86340",
-              "postal_code": "",
-              "urlSegment": "hallein"
-          },
-          {
-              "name": "St. Johann im Pongau",
-              "altName": "St. Johann im Pongau",
-              "id": "osm:b4:-86539:b6:-533765",
-              "postal_code": "",
-              "urlSegment": "st-johann-im-pongau"
-          },
-          {
-              "name": "Salzburg",
-              "altName": "Salzburg",
-              "id": "osm:b4:-86539:b6:-86538",
-              "postal_code": "5020",
-              "urlSegment": "salzburg-5020"
-          },
-          {
-              "name": "Salzburg-Umgebung",
-              "altName": "Salzburg-Umgebung",
-              "id": "osm:b4:-86539:b6:-86381",
-              "postal_code": "",
-              "urlSegment": "salzburg-umgebung"
-          },
-          {
-              "name": "Tamsweg",
-              "altName": "Tamsweg",
-              "id": "osm:b4:-86539:b6:-533764",
-              "postal_code": "",
-              "urlSegment": "tamsweg"
-          },
-          {
-              "name": "Zell am See",
-              "altName": "Zell am See",
-              "id": "osm:b4:-86539:b6:-539863",
-              "postal_code": "",
-              "urlSegment": "zell-am-see"
-          }
-      ],
-      "urlSegment": "salzburg"
+    "name": "Salzburg",
+    "altName": "Salzburg",
+    "id": "osm:b4:-86539",
+    "children": [
+      {
+        "name": "Hallein",
+        "altName": "Hallein",
+        "id": "osm:b4:-86539:b6:-86340",
+        "postal_code": "",
+        "urlSegment": "hallein"
+      },
+      {
+        "name": "St. Johann im Pongau",
+        "altName": "St. Johann im Pongau",
+        "id": "osm:b4:-86539:b6:-533765",
+        "postal_code": "",
+        "urlSegment": "st-johann-im-pongau"
+      },
+      {
+        "name": "Salzburg",
+        "altName": "Salzburg",
+        "id": "osm:b4:-86539:b6:-86538",
+        "postal_code": "5020",
+        "urlSegment": "salzburg-5020"
+      },
+      {
+        "name": "Salzburg-Umgebung",
+        "altName": "Salzburg-Umgebung",
+        "id": "osm:b4:-86539:b6:-86381",
+        "postal_code": "",
+        "urlSegment": "salzburg-umgebung"
+      },
+      {
+        "name": "Tamsweg",
+        "altName": "Tamsweg",
+        "id": "osm:b4:-86539:b6:-533764",
+        "postal_code": "",
+        "urlSegment": "tamsweg"
+      },
+      {
+        "name": "Zell am See",
+        "altName": "Zell am See",
+        "id": "osm:b4:-86539:b6:-539863",
+        "postal_code": "",
+        "urlSegment": "zell-am-see"
+      }
+    ],
+    "urlSegment": "salzburg"
   },
   {
-      "name": "Salzburg Stadt",
-      "altName": "Salzburg Stadt",
-      "id": "osm:b6:-86538",
-      "children": [
-          {
-              "name": "Aigen",
-              "altName": "Aigen",
-              "id": "osm:b6:-86538:b10:-7489997",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Altstadt",
-              "altName": "Altstadt",
-              "id": "osm:b6:-86538:b10:-7489993",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Elisabeth-Vorstadt",
-              "altName": "Elisabeth-Vorstadt",
-              "id": "osm:b6:-86538:b10:-7489992",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Gaisberg",
-              "altName": "Gaisberg",
-              "id": "osm:b6:-86538:b10:-7489996",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Gneis",
-              "altName": "Gneis",
-              "id": "osm:b6:-86538:b10:-7489986",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Gneis Süd",
-              "altName": "Gneis Süd",
-              "id": "osm:b6:-86538:b10:-7489991",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Gnigl",
-              "altName": "Gnigl",
-              "id": "osm:b6:-86538:b10:-7489990",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Hellbrunn",
-              "altName": "Hellbrunn",
-              "id": "osm:b6:-86538:b10:-7489995",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Heuberg",
-              "altName": "Heuberg",
-              "id": "osm:b6:-86538:b10:-7489994",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Itzling",
-              "altName": "Itzling",
-              "id": "osm:b6:-86538:b10:-7489989",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Itzling Nord",
-              "altName": "Itzling Nord",
-              "id": "osm:b6:-86538:b10:-7489988",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Kasern",
-              "altName": "Kasern",
-              "id": "osm:b6:-86538:b10:-7489985",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Langwied",
-              "altName": "Langwied",
-              "id": "osm:b6:-86538:b10:-7489984",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Lehen",
-              "altName": "Lehen",
-              "id": "osm:b6:-86538:b10:-7489983",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Leopoldskroner Moos",
-              "altName": "Leopoldskroner Moos",
-              "id": "osm:b6:-86538:b10:-7489987",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Liefering",
-              "altName": "Liefering",
-              "id": "osm:b6:-86538:b10:-7489982",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Maxglan",
-              "altName": "Maxglan",
-              "id": "osm:b6:-86538:b10:-7489981",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Maxglan West",
-              "altName": "Maxglan West",
-              "id": "osm:b6:-86538:b10:-7489980",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Morzg",
-              "altName": "Morzg",
-              "id": "osm:b6:-86538:b10:-7489979",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Mülln",
-              "altName": "Mülln",
-              "id": "osm:b6:-86538:b10:-7489978",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Neustadt",
-              "altName": "Neustadt",
-              "id": "osm:b6:-86538:b10:-7489977",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Nonntal",
-              "altName": "Nonntal",
-              "id": "osm:b6:-86538:b10:-7489976",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Parsch",
-              "altName": "Parsch",
-              "id": "osm:b6:-86538:b10:-7489975",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Riedenburg",
-              "altName": "Riedenburg",
-              "id": "osm:b6:-86538:b10:-7489974",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Salzburg Süd",
-              "altName": "Salzburg Süd",
-              "id": "osm:b6:-86538:b10:-7489973",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Schallmoos",
-              "altName": "Schallmoos",
-              "id": "osm:b6:-86538:b10:-7489972",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Taxham",
-              "altName": "Taxham",
-              "id": "osm:b6:-86538:b10:-7489971",
-              "postal_code": "",
-              "urlSegment": null
-          }
-      ],
-      "urlSegment": "salzburg/salzburg-stadt"
+    "name": "Salzburg Stadt",
+    "altName": "Salzburg Stadt",
+    "id": "osm:b6:-86538",
+    "children": [
+      {
+        "name": "Aigen",
+        "altName": "Aigen",
+        "id": "osm:b6:-86538:b10:-7489997",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Altstadt",
+        "altName": "Altstadt",
+        "id": "osm:b6:-86538:b10:-7489993",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Elisabeth-Vorstadt",
+        "altName": "Elisabeth-Vorstadt",
+        "id": "osm:b6:-86538:b10:-7489992",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Gaisberg",
+        "altName": "Gaisberg",
+        "id": "osm:b6:-86538:b10:-7489996",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Gneis",
+        "altName": "Gneis",
+        "id": "osm:b6:-86538:b10:-7489986",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Gneis Süd",
+        "altName": "Gneis Süd",
+        "id": "osm:b6:-86538:b10:-7489991",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Gnigl",
+        "altName": "Gnigl",
+        "id": "osm:b6:-86538:b10:-7489990",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Hellbrunn",
+        "altName": "Hellbrunn",
+        "id": "osm:b6:-86538:b10:-7489995",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Heuberg",
+        "altName": "Heuberg",
+        "id": "osm:b6:-86538:b10:-7489994",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Itzling",
+        "altName": "Itzling",
+        "id": "osm:b6:-86538:b10:-7489989",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Itzling Nord",
+        "altName": "Itzling Nord",
+        "id": "osm:b6:-86538:b10:-7489988",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Kasern",
+        "altName": "Kasern",
+        "id": "osm:b6:-86538:b10:-7489985",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Langwied",
+        "altName": "Langwied",
+        "id": "osm:b6:-86538:b10:-7489984",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Lehen",
+        "altName": "Lehen",
+        "id": "osm:b6:-86538:b10:-7489983",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Leopoldskroner Moos",
+        "altName": "Leopoldskroner Moos",
+        "id": "osm:b6:-86538:b10:-7489987",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Liefering",
+        "altName": "Liefering",
+        "id": "osm:b6:-86538:b10:-7489982",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Maxglan",
+        "altName": "Maxglan",
+        "id": "osm:b6:-86538:b10:-7489981",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Maxglan West",
+        "altName": "Maxglan West",
+        "id": "osm:b6:-86538:b10:-7489980",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Morzg",
+        "altName": "Morzg",
+        "id": "osm:b6:-86538:b10:-7489979",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Mülln",
+        "altName": "Mülln",
+        "id": "osm:b6:-86538:b10:-7489978",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Neustadt",
+        "altName": "Neustadt",
+        "id": "osm:b6:-86538:b10:-7489977",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Nonntal",
+        "altName": "Nonntal",
+        "id": "osm:b6:-86538:b10:-7489976",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Parsch",
+        "altName": "Parsch",
+        "id": "osm:b6:-86538:b10:-7489975",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Riedenburg",
+        "altName": "Riedenburg",
+        "id": "osm:b6:-86538:b10:-7489974",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Salzburg Süd",
+        "altName": "Salzburg Süd",
+        "id": "osm:b6:-86538:b10:-7489973",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Schallmoos",
+        "altName": "Schallmoos",
+        "id": "osm:b6:-86538:b10:-7489972",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Taxham",
+        "altName": "Taxham",
+        "id": "osm:b6:-86538:b10:-7489971",
+        "postal_code": "",
+        "urlSegment": null
+      }
+    ],
+    "urlSegment": "salzburg/salzburg-stadt"
   },
   {
-      "name": "Kärnten",
-      "altName": "Kärnten",
-      "id": "osm:b4:-52345",
-      "children": [
-          {
-              "name": "Feldkirchen",
-              "altName": "Feldkirchen",
-              "id": "osm:b4:-52345:b6:-106175",
-              "postal_code": "",
-              "urlSegment": "feldkirchen"
-          },
-          {
-              "name": "Hermagor",
-              "altName": "Hermagor",
-              "id": "osm:b4:-52345:b6:-376675",
-              "postal_code": "",
-              "urlSegment": "hermagor"
-          },
-          {
-              "name": "Klagenfurt",
-              "altName": "Klagenfurt",
-              "id": "osm:b4:-52345:b6:-105870",
-              "postal_code": "",
-              "urlSegment": "klagenfurt"
-          },
-          {
-              "name": "Klagenfurt-Land",
-              "altName": "Klagenfurt-Land",
-              "id": "osm:b4:-52345:b6:-69648",
-              "postal_code": "",
-              "urlSegment": "klagenfurt-land"
-          },
-          {
-              "name": "Spittal an der Drau",
-              "altName": "Spittal an der Drau",
-              "id": "osm:b4:-52345:b6:-376676",
-              "postal_code": "",
-              "urlSegment": "spittal-an-der-drau"
-          },
-          {
-              "name": "St. Veit an der Glan",
-              "altName": "St. Veit an der Glan",
-              "id": "osm:b4:-52345:b6:-105348",
-              "postal_code": "",
-              "urlSegment": "st-veit-an-der-glan"
-          },
-          {
-              "name": "Villach",
-              "altName": "Villach",
-              "id": "osm:b4:-52345:b6:-106163",
-              "postal_code": "",
-              "urlSegment": "villach"
-          },
-          {
-              "name": "Völkermarkt",
-              "altName": "Völkermarkt",
-              "id": "osm:b4:-52345:b6:-105958",
-              "postal_code": "",
-              "urlSegment": "voelkermarkt"
-          },
-          {
-              "name": "Villach-Land",
-              "altName": "Villach-Land",
-              "id": "osm:b4:-52345:b6:-106094",
-              "postal_code": "",
-              "urlSegment": "villach-land"
-          },
-          {
-              "name": "Wolfsberg",
-              "altName": "Wolfsberg",
-              "id": "osm:b4:-52345:b6:-105735",
-              "postal_code": "",
-              "urlSegment": "wolfsberg"
-          }
-      ],
-      "urlSegment": "kaernten"
+    "name": "Kärnten",
+    "altName": "Kärnten",
+    "id": "osm:b4:-52345",
+    "children": [
+      {
+        "name": "Feldkirchen",
+        "altName": "Feldkirchen",
+        "id": "osm:b4:-52345:b6:-106175",
+        "postal_code": "",
+        "urlSegment": "feldkirchen"
+      },
+      {
+        "name": "Hermagor",
+        "altName": "Hermagor",
+        "id": "osm:b4:-52345:b6:-376675",
+        "postal_code": "",
+        "urlSegment": "hermagor"
+      },
+      {
+        "name": "Klagenfurt",
+        "altName": "Klagenfurt",
+        "id": "osm:b4:-52345:b6:-105870",
+        "postal_code": "",
+        "urlSegment": "klagenfurt"
+      },
+      {
+        "name": "Klagenfurt-Land",
+        "altName": "Klagenfurt-Land",
+        "id": "osm:b4:-52345:b6:-69648",
+        "postal_code": "",
+        "urlSegment": "klagenfurt-land"
+      },
+      {
+        "name": "Spittal an der Drau",
+        "altName": "Spittal an der Drau",
+        "id": "osm:b4:-52345:b6:-376676",
+        "postal_code": "",
+        "urlSegment": "spittal-an-der-drau"
+      },
+      {
+        "name": "St. Veit an der Glan",
+        "altName": "St. Veit an der Glan",
+        "id": "osm:b4:-52345:b6:-105348",
+        "postal_code": "",
+        "urlSegment": "st-veit-an-der-glan"
+      },
+      {
+        "name": "Villach",
+        "altName": "Villach",
+        "id": "osm:b4:-52345:b6:-106163",
+        "postal_code": "",
+        "urlSegment": "villach"
+      },
+      {
+        "name": "Völkermarkt",
+        "altName": "Völkermarkt",
+        "id": "osm:b4:-52345:b6:-105958",
+        "postal_code": "",
+        "urlSegment": "voelkermarkt"
+      },
+      {
+        "name": "Villach-Land",
+        "altName": "Villach-Land",
+        "id": "osm:b4:-52345:b6:-106094",
+        "postal_code": "",
+        "urlSegment": "villach-land"
+      },
+      {
+        "name": "Wolfsberg",
+        "altName": "Wolfsberg",
+        "id": "osm:b4:-52345:b6:-105735",
+        "postal_code": "",
+        "urlSegment": "wolfsberg"
+      }
+    ],
+    "urlSegment": "kaernten"
   },
   {
-      "name": "Klagenfurt am Wörthersee",
-      "altName": "Klagenfurt am Wörthersee",
-      "id": "osm:b6:-105870",
-      "children": [
-          {
-              "name": "Annabichl",
-              "altName": "Annabichl",
-              "id": "osm:b6:-105870:b9:-2401607",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Hörtendorf",
-              "altName": "Hörtendorf",
-              "id": "osm:b6:-105870:b9:-2401507",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Innere Stadt",
-              "altName": "Innere Stadt",
-              "id": "osm:b6:-105870:b9:-2219021",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "St. Martin",
-              "altName": "St. Martin",
-              "id": "osm:b6:-105870:b9:-6416634",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "St. Peter",
-              "altName": "St. Peter",
-              "id": "osm:b6:-105870:b9:-2342527",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "St. Ruprecht",
-              "altName": "St. Ruprecht",
-              "id": "osm:b6:-105870:b9:-2253131",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "St. Veiter Vorstadt",
-              "altName": "St. Veiter Vorstadt",
-              "id": "osm:b6:-105870:b9:-2219101",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Viktring",
-              "altName": "Viktring",
-              "id": "osm:b6:-105870:b9:-6416635",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Viktringer Vorstadt",
-              "altName": "Viktringer Vorstadt",
-              "id": "osm:b6:-105870:b9:-2219022",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Villacher Vorstadt",
-              "altName": "Villacher Vorstadt",
-              "id": "osm:b6:-105870:b9:-2219102",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Völkermarkter Vorstadt",
-              "altName": "Völkermarkter Vorstadt",
-              "id": "osm:b6:-105870:b9:-2219103",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Wölfnitz",
-              "altName": "Wölfnitz",
-              "id": "osm:b6:-105870:b9:-2401608",
-              "postal_code": "",
-              "urlSegment": null
-          }
-      ],
-      "urlSegment": "kaernten/klagenfurt-am-woerthersee"
+    "name": "Klagenfurt am Wörthersee",
+    "altName": "Klagenfurt am Wörthersee",
+    "id": "osm:b6:-105870",
+    "children": [
+      {
+        "name": "Annabichl",
+        "altName": "Annabichl",
+        "id": "osm:b6:-105870:b9:-2401607",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Hörtendorf",
+        "altName": "Hörtendorf",
+        "id": "osm:b6:-105870:b9:-2401507",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Innere Stadt",
+        "altName": "Innere Stadt",
+        "id": "osm:b6:-105870:b9:-2219021",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "St. Martin",
+        "altName": "St. Martin",
+        "id": "osm:b6:-105870:b9:-6416634",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "St. Peter",
+        "altName": "St. Peter",
+        "id": "osm:b6:-105870:b9:-2342527",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "St. Ruprecht",
+        "altName": "St. Ruprecht",
+        "id": "osm:b6:-105870:b9:-2253131",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "St. Veiter Vorstadt",
+        "altName": "St. Veiter Vorstadt",
+        "id": "osm:b6:-105870:b9:-2219101",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Viktring",
+        "altName": "Viktring",
+        "id": "osm:b6:-105870:b9:-6416635",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Viktringer Vorstadt",
+        "altName": "Viktringer Vorstadt",
+        "id": "osm:b6:-105870:b9:-2219022",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Villacher Vorstadt",
+        "altName": "Villacher Vorstadt",
+        "id": "osm:b6:-105870:b9:-2219102",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Völkermarkter Vorstadt",
+        "altName": "Völkermarkter Vorstadt",
+        "id": "osm:b6:-105870:b9:-2219103",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Wölfnitz",
+        "altName": "Wölfnitz",
+        "id": "osm:b6:-105870:b9:-2401608",
+        "postal_code": "",
+        "urlSegment": null
+      }
+    ],
+    "urlSegment": "kaernten/klagenfurt-am-woerthersee"
   },
   {
-      "name": "Tirol",
-      "altName": "Tirol",
-      "id": "osm:b4:-52343",
-      "children": [
-          {
-              "name": "Innsbruck",
-              "altName": "Innsbruck",
-              "id": "osm:b4:-52343:b6:-4835169",
-              "postal_code": "",
-              "urlSegment": "innsbruck"
-          },
-          {
-              "name": "Innsbruck-Land",
-              "altName": "Innsbruck-Land",
-              "id": "osm:b4:-52343:b6:-78251",
-              "postal_code": "",
-              "urlSegment": "innsbruck-land"
-          },
-          {
-              "name": "Imst",
-              "altName": "Imst",
-              "id": "osm:b4:-52343:b6:-77101",
-              "postal_code": "",
-              "urlSegment": "imst"
-          },
-          {
-              "name": "Kitzbühel",
-              "altName": "Kitzbühel",
-              "id": "osm:b4:-52343:b6:-85647",
-              "postal_code": "",
-              "urlSegment": "kitzbuehel"
-          },
-          {
-              "name": "Kufstein",
-              "altName": "Kufstein",
-              "id": "osm:b4:-52343:b6:-544102",
-              "postal_code": "",
-              "urlSegment": "kufstein"
-          },
-          {
-              "name": "Landeck",
-              "altName": "Landeck",
-              "id": "osm:b4:-52343:b6:-76826",
-              "postal_code": "",
-              "urlSegment": "landeck"
-          },
-          {
-              "name": "Lienz",
-              "altName": "Lienz",
-              "id": "osm:b4:-52343:b6:-539866",
-              "postal_code": "",
-              "urlSegment": "lienz"
-          },
-          {
-              "name": "Reutte",
-              "altName": "Reutte",
-              "id": "osm:b4:-52343:b6:-30030",
-              "postal_code": "",
-              "urlSegment": "reutte"
-          },
-          {
-              "name": "Schwaz",
-              "altName": "Schwaz",
-              "id": "osm:b4:-52343:b6:-80051",
-              "postal_code": "",
-              "urlSegment": "schwaz"
-          }
-      ],
-      "urlSegment": "tirol"
+    "name": "Tirol",
+    "altName": "Tirol",
+    "id": "osm:b4:-52343",
+    "children": [
+      {
+        "name": "Innsbruck",
+        "altName": "Innsbruck",
+        "id": "osm:b4:-52343:b6:-4835169",
+        "postal_code": "",
+        "urlSegment": "innsbruck"
+      },
+      {
+        "name": "Innsbruck-Land",
+        "altName": "Innsbruck-Land",
+        "id": "osm:b4:-52343:b6:-78251",
+        "postal_code": "",
+        "urlSegment": "innsbruck-land"
+      },
+      {
+        "name": "Imst",
+        "altName": "Imst",
+        "id": "osm:b4:-52343:b6:-77101",
+        "postal_code": "",
+        "urlSegment": "imst"
+      },
+      {
+        "name": "Kitzbühel",
+        "altName": "Kitzbühel",
+        "id": "osm:b4:-52343:b6:-85647",
+        "postal_code": "",
+        "urlSegment": "kitzbuehel"
+      },
+      {
+        "name": "Kufstein",
+        "altName": "Kufstein",
+        "id": "osm:b4:-52343:b6:-544102",
+        "postal_code": "",
+        "urlSegment": "kufstein"
+      },
+      {
+        "name": "Landeck",
+        "altName": "Landeck",
+        "id": "osm:b4:-52343:b6:-76826",
+        "postal_code": "",
+        "urlSegment": "landeck"
+      },
+      {
+        "name": "Lienz",
+        "altName": "Lienz",
+        "id": "osm:b4:-52343:b6:-539866",
+        "postal_code": "",
+        "urlSegment": "lienz"
+      },
+      {
+        "name": "Reutte",
+        "altName": "Reutte",
+        "id": "osm:b4:-52343:b6:-30030",
+        "postal_code": "",
+        "urlSegment": "reutte"
+      },
+      {
+        "name": "Schwaz",
+        "altName": "Schwaz",
+        "id": "osm:b4:-52343:b6:-80051",
+        "postal_code": "",
+        "urlSegment": "schwaz"
+      }
+    ],
+    "urlSegment": "tirol"
   },
   {
-      "name": "Innsbruck",
-      "altName": "Innsbruck",
-      "id": "osm:b6:-4835169",
-      "children": [
-          {
-              "name": "Amras",
-              "altName": "Amras",
-              "id": "osm:b6:-4835169:b9:-8182614",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Arzl",
-              "altName": "Arzl",
-              "id": "osm:b6:-4835169:b9:-8379592",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Hötting",
-              "altName": "Hötting",
-              "id": "osm:b6:-4835169:b9:-8379594",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Igls",
-              "altName": "Igls",
-              "id": "osm:b6:-4835169:b9:-8182613",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Innsbruck",
-              "altName": "Innsbruck",
-              "id": "osm:b6:-4835169:b9:-8182617",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Mühlau",
-              "altName": "Mühlau",
-              "id": "osm:b6:-4835169:b9:-8379593",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Pradl",
-              "altName": "Pradl",
-              "id": "osm:b6:-4835169:b9:-8182615",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Vill",
-              "altName": "Vill",
-              "id": "osm:b6:-4835169:b9:-8182612",
-              "postal_code": "",
-              "urlSegment": null
-          },
-          {
-              "name": "Wilten",
-              "altName": "Wilten",
-              "id": "osm:b6:-4835169:b9:-8182616",
-              "postal_code": "",
-              "urlSegment": null
-          }
-      ],
-      "urlSegment": "tirol/innsbruck"
+    "name": "Innsbruck",
+    "altName": "Innsbruck",
+    "id": "osm:b6:-4835169",
+    "children": [
+      {
+        "name": "Amras",
+        "altName": "Amras",
+        "id": "osm:b6:-4835169:b9:-8182614",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Arzl",
+        "altName": "Arzl",
+        "id": "osm:b6:-4835169:b9:-8379592",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Hötting",
+        "altName": "Hötting",
+        "id": "osm:b6:-4835169:b9:-8379594",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Igls",
+        "altName": "Igls",
+        "id": "osm:b6:-4835169:b9:-8182613",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Innsbruck",
+        "altName": "Innsbruck",
+        "id": "osm:b6:-4835169:b9:-8182617",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Mühlau",
+        "altName": "Mühlau",
+        "id": "osm:b6:-4835169:b9:-8379593",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Pradl",
+        "altName": "Pradl",
+        "id": "osm:b6:-4835169:b9:-8182615",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Vill",
+        "altName": "Vill",
+        "id": "osm:b6:-4835169:b9:-8182612",
+        "postal_code": "",
+        "urlSegment": null
+      },
+      {
+        "name": "Wilten",
+        "altName": "Wilten",
+        "id": "osm:b6:-4835169:b9:-8182616",
+        "postal_code": "",
+        "urlSegment": null
+      }
+    ],
+    "urlSegment": "tirol/innsbruck"
   },
   {
-      "name": "Vorarlberg",
-      "altName": "Vorarlberg",
-      "id": "osm:b4:-74942",
-      "children": [
-          {
-              "name": "Bregenz",
-              "altName": "Bregenz",
-              "id": "osm:b4:-74942:b6:-74231",
-              "postal_code": "",
-              "urlSegment": "bregenz"
-          },
-          {
-              "name": "Bludenz",
-              "altName": "Bludenz",
-              "id": "osm:b4:-74942:b6:-74804",
-              "postal_code": "",
-              "urlSegment": "bludenz"
-          },
-          {
-              "name": "Dornbirn",
-              "altName": "Dornbirn",
-              "id": "osm:b4:-74942:b6:-75111",
-              "postal_code": "",
-              "urlSegment": "dornbirn"
-          },
-          {
-              "name": "Feldkirch",
-              "altName": "Feldkirch",
-              "id": "osm:b4:-74942:b6:-75152",
-              "postal_code": "",
-              "urlSegment": "feldkirch"
-          }
-      ],
-      "urlSegment": "vorarlberg"
+    "name": "Vorarlberg",
+    "altName": "Vorarlberg",
+    "id": "osm:b4:-74942",
+    "children": [
+      {
+        "name": "Bregenz",
+        "altName": "Bregenz",
+        "id": "osm:b4:-74942:b6:-74231",
+        "postal_code": "",
+        "urlSegment": "bregenz"
+      },
+      {
+        "name": "Bludenz",
+        "altName": "Bludenz",
+        "id": "osm:b4:-74942:b6:-74804",
+        "postal_code": "",
+        "urlSegment": "bludenz"
+      },
+      {
+        "name": "Dornbirn",
+        "altName": "Dornbirn",
+        "id": "osm:b4:-74942:b6:-75111",
+        "postal_code": "",
+        "urlSegment": "dornbirn"
+      },
+      {
+        "name": "Feldkirch",
+        "altName": "Feldkirch",
+        "id": "osm:b4:-74942:b6:-75152",
+        "postal_code": "",
+        "urlSegment": "feldkirch"
+      }
+    ],
+    "urlSegment": "vorarlberg"
   }
 ]

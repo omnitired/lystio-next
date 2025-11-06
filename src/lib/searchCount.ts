@@ -30,14 +30,18 @@ export interface HistogramResponse {
   histogram: number[];
 }
 
-export async function fetchSearchCount(params: SearchCountParams): Promise<SearchCountResponse> {
+export async function fetchSearchCount(
+  params: SearchCountParams,
+): Promise<SearchCountResponse> {
   return apiRequest<SearchCountResponse>("/tenement/search/count", {
     method: "POST",
     body: JSON.stringify(params),
   });
 }
 
-export async function fetchHistogram(params: HistogramParams): Promise<HistogramResponse> {
+export async function fetchHistogram(
+  params: HistogramParams,
+): Promise<HistogramResponse> {
   return apiRequest<HistogramResponse>("/tenement/search/histogram", {
     method: "POST",
     body: JSON.stringify(params),

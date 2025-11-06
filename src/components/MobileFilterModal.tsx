@@ -17,7 +17,12 @@ interface MobileFilterModalProps {
   histogramParams: HistogramParams;
 }
 
-export function MobileFilterModal({ isOpen, onClose, onApply, histogramParams }: MobileFilterModalProps) {
+export function MobileFilterModal({
+  isOpen,
+  onClose,
+  onApply,
+  histogramParams,
+}: MobileFilterModalProps) {
   const { filter, setMode } = useFilter();
   const [showCategoryModal, setShowCategoryModal] = useState(false);
   const [showPriceModal, setShowPriceModal] = useState(false);
@@ -50,15 +55,18 @@ export function MobileFilterModal({ isOpen, onClose, onApply, histogramParams }:
           >
             <div className="flex items-center gap-4">
               <Image src="/icons/home.svg" alt="" width={28} height={28} />
-              <span className="text-md font-normal text-black">
-                Category
-              </span>
+              <span className="text-md font-normal text-black">Category</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="text-md font-normal text-brand-purple">
                 {filter.category}
               </span>
-              <Image src="/icons/chevron-right-purple.svg" alt="" width={24} height={24} />
+              <Image
+                src="/icons/chevron-right-purple.svg"
+                alt=""
+                width={24}
+                height={24}
+              />
             </div>
           </button>
 
@@ -81,9 +89,18 @@ export function MobileFilterModal({ isOpen, onClose, onApply, histogramParams }:
               >
                 {!filter.minPrice && !filter.maxPrice
                   ? "Any Price"
-                  : getPriceDisplayText(filter.minPrice, filter.maxPrice, "Any Price")}
+                  : getPriceDisplayText(
+                      filter.minPrice,
+                      filter.maxPrice,
+                      "Any Price",
+                    )}
               </span>
-              <Image src="/icons/chevron-right-gray.svg" alt="" width={24} height={24} />
+              <Image
+                src="/icons/chevron-right-gray.svg"
+                alt=""
+                width={24}
+                height={24}
+              />
             </div>
           </button>
         </div>

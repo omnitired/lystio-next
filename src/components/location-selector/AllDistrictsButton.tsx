@@ -7,7 +7,12 @@ interface AllDistrictsButtonProps {
   variant: "dropdown" | "modal";
 }
 
-export function AllDistrictsButton({ checked, districtCount, onClick, variant }: AllDistrictsButtonProps) {
+export function AllDistrictsButton({
+  checked,
+  districtCount,
+  onClick,
+  variant,
+}: AllDistrictsButtonProps) {
   const isModal = variant === "modal";
 
   return (
@@ -19,10 +24,14 @@ export function AllDistrictsButton({ checked, districtCount, onClick, variant }:
     >
       <Checkbox checked={checked} />
       <div className="flex-1 min-w-0">
-        <p className={`${isModal ? "text-base" : "text-sm"} font-medium text-text-primary leading-normal text-left`}>
+        <p
+          className={`${isModal ? "text-base" : "text-sm"} font-medium text-text-primary leading-normal text-left`}
+        >
           All Districts
         </p>
-        <p className={`${isModal ? "text-sm" : "text-xs"} font-medium text-text-primary opacity-60 leading-normal text-left`}>
+        <p
+          className={`${isModal ? "text-sm" : "text-xs"} font-medium text-text-primary opacity-60 leading-normal text-left`}
+        >
           {districtCount} Districts
         </p>
       </div>

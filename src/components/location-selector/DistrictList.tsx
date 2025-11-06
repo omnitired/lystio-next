@@ -17,7 +17,7 @@ export function DistrictList({
   selectedDistricts,
   onToggleAll,
   onToggleDistrict,
-  variant
+  variant,
 }: DistrictListProps) {
   return (
     <>

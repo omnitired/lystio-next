@@ -8,16 +8,19 @@ interface SearchResultsSectionProps {
   variant: "dropdown" | "modal";
 }
 
-export function SearchResultsSection({ title, results, onSelect, variant }: SearchResultsSectionProps) {
+export function SearchResultsSection({
+  title,
+  results,
+  onSelect,
+  variant,
+}: SearchResultsSectionProps) {
   const isModal = variant === "modal";
 
   if (results.length === 0) return null;
 
   return (
     <div>
-      <p className="text-sm font-medium text-text-secondary mb-2">
-        {title}
-      </p>
+      <p className="text-sm font-medium text-text-secondary mb-2">{title}</p>
       <div className="space-y-1">
         {results.map((result) => (
           <SearchResultItem

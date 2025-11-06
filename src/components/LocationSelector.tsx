@@ -3,7 +3,12 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { MapboxSearchResponse, GroupedSuggestions } from "@/types/mapbox";
-import { useAllLocations, usePopularLocations, useRecentSearches, type Location } from "@/lib/locations";
+import {
+  useAllLocations,
+  usePopularLocations,
+  useRecentSearches,
+  type Location,
+} from "@/lib/locations";
 import { SLIDE_ANIMATION, EXPAND_ANIMATION } from "@/lib/locationUtils";
 import { DrawAreaButton } from "./location-selector/DrawAreaButton";
 import { SectionHeader } from "./location-selector/SectionHeader";
@@ -13,7 +18,11 @@ import { LocationCard } from "./location-selector/LocationCard";
 import { DistrictList } from "./location-selector/DistrictList";
 
 interface LocationSelectorProps {
-  onLocationUpdate?: (locationName: string, locationIds: string[], locationId?: string) => void;
+  onLocationUpdate?: (
+    locationName: string,
+    locationIds: string[],
+    locationId?: string,
+  ) => void;
   searchResults?: MapboxSearchResponse;
   isLoading?: boolean;
   hasSearchQuery?: boolean;
@@ -27,28 +36,36 @@ export function LocationSelector({
   isLoading = false,
   hasSearchQuery = false,
   selectedLocationId,
-  variant = "dropdown"
+  variant = "dropdown",
 }: LocationSelectorProps) {
-  const { data: allLocations = [], isLoading: isLoadingAll } = useAllLocations();
-  const { data: popularLocations = [], isLoading: isLoadingPopular } = usePopularLocations();
+  const { data: allLocations = [], isLoading: isLoadingAll } =
+    useAllLocations();
+  const { data: popularLocations = [], isLoading: isLoadingPopular } =
+    usePopularLocations();
   const { data: recentSearches = [] } = useRecentSearches();
 
   const popularCities = popularLocations;
   const otherLocations = allLocations.filter(
-    (loc) => !popularLocations.some((pop) => pop.id === loc.id)
+    (loc) => !popularLocations.some((pop) => pop.id === loc.id),
   );
 
   const findLocationById = (id: string): Location | null => {
-    return allLocations.find(loc => loc.id === id) || null;
+    return allLocations.find((loc) => loc.id === id) || null;
   };
 
-  const initialLocation = selectedLocationId ? findLocationById(selectedLocationId) : null;
+  const initialLocation = selectedLocationId
+    ? findLocationById(selectedLocationId)
+    : null;
 
   const [expandedLocation, setExpandedLocation] = useState<string | null>(
-    variant === "modal" ? selectedLocationId || null : null
+    variant === "modal" ? selectedLocationId || null : null,
   );
-  const [selectedLocation, setSelectedLocation] = useState<Location | null>(initialLocation);
-  const [selectedDistricts, setSelectedDistricts] = useState<Set<string>>(new Set());
+  const [selectedLocation, setSelectedLocation] = useState<Location | null>(
+    initialLocation,
+  );
+  const [selectedDistricts, setSelectedDistricts] = useState<Set<string>>(
+    new Set(),
+  );
   const [allDistrictsSelected, setAllDistrictsSelected] = useState(true);
 
   const isModal = variant === "modal";
@@ -78,7 +95,11 @@ export function LocationSelector({
       const locationIds = allDistrictsSelected
         ? [selectedLocation.id]
         : Array.from(selectedDistricts);
-      onLocationUpdate?.(selectedLocation.name, locationIds, selectedLocation.id);
+      onLocationUpdate?.(
+        selectedLocation.name,
+        locationIds,
+        selectedLocation.id,
+      );
     }
   }, [selectedLocation, selectedDistricts, allDistrictsSelected, isModal]);
 
@@ -114,7 +135,11 @@ export function LocationSelector({
     // For modal variant, update immediately
     if (isModal && selectedLocation) {
       const locationIds = Array.from(newSelected);
-      onLocationUpdate?.(selectedLocation.name, locationIds, selectedLocation.id);
+      onLocationUpdate?.(
+        selectedLocation.name,
+        locationIds,
+        selectedLocation.id,
+      );
     }
   };
 
@@ -126,7 +151,11 @@ export function LocationSelector({
     // For modal variant, update immediately
     if (isModal && selectedLocation) {
       const locationIds = newAllSelected ? [selectedLocation.id] : [];
-      onLocationUpdate?.(selectedLocation.name, locationIds, selectedLocation.id);
+      onLocationUpdate?.(
+        selectedLocation.name,
+        locationIds,
+        selectedLocation.id,
+      );
     }
   };
 
@@ -154,13 +183,17 @@ export function LocationSelector({
         onSelect={handleSearchResultSelect}
         variant={variant}
       />
-      {!isLoading && searchResults && searchResults.suggestions.length === 0 && (
-        <div className="text-center py-8">
-          <p className={`${isModal ? "text-base" : "text-sm"} text-text-secondary`}>
-            No results found
-          </p>
-        </div>
-      )}
+      {!isLoading &&
+        searchResults &&
+        searchResults.suggestions.length === 0 && (
+          <div className="text-center py-8">
+            <p
+              className={`${isModal ? "text-base" : "text-sm"} text-text-secondary`}
+            >
+              No results found
+            </p>
+          </div>
+        )}
     </div>
   );
 
@@ -168,7 +201,9 @@ export function LocationSelector({
     if (isLoadingAll || isLoadingPopular) {
       return (
         <div className="text-center py-8">
-          <p className={`${isModal ? "text-base" : "text-sm"} text-text-secondary`}>
+          <p
+            className={`${isModal ? "text-base" : "text-sm"} text-text-secondary`}
+          >
             Loading locations...
           </p>
         </div>
@@ -263,7 +298,10 @@ export function LocationSelector({
               if (isModal) {
                 const isExpanded = expandedLocation === location.id;
                 return (
-                  <div key={location.id} className="border-b border-border-light">
+                  <div
+                    key={location.id}
+                    className="border-b border-border-light"
+                  >
                     <LocationCard
                       location={location}
                       isSelected={false}
@@ -333,7 +371,11 @@ export function LocationSelector({
       {/* Right Panel - Districts */}
       {!hasSearchQuery && selectedLocation && (
         <div className="w-[270px] border-l border-border-light flex flex-col">
-          <motion.div key={selectedLocation.id} {...SLIDE_ANIMATION} className="flex flex-col h-full">
+          <motion.div
+            key={selectedLocation.id}
+            {...SLIDE_ANIMATION}
+            className="flex flex-col h-full"
+          >
             <SectionHeader title={selectedLocation.name} />
             <div className="flex-1 overflow-y-auto max-h-[520px] scrollbar-hide [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
               <DistrictList

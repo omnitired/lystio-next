@@ -30,13 +30,16 @@ export function useDropdownState<T = string>() {
     }, 200); // Match animation duration
   }, []);
 
-  const toggle = useCallback((dropdown: T) => {
-    if (active === dropdown) {
-      close();
-    } else {
-      open(dropdown);
-    }
-  }, [active, open, close]);
+  const toggle = useCallback(
+    (dropdown: T) => {
+      if (active === dropdown) {
+        close();
+      } else {
+        open(dropdown);
+      }
+    },
+    [active, open, close],
+  );
 
   return {
     active,

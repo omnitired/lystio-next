@@ -14,7 +14,7 @@ export const DEBOUNCE = {
  * Cache durations (in milliseconds)
  */
 export const CACHE = {
-  LOCATIONS: 60 * 60 * 1000,      // 1 hour
+  LOCATIONS: 60 * 60 * 1000, // 1 hour
   RECENT_SEARCHES: 5 * 60 * 1000, // 5 minutes
 } as const;
 

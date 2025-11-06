@@ -7,7 +7,11 @@ import { LocationSelector } from "./LocationSelector";
 interface LocationDropdownProps {
   onClose?: () => void;
   onApply?: (selectedLocation: string, selectedDistricts: string[]) => void;
-  onLocationUpdate?: (locationName: string, locationIds: string[], locationId?: string) => void;
+  onLocationUpdate?: (
+    locationName: string,
+    locationIds: string[],
+    locationId?: string,
+  ) => void;
   isOpen?: boolean;
   searchResults?: MapboxSearchResponse;
   isLoading?: boolean;

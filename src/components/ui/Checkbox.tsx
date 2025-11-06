@@ -19,7 +19,6 @@ interface CheckboxProps {
  * />
  */
 export function Checkbox({ checked, onChange, className = "" }: CheckboxProps) {
-
   return (
     <div
       className={`w-4 h-4 flex items-center justify-center shrink-0 border ${className || "rounded"} ${
@@ -30,12 +29,7 @@ export function Checkbox({ checked, onChange, className = "" }: CheckboxProps) {
       onClick={onChange}
     >
       {checked && (
-        <Image
-          src="/icons/checkmark-white.svg"
-          alt=""
-          width={12}
-          height={10}
-        />
+        <Image src="/icons/checkmark-white.svg" alt="" width={12} height={10} />
       )}
     </div>
   );

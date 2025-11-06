@@ -27,7 +27,8 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --font-plus-jakarta: var(--font-plus-jakarta-sans);
-  --font-family-plus-jakarta: var(--font-plus-jakarta-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-family-plus-jakarta:
+    var(--font-plus-jakarta-sans), ui-sans-serif, system-ui, sans-serif;
 
   /* Brand colors */
   --color-brand-purple: var(--brand-purple);

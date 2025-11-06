@@ -1,13 +1,25 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDownIcon, ChevronUpIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
+import {
+  ChevronDownIcon,
+  ChevronUpIcon,
+  ChevronRightIcon,
+} from "@heroicons/react/24/outline";
 import categoriesData from "@/data/categories.json";
 import { mockCounts } from "@/data/mockCounts";
 import { Checkbox } from "./ui/Checkbox";
-import { categoryIcons, PURPLE_FILTER, SLIDE_DURATION } from "@/lib/categoryUtils";
+import {
+  categoryIcons,
+  PURPLE_FILTER,
+  SLIDE_DURATION,
+} from "@/lib/categoryUtils";
 
 interface CategorySelectorProps {
-  onCategoryUpdate?: (categoryName: string, typeId: string, subtypeIds: string[]) => void;
+  onCategoryUpdate?: (
+    categoryName: string,
+    typeId: string,
+    subtypeIds: string[],
+  ) => void;
   initialTypeId?: string;
   initialSubtypeIds?: string[];
   variant?: "dropdown" | "modal";
@@ -52,7 +64,12 @@ interface SubcategoryListProps {
   typeId?: string;
 }
 
-function AllSubcategoriesButton({ onClick, checked, totalCount, variant }: AllSubcategoriesButtonProps) {
+function AllSubcategoriesButton({
+  onClick,
+  checked,
+  totalCount,
+  variant,
+}: AllSubcategoriesButtonProps) {
   const isModal = variant === "modal";
 
   return (
@@ -63,19 +80,33 @@ function AllSubcategoriesButton({ onClick, checked, totalCount, variant }: AllSu
       } ${isModal ? "border-t" : "border-b"} border-border-light ${isModal ? "hover-purple" : ""}`}
     >
       <Checkbox checked={checked} />
-      <span className={`${
-        isModal ? "text-body" : "text-body-sm leading-[1.6] whitespace-nowrap"
-      } flex-1 text-left`}>
+      <span
+        className={`${
+          isModal ? "text-body" : "text-body-sm leading-[1.6] whitespace-nowrap"
+        } flex-1 text-left`}
+      >
         All Subcategories
       </span>
-      <span className={isModal ? "text-caption" : "text-[10px] font-semibold text-text-secondary leading-[1.2] text-right whitespace-nowrap"}>
+      <span
+        className={
+          isModal
+            ? "text-caption"
+            : "text-[10px] font-semibold text-text-secondary leading-[1.2] text-right whitespace-nowrap"
+        }
+      >
         {totalCount.toLocaleString()}
       </span>
     </button>
   );
 }
 
-function SubcategoryItem({ subtypeId, subtypeName, checked, onClick, variant }: SubcategoryItemProps) {
+function SubcategoryItem({
+  subtypeId,
+  subtypeName,
+  checked,
+  onClick,
+  variant,
+}: SubcategoryItemProps) {
   const isModal = variant === "modal";
 
   return (
@@ -87,12 +118,20 @@ function SubcategoryItem({ subtypeId, subtypeName, checked, onClick, variant }: 
       } hover-purple`}
     >
       <Checkbox checked={checked} />
-      <span className={`${
-        isModal ? "text-body" : "text-body-sm leading-[1.6] whitespace-nowrap"
-      } flex-1 text-left`}>
+      <span
+        className={`${
+          isModal ? "text-body" : "text-body-sm leading-[1.6] whitespace-nowrap"
+        } flex-1 text-left`}
+      >
         {subtypeName}
       </span>
-      <span className={isModal ? "text-caption" : "text-[10px] font-semibold text-text-secondary leading-[1.2] text-right whitespace-nowrap"}>
+      <span
+        className={
+          isModal
+            ? "text-caption"
+            : "text-[10px] font-semibold text-text-secondary leading-[1.2] text-right whitespace-nowrap"
+        }
+      >
         {Math.floor(Math.random() * 1000)}
       </span>
     </button>
@@ -109,7 +148,14 @@ function SectionHeader({ title }: SectionHeaderProps) {
   );
 }
 
-function CategoryButton({ typeId, typeName, isActive, count, onClick, variant }: CategoryButtonProps) {
+function CategoryButton({
+  typeId,
+  typeName,
+  isActive,
+  count,
+  onClick,
+  variant,
+}: CategoryButtonProps) {
   const isModal = variant === "modal";
 
   if (isModal) {
@@ -125,16 +171,20 @@ function CategoryButton({ typeId, typeName, isActive, count, onClick, variant }:
             src={categoryIcons[typeId]}
             alt={typeName}
             className="w-5 h-5 shrink-0"
-            style={{ filter: isActive ? PURPLE_FILTER : 'none' }}
+            style={{ filter: isActive ? PURPLE_FILTER : "none" }}
           />
-          <span className={`text-base font-medium ${
-            isActive ? "text-brand-purple" : "text-text-primary"
-          }`}>
+          <span
+            className={`text-base font-medium ${
+              isActive ? "text-brand-purple" : "text-text-primary"
+            }`}
+          >
             {typeName}
           </span>
-          <span className={`text-xs font-semibold ${
-            isActive ? "text-brand-purple" : "text-text-secondary"
-          }`}>
+          <span
+            className={`text-xs font-semibold ${
+              isActive ? "text-brand-purple" : "text-text-secondary"
+            }`}
+          >
             {count.toLocaleString()}
           </span>
         </div>
@@ -160,20 +210,26 @@ function CategoryButton({ typeId, typeName, isActive, count, onClick, variant }:
           src={categoryIcons[typeId]}
           alt={typeName}
           className="w-4 h-4 shrink-0"
-          style={{ filter: isActive ? PURPLE_FILTER : 'none' }}
+          style={{ filter: isActive ? PURPLE_FILTER : "none" }}
         />
-        <span className={`text-sm font-medium leading-[1.6] whitespace-nowrap ${
-          isActive ? "text-brand-purple" : "text-text-primary"
-        }`}>
+        <span
+          className={`text-sm font-medium leading-[1.6] whitespace-nowrap ${
+            isActive ? "text-brand-purple" : "text-text-primary"
+          }`}
+        >
           {typeName}
         </span>
-        <span className={`text-[10px] font-semibold leading-[1.2] whitespace-nowrap ${
-          isActive ? "text-brand-purple" : "text-text-secondary"
-        }`}>
+        <span
+          className={`text-[10px] font-semibold leading-[1.2] whitespace-nowrap ${
+            isActive ? "text-brand-purple" : "text-text-secondary"
+          }`}
+        >
           {count.toLocaleString()}
         </span>
         <div className="shrink-0">
-          <ChevronRightIcon className={`w-5 h-5 ${isActive ? "text-brand-purple" : "text-[#79767D]"}`} />
+          <ChevronRightIcon
+            className={`w-5 h-5 ${isActive ? "text-brand-purple" : "text-[#79767D]"}`}
+          />
         </div>
       </div>
     </button>
@@ -188,7 +244,7 @@ function SubcategoryList({
   onToggleAllSubcategories,
   totalCount,
   variant,
-  typeId
+  typeId,
 }: SubcategoryListProps) {
   return (
     <>
@@ -216,19 +272,32 @@ export function CategorySelector({
   onCategoryUpdate,
   initialTypeId,
   initialSubtypeIds,
-  variant = "dropdown"
+  variant = "dropdown",
 }: CategorySelectorProps) {
-  const [expandedType, setExpandedType] = useState<string | null>(variant === "modal" ? initialTypeId || null : null);
-  const [selectedType, setSelectedType] = useState<string>(initialTypeId || "3");
-  const [selectedSubtypes, setSelectedSubtypes] = useState<Set<string>>(
-    initialSubtypeIds && initialSubtypeIds.length > 0 ? new Set(initialSubtypeIds) : new Set()
+  const [expandedType, setExpandedType] = useState<string | null>(
+    variant === "modal" ? initialTypeId || null : null,
   );
-  const [allSubcategoriesSelected, setAllSubcategoriesSelected] = useState(!initialSubtypeIds || initialSubtypeIds.length === 0);
+  const [selectedType, setSelectedType] = useState<string>(
+    initialTypeId || "3",
+  );
+  const [selectedSubtypes, setSelectedSubtypes] = useState<Set<string>>(
+    initialSubtypeIds && initialSubtypeIds.length > 0
+      ? new Set(initialSubtypeIds)
+      : new Set(),
+  );
+  const [allSubcategoriesSelected, setAllSubcategoriesSelected] = useState(
+    !initialSubtypeIds || initialSubtypeIds.length === 0,
+  );
 
   const isModal = variant === "modal";
 
-  const notifyParent = (typeId: string, subtypes: Set<string>, allSelected: boolean) => {
-    const typeName = categoriesData.types[typeId as keyof typeof categoriesData.types];
+  const notifyParent = (
+    typeId: string,
+    subtypes: Set<string>,
+    allSelected: boolean,
+  ) => {
+    const typeName =
+      categoriesData.types[typeId as keyof typeof categoriesData.types];
     const subtypeIds = allSelected ? [] : Array.from(subtypes);
     onCategoryUpdate?.(typeName, typeId, subtypeIds);
   };
@@ -271,14 +340,20 @@ export function CategorySelector({
     notifyParent(selectedType, new Set(), newAllSelected);
   };
 
-  const currentSubtypes = categoriesData.subtypes[selectedType as keyof typeof categoriesData.subtypes] || {};
+  const currentSubtypes =
+    categoriesData.subtypes[
+      selectedType as keyof typeof categoriesData.subtypes
+    ] || {};
 
   if (isModal) {
     return (
       <div className="flex-1 overflow-y-auto">
         {Object.entries(categoriesData.types).map(([typeId, typeName]) => {
           const isExpanded = expandedType === typeId;
-          const currentSubtypes = categoriesData.subtypes[typeId as keyof typeof categoriesData.subtypes] || {};
+          const currentSubtypes =
+            categoriesData.subtypes[
+              typeId as keyof typeof categoriesData.subtypes
+            ] || {};
 
           return (
             <div key={typeId} className="border-b border-border-light">
@@ -350,7 +425,11 @@ export function CategorySelector({
           className="flex flex-col h-full"
         >
           <SectionHeader
-            title={categoriesData.types[selectedType as keyof typeof categoriesData.types]}
+            title={
+              categoriesData.types[
+                selectedType as keyof typeof categoriesData.types
+              ]
+            }
           />
           <div className="flex-1 flex flex-col overflow-auto max-h-[480px] scrollbar-hide [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
             <SubcategoryList

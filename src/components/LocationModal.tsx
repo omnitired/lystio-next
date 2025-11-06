@@ -14,10 +14,7 @@ interface LocationModalProps {
   onClose: () => void;
 }
 
-export function LocationModal({
-  isOpen,
-  onClose,
-}: LocationModalProps) {
+export function LocationModal({ isOpen, onClose }: LocationModalProps) {
   const { filter, updateLocation } = useFilter();
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
@@ -43,7 +40,11 @@ export function LocationModal({
     enabled: debouncedQuery.length > 0,
   });
 
-  const handleLocationUpdate = (locationName: string, locationIds: string[], locationId?: string) => {
+  const handleLocationUpdate = (
+    locationName: string,
+    locationIds: string[],
+    locationId?: string,
+  ) => {
     updateLocation(locationName, locationIds, locationId);
     onClose();
   };

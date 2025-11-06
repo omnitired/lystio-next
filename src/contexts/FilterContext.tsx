@@ -1,6 +1,12 @@
 "use client";
 
-import { createContext, useContext, useState, useCallback, ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useCallback,
+  ReactNode,
+} from "react";
 import type { FilterState, HeaderMode } from "@/types/filters";
 import { DEFAULT_FILTER } from "@/lib/constants";
 
@@ -8,11 +14,19 @@ interface FilterContextValue {
   /** Current filter state */
   filter: FilterState;
   /** Update location filter */
-  updateLocation: (name: string, locationIds: string[], locationId?: string) => void;
+  updateLocation: (
+    name: string,
+    locationIds: string[],
+    locationId?: string,
+  ) => void;
   /** Update category filter */
   updateCategory: (name: string, typeId: string, subtypeIds: string[]) => void;
   /** Update price filter */
-  updatePrice: (min: number | null, max: number | null, showOnRequest: boolean) => void;
+  updatePrice: (
+    min: number | null,
+    max: number | null,
+    showOnRequest: boolean,
+  ) => void;
   /** Update search mode */
   setMode: (mode: HeaderMode) => void;
   /** Reset all filters to default */
@@ -43,38 +57,50 @@ interface FilterProviderProps {
 /**
  * Provider component for filter state management
  */
-export function FilterProvider({ children, initialFilter }: FilterProviderProps) {
+export function FilterProvider({
+  children,
+  initialFilter,
+}: FilterProviderProps) {
   const [filter, setFilter] = useState<FilterState>({
     ...defaultFilter,
     ...initialFilter,
   });
 
-  const updateLocation = useCallback((name: string, locationIds: string[], locationId?: string) => {
-    setFilter((prev) => ({
-      ...prev,
-      location: name,
-      locationIds,
-      locationId: locationId || locationIds[0] || "",
-    }));
-  }, []);
+  const updateLocation = useCallback(
+    (name: string, locationIds: string[], locationId?: string) => {
+      setFilter((prev) => ({
+        ...prev,
+        location: name,
+        locationIds,
+        locationId: locationId || locationIds[0] || "",
+      }));
+    },
+    [],
+  );
 
-  const updateCategory = useCallback((name: string, typeId: string, subtypeIds: string[]) => {
-    setFilter((prev) => ({
-      ...prev,
-      category: name,
-      typeId,
-      subTypeIds: subtypeIds,
-    }));
-  }, []);
+  const updateCategory = useCallback(
+    (name: string, typeId: string, subtypeIds: string[]) => {
+      setFilter((prev) => ({
+        ...prev,
+        category: name,
+        typeId,
+        subTypeIds: subtypeIds,
+      }));
+    },
+    [],
+  );
 
-  const updatePrice = useCallback((min: number | null, max: number | null, showOnRequest: boolean) => {
-    setFilter((prev) => ({
-      ...prev,
-      minPrice: min,
-      maxPrice: max,
-      showPriceOnRequest: showOnRequest,
-    }));
-  }, []);
+  const updatePrice = useCallback(
+    (min: number | null, max: number | null, showOnRequest: boolean) => {
+      setFilter((prev) => ({
+        ...prev,
+        minPrice: min,
+        maxPrice: max,
+        showPriceOnRequest: showOnRequest,
+      }));
+    },
+    [],
+  );
 
   const setMode = useCallback((mode: HeaderMode) => {
     setFilter((prev) => ({
@@ -96,7 +122,9 @@ export function FilterProvider({ children, initialFilter }: FilterProviderProps)
     resetFilters,
   };
 
-  return <FilterContext.Provider value={value}>{children}</FilterContext.Provider>;
+  return (
+    <FilterContext.Provider value={value}>{children}</FilterContext.Provider>
+  );
 }
 
 /**

@@ -9,7 +9,13 @@ interface DistrictItemProps {
   variant: "dropdown" | "modal";
 }
 
-export function DistrictItem({ name, postalCode, checked, onClick, variant }: DistrictItemProps) {
+export function DistrictItem({
+  name,
+  postalCode,
+  checked,
+  onClick,
+  variant,
+}: DistrictItemProps) {
   const isModal = variant === "modal";
 
   return (
@@ -20,7 +26,9 @@ export function DistrictItem({ name, postalCode, checked, onClick, variant }: Di
       }`}
     >
       <Checkbox checked={checked} />
-      <span className={`${isModal ? "text-base" : "text-sm"} font-medium text-text-primary leading-normal flex-1 text-left`}>
+      <span
+        className={`${isModal ? "text-base" : "text-sm"} font-medium text-text-primary leading-normal flex-1 text-left`}
+      >
         {postalCode ? `${postalCode}, ${name}` : name}
       </span>
     </button>

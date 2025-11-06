@@ -31,7 +31,11 @@ interface ModeToggleProps {
   variant?: "desktop" | "modal";
 }
 
-export function ModeToggle({ mode, onModeChange, variant = "desktop" }: ModeToggleProps) {
+export function ModeToggle({
+  mode,
+  onModeChange,
+  variant = "desktop",
+}: ModeToggleProps) {
   const [indicatorStyle, setIndicatorStyle] = useState({ left: 0, width: 0 });
   const buttonsRef = useRef<(HTMLButtonElement | null)[]>([]);
 

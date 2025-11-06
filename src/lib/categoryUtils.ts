@@ -17,7 +17,8 @@ export const categoryIcons: Record<string, string> = {
 };
 
 /** SVG filter for brand purple color */
-export const PURPLE_FILTER = 'invert(36%) sepia(95%) saturate(4527%) hue-rotate(262deg) brightness(98%) contrast(93%)';
+export const PURPLE_FILTER =
+  "invert(36%) sepia(95%) saturate(4527%) hue-rotate(262deg) brightness(98%) contrast(93%)";
 
 /** Animation duration for expand/collapse */
 export const EXPAND_DURATION = 0.2;

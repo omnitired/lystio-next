@@ -28,8 +28,6 @@ export function Modal({
   applyIcon,
   showFooter = true,
 }: ModalProps) {
-
-
   return (
     <AnimatePresence>
       {isOpen && (
@@ -57,7 +55,9 @@ export function Modal({
           >
             {/* Header */}
             <div className="flex items-center justify-between p-4">
-              <h2 className="text-lg font-semibold text-text-primary">{title}</h2>
+              <h2 className="text-lg font-semibold text-text-primary">
+                {title}
+              </h2>
               <Button
                 variant="icon"
                 onClick={onClose}

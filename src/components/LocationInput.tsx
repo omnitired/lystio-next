@@ -11,7 +11,7 @@ export function LocationInput({
   value,
   onChange,
   placeholder = "Enter location...",
-  variant = "dropdown"
+  variant = "dropdown",
 }: LocationInputProps) {
   const isModal = variant === "modal";
   const isDropdown = variant === "dropdown";

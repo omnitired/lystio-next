@@ -10,10 +10,7 @@ interface CategoryModalProps {
   onClose: () => void;
 }
 
-export function CategoryModal({
-  isOpen,
-  onClose,
-}: CategoryModalProps) {
+export function CategoryModal({ isOpen, onClose }: CategoryModalProps) {
   const { filter, updateCategory } = useFilter();
   const { typeId, subTypeIds } = filter;
 
@@ -21,7 +18,11 @@ export function CategoryModal({
   const [tempTypeId, setTempTypeId] = useState(typeId);
   const [tempSubtypeIds, setTempSubtypeIds] = useState(subTypeIds);
 
-  const handleCategoryUpdate = (categoryName: string, typeId: string, subtypeIds: string[]) => {
+  const handleCategoryUpdate = (
+    categoryName: string,
+    typeId: string,
+    subtypeIds: string[],
+  ) => {
     setTempCategoryName(categoryName);
     setTempTypeId(typeId);
     setTempSubtypeIds(subtypeIds);

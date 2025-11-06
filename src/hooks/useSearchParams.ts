@@ -19,21 +19,35 @@ export function useSearchParams() {
     return {
       type: [parseInt(filter.typeId)],
       rentType: [filter.mode === "rent" ? "rent" : "buy"],
-      ...(filter.subTypeIds.length > 0 ? { subType: filter.subTypeIds.map((id) => parseInt(id)) } : {}),
+      ...(filter.subTypeIds.length > 0
+        ? { subType: filter.subTypeIds.map((id) => parseInt(id)) }
+        : {}),
       showPriceOnRequest: filter.showPriceOnRequest,
       sort: "most_recent" as const,
-      ...(filter.locationIds.length > 0 ? { withinId: filter.locationIds } : {}),
+      ...(filter.locationIds.length > 0
+        ? { withinId: filter.locationIds }
+        : {}),
     };
-  }, [filter.typeId, filter.mode, filter.subTypeIds, filter.showPriceOnRequest, filter.locationIds]);
+  }, [
+    filter.typeId,
+    filter.mode,
+    filter.subTypeIds,
+    filter.showPriceOnRequest,
+    filter.locationIds,
+  ]);
 
   const searchCountParams = useMemo<SearchCountParams>(() => {
     const params: SearchCountParams = {
       type: [parseInt(filter.typeId)],
       rentType: [filter.mode === "rent" ? "rent" : "buy"],
-      ...(filter.subTypeIds.length > 0 ? { subType: filter.subTypeIds.map((id) => parseInt(id)) } : {}),
+      ...(filter.subTypeIds.length > 0
+        ? { subType: filter.subTypeIds.map((id) => parseInt(id)) }
+        : {}),
       showPriceOnRequest: filter.showPriceOnRequest,
       sort: "most_recent" as const,
-      ...(filter.locationIds.length > 0 ? { withinId: filter.locationIds } : {}),
+      ...(filter.locationIds.length > 0
+        ? { withinId: filter.locationIds }
+        : {}),
     };
 
     // Add price filter
@@ -48,7 +62,15 @@ export function useSearchParams() {
     }
 
     return params;
-  }, [filter.typeId, filter.mode, filter.subTypeIds, filter.showPriceOnRequest, filter.locationIds, filter.minPrice, filter.maxPrice]);
+  }, [
+    filter.typeId,
+    filter.mode,
+    filter.subTypeIds,
+    filter.showPriceOnRequest,
+    filter.locationIds,
+    filter.minPrice,
+    filter.maxPrice,
+  ]);
 
   return { histogramParams, searchCountParams };
 }

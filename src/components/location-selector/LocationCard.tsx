@@ -1,5 +1,9 @@
 import Image from "next/image";
-import { ChevronDownIcon, ChevronUpIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
+import {
+  ChevronDownIcon,
+  ChevronUpIcon,
+  ChevronRightIcon,
+} from "@heroicons/react/24/outline";
 import type { Location } from "@/lib/locations";
 import { cityImages } from "@/data/cityImages";
 
@@ -20,7 +24,7 @@ export function LocationCard({
   onClick,
   variant,
   showImage = true,
-  showChevron = true
+  showChevron = true,
 }: LocationCardProps) {
   const isModal = variant === "modal";
   const isDropdownGrid = variant === "dropdown" && showImage && !showChevron;
@@ -43,7 +47,12 @@ export function LocationCard({
           />
           {isSelected && (
             <div className="absolute top-0.5 right-0.5">
-              <Image src="/icons/checkmark-circle-white.svg" alt="" width={16} height={16} />
+              <Image
+                src="/icons/checkmark-circle-white.svg"
+                alt=""
+                width={16}
+                height={16}
+              />
             </div>
           )}
         </div>
@@ -51,10 +60,14 @@ export function LocationCard({
           <p className="text-sm font-medium leading-normal overflow-hidden text-ellipsis whitespace-nowrap text-text-primary">
             {location.name}
           </p>
-          <p className={`text-[10px] font-medium leading-[1.3] overflow-hidden text-ellipsis whitespace-nowrap ${
-            isSelected ? "text-brand-purple" : "text-text-secondary"
-          }`}>
-            {isSelected ? "All Districts" : `${location.children.length} Districts`}
+          <p
+            className={`text-[10px] font-medium leading-[1.3] overflow-hidden text-ellipsis whitespace-nowrap ${
+              isSelected ? "text-brand-purple" : "text-text-secondary"
+            }`}
+          >
+            {isSelected
+              ? "All Districts"
+              : `${location.children.length} Districts`}
           </p>
         </div>
       </button>
@@ -80,10 +93,18 @@ export function LocationCard({
           />
         )}
         <div className="flex flex-col items-start">
-          <p className={isModal ? "text-body leading-normal" : "text-body-sm leading-normal"}>
+          <p
+            className={
+              isModal
+                ? "text-body leading-normal"
+                : "text-body-sm leading-normal"
+            }
+          >
             {location.name}
           </p>
-          <p className={`${isModal ? "text-sm" : "text-[10px]"} font-medium text-text-secondary leading-[1.3]`}>
+          <p
+            className={`${isModal ? "text-sm" : "text-[10px]"} font-medium text-text-secondary leading-[1.3]`}
+          >
             {location.children.length} Districts
           </p>
         </div>

@@ -1,11 +1,6 @@
 "use client";
 
-import {
-  useState,
-  useRef,
-  useEffect,
-  useCallback,
-} from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { useQuery } from "@tanstack/react-query";
 import { searchMapbox, generateSessionToken } from "@/lib/mapbox";
@@ -42,14 +37,25 @@ interface SearchSectionProps {
   dropdown?: React.ReactNode;
 }
 
-function SearchSection({ label, isActive, onClick, roundedStyle = "none", children, dropdown }: SearchSectionProps) {
+function SearchSection({
+  label,
+  isActive,
+  onClick,
+  roundedStyle = "none",
+  children,
+  dropdown,
+}: SearchSectionProps) {
   const roundedClass =
-    roundedStyle === "left" ? "rounded-l-full" :
-    roundedStyle === "right" ? "rounded-r-full" :
-    "";
+    roundedStyle === "left"
+      ? "rounded-l-full"
+      : roundedStyle === "right"
+        ? "rounded-r-full"
+        : "";
 
   return (
-    <div className={`flex-1 bg-bg-light h-full border-l border-border-light relative ${roundedClass} first:border-l-0`}>
+    <div
+      className={`flex-1 bg-bg-light h-full border-l border-border-light relative ${roundedClass} first:border-l-0`}
+    >
       <div
         onClick={onClick}
         className={`w-full h-full flex items-center gap-[15px] px-3 py-2 cursor-pointer transition-colors ${roundedClass} ${
@@ -99,7 +105,8 @@ export function SearchBar({
   onSearch,
   onCountUpdate,
 }: SearchBarProps) {
-  const { filter, updateLocation, updateCategory, updatePrice, setMode } = useFilter();
+  const { filter, updateLocation, updateCategory, updatePrice, setMode } =
+    useFilter();
   const [activeDropdown, setActiveDropdown] = useState<DropdownType>(null);
   const [showFilterModal, setShowFilterModal] = useState(false);
   const [showLocationModal, setShowLocationModal] = useState(false);
@@ -156,7 +163,7 @@ export function SearchBar({
   }, []);
 
   const toggleDropdown = (dropdown: DropdownType) => {
-    setActiveDropdown(prev => prev === dropdown ? null : dropdown);
+    setActiveDropdown((prev) => (prev === dropdown ? null : dropdown));
   };
 
   const handleDropdownClose = useCallback(() => {
@@ -168,7 +175,7 @@ export function SearchBar({
       updateLocation(locationName, locationIds, locationId);
       setIsTyping(false);
     },
-    [updateLocation]
+    [updateLocation],
   );
 
   return (
@@ -206,7 +213,11 @@ export function SearchBar({
                   type="text"
                   value={filter.location}
                   onChange={(e) => {
-                    updateLocation(e.target.value, filter.locationIds, filter.locationId);
+                    updateLocation(
+                      e.target.value,
+                      filter.locationIds,
+                      filter.locationId,
+                    );
                     setIsTyping(true);
                   }}
                   placeholder="Enter location..."
@@ -309,7 +320,11 @@ export function SearchBar({
                     !filter.minPrice && !filter.maxPrice ? "opacity-40" : ""
                   }`}
                 >
-                  {getPriceDisplayText(filter.minPrice, filter.maxPrice, pricePlaceholder)}
+                  {getPriceDisplayText(
+                    filter.minPrice,
+                    filter.maxPrice,
+                    pricePlaceholder,
+                  )}
                 </span>
               </div>
             </div>

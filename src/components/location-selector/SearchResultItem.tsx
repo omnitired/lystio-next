@@ -7,7 +7,12 @@ interface SearchResultItemProps {
   variant: "dropdown" | "modal";
 }
 
-export function SearchResultItem({ name, description, onClick, variant }: SearchResultItemProps) {
+export function SearchResultItem({
+  name,
+  description,
+  onClick,
+  variant,
+}: SearchResultItemProps) {
   const isModal = variant === "modal";
 
   return (
@@ -18,10 +23,17 @@ export function SearchResultItem({ name, description, onClick, variant }: Search
       }`}
     >
       <div className="shrink-0 mt-0.5">
-        <Image src="/icons/location-pin-purple.svg" alt="" width={20} height={20} />
+        <Image
+          src="/icons/location-pin-purple.svg"
+          alt=""
+          width={20}
+          height={20}
+        />
       </div>
       <div className="flex-1 min-w-0">
-        <p className={`${isModal ? "text-base" : "text-sm"} font-medium text-text-primary`}>
+        <p
+          className={`${isModal ? "text-base" : "text-sm"} font-medium text-text-primary`}
+        >
           {name}
         </p>
         <p className={`${isModal ? "text-sm" : "text-xs"} text-text-secondary`}>
