@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useState } from "react";
 import { type HistogramParams } from "@/lib/searchCount";
 import { Modal } from "./ui/Modal";
 import { PriceSelector } from "./PriceSelector";
@@ -18,19 +18,20 @@ export function PriceModal({
   histogramParams
 }: PriceModalProps) {
   const { filter, updatePrice } = useFilter();
+  const { minPrice, maxPrice, showPriceOnRequest } = filter;
 
-  const priceRef = useRef<{ min: number | null; max: number | null; showPriceOnRequest: boolean }>({
-    min: filter.minPrice,
-    max: filter.maxPrice,
-    showPriceOnRequest: filter.showPriceOnRequest ?? false
-  });
+  const [tempMin, setTempMin] = useState(minPrice);
+  const [tempMax, setTempMax] = useState(maxPrice);
+  const [tempShowPriceOnRequest, setTempShowPriceOnRequest] = useState(showPriceOnRequest ?? false);
 
-  const handlePriceUpdate = (min: number | null, max: number | null, showPriceOnRequest: boolean) => {
-    priceRef.current = { min, max, showPriceOnRequest };
+  const handlePriceUpdate = (min: number | null, max: number | null, showOnRequest: boolean) => {
+    setTempMin(min);
+    setTempMax(max);
+    setTempShowPriceOnRequest(showOnRequest);
   };
 
   const handleApply = () => {
-    updatePrice(priceRef.current.min, priceRef.current.max, priceRef.current.showPriceOnRequest);
+    updatePrice(tempMin, tempMax, tempShowPriceOnRequest);
     onClose();
   };
 
@@ -45,9 +46,9 @@ export function PriceModal({
       <div className="flex-1 overflow-y-auto p-4">
         <PriceSelector
           onPriceUpdate={handlePriceUpdate}
-          initialMinPrice={filter.minPrice}
-          initialMaxPrice={filter.maxPrice}
-          initialShowPriceOnRequest={filter.showPriceOnRequest}
+          initialMinPrice={minPrice}
+          initialMaxPrice={maxPrice}
+          initialShowPriceOnRequest={showPriceOnRequest}
           histogramParams={histogramParams}
           variant="modal"
         />

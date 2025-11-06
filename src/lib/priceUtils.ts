@@ -3,45 +3,40 @@
  */
 
 /**
+ * Format a number with thousand separators (German locale)
+ * @example formatPriceNumber(1500) // "1.500"
+ */
+export const formatPriceNumber = (price: number): string => {
+  return price.toLocaleString('de-DE');
+};
+
+/**
  * Format a number as a price with thousand separators and Euro symbol
- * @example formatPrice(1500) // "1,500€"
+ * @example formatPrice(1500) // "1.500€"
  */
 export const formatPrice = (price: number): string => {
-  if (!price) return "0€";
-
-  const priceStr = price.toString();
-  const parts = [];
-
-  // Process from right to left, adding commas every 3 digits
-  let i = priceStr.length;
-  while (i > 0) {
-    const start = Math.max(0, i - 3);
-    parts.unshift(priceStr.slice(start, i));
-    i = start;
-  }
-
-  return `${parts.join('.')}€`;
+  return `${formatPriceNumber(price)}€`;
 };
 
+const DEFAULT_OPTIONS = [null, 400, 500, 600, 700, 800, 900, 1000, 1200, 1300, 1400, 1500, 1600, 1700, 1800];
+
 /**
- * Generate an array of price options for minimum price selection
- * Ensures minimum 100 distance between stops, generates fewer stops for small ranges
+ * Generate price options from histogram range
+ * Ensures minimum 100 distance between stops
  */
 export const generatePriceOptions = (min: number, max: number): (number | null)[] => {
-  const options: (number | null)[] = [null]; // null = "No Minimum"
+  const options: (number | null)[] = [null];
   const range = max - min;
 
-  // Calculate max possible stops with 100 minimum distance
   const maxStops = Math.floor(range / 100);
-  const numStops = Math.min(maxStops, 19); // Cap at 19 (plus min/max = 21 total)
+  const numStops = Math.min(maxStops, 19);
 
   if (numStops <= 0) {
-    // Range too small, just add max
     options.push(Math.ceil(max));
     return options;
   }
 
-  const step = range / (numStops + 1); // +1 to account for spacing
+  const step = range / (numStops + 1);
 
   for (let i = 1; i <= numStops; i++) {
     const price = min + (step * i);
@@ -49,60 +44,30 @@ export const generatePriceOptions = (min: number, max: number): (number | null)[
     options.push(roundedPrice);
   }
 
-  // Add max as the last option
   options.push(Math.ceil(max));
-
   return options;
 };
 
 /**
- * Generate an array of price options for maximum price selection
- * Ensures minimum 100 distance between stops, generates fewer stops for small ranges
+ * Get default price options or generate from histogram
  */
-export const generateMaxPriceOptions = (min: number, max: number): (number | null)[] => {
-  const options: (number | null)[] = [null]; // null = "No Maximum"
-  const range = max - min;
-
-  // Calculate max possible stops with 100 minimum distance
-  const maxStops = Math.floor(range / 100);
-  const numStops = Math.min(maxStops, 19); // Cap at 19 (plus min/max = 21 total)
-
-  if (numStops <= 0) {
-    // Range too small, just add max
-    options.push(Math.ceil(max));
-    return options;
-  }
-
-  const step = range / (numStops + 1); // +1 to account for spacing
-
-  for (let i = 1; i <= numStops; i++) {
-    const price = min + (step * i);
-    const roundedPrice = Math.ceil(price / 100) * 100;
-    options.push(roundedPrice);
-  }
-
-  // Add max as the last option
-  options.push(Math.ceil(max));
-
-  return options;
+export const getPriceOptions = (range?: [number, number] | null): (number | null)[] => {
+  return range ? generatePriceOptions(range[0], range[1]) : DEFAULT_OPTIONS;
 };
 
 /**
  * Generate display text for price range
- * @example getPriceDisplayText(500, 1000, "Select Price Range") // "500 - 1,000 €"
- * @example getPriceDisplayText(null, null, "Select Price Range") // "Select Price Range"
+ * @example getPriceDisplayText(500, 1000) // "500 - 1.000 €"
  */
 export const getPriceDisplayText = (
   minPrice: number | null,
   maxPrice: number | null,
   placeholder: string = "Select Price Range"
 ): string => {
-  if (!minPrice && !maxPrice) {
-    return placeholder;
-  }
+  if (!minPrice && !maxPrice) return placeholder;
 
-  const minText = minPrice ? formatPrice(minPrice).replace("€", "") : "0";
-  const maxText = maxPrice ? formatPrice(maxPrice).replace("€", "") : "∞";
+  const minText = minPrice ? formatPriceNumber(minPrice) : "0";
+  const maxText = maxPrice ? formatPriceNumber(maxPrice) : "∞";
 
   return `${minText} - ${maxText} €`;
 };

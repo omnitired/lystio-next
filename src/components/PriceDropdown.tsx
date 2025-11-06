@@ -4,7 +4,6 @@ import { type HistogramParams } from "@/lib/searchCount";
 
 interface PriceDropdownProps {
   onClose?: () => void;
-  onApply?: (min: number | null, max: number | null, showPriceOnRequest: boolean) => void;
   onPriceUpdate?: (min: number | null, max: number | null, showPriceOnRequest: boolean) => void;
   isOpen?: boolean;
   initialMinPrice?: number | null;
@@ -13,7 +12,7 @@ interface PriceDropdownProps {
   histogramParams?: HistogramParams | null;
 }
 
-export function PriceDropdown({ onClose, onPriceUpdate, isOpen = true, initialMinPrice, initialMaxPrice, initialShowPriceOnRequest, histogramParams }: PriceDropdownProps) {
+export function PriceDropdown({ onClose, isOpen = true, ...selectorProps }: PriceDropdownProps) {
   return (
     <Dropdown isOpen={isOpen} onClose={onClose} className="w-full max-w-[424px]">
       {/* Header */}
@@ -23,14 +22,7 @@ export function PriceDropdown({ onClose, onPriceUpdate, isOpen = true, initialMi
         </p>
       </div>
 
-      <PriceSelector
-        onPriceUpdate={onPriceUpdate}
-        initialMinPrice={initialMinPrice}
-        initialMaxPrice={initialMaxPrice}
-        initialShowPriceOnRequest={initialShowPriceOnRequest}
-        histogramParams={histogramParams}
-        variant="dropdown"
-      />
+      <PriceSelector {...selectorProps} variant="dropdown" />
     </Dropdown>
   );
 }
