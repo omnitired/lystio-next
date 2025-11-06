@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { CheckIcon } from "@heroicons/react/24/outline";
 
 interface CheckboxProps {
   /** Whether the checkbox is checked */
@@ -28,9 +28,7 @@ export function Checkbox({ checked, onChange, className = "" }: CheckboxProps) {
       }`}
       onClick={onChange}
     >
-      {checked && (
-        <Image src="/icons/checkmark-white.svg" alt="" width={12} height={10} />
-      )}
+      {checked && <CheckIcon className="w-3 h-3 text-white stroke-[3]" />}
     </div>
   );
 }

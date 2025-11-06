@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
-import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
+import { CheckIcon } from "@heroicons/react/24/outline";
 import { useHistogram, type HistogramParams } from "@/lib/searchCount";
 import { formatPrice, getPriceOptions } from "@/lib/priceUtils";
 import { Checkbox } from "./ui/Checkbox";
@@ -97,12 +97,8 @@ export function PriceSelector({
           {getDisplayText(price, type)}
         </span>
         {isSelected && (
-          <Image
-            src="/icons/checkmark-purple.svg"
-            alt=""
-            width={24}
-            height={24}
-            className={isModal ? "" : "relative z-10"}
+          <CheckIcon
+            className={`w-6 h-6 text-brand-purple stroke-2 ${isModal ? "" : "relative z-10"}`}
           />
         )}
       </button>

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { ArrowRightIcon } from "@heroicons/react/24/outline";
 
 interface DrawAreaButtonProps {
   variant: "dropdown" | "modal";
@@ -31,12 +32,7 @@ export function DrawAreaButton({ variant }: DrawAreaButtonProps) {
         >
           Draw an area on the map
         </span>
-        <Image
-          src="/icons/arrow-right-purple.svg"
-          alt=""
-          width={24}
-          height={24}
-        />
+        <ArrowRightIcon className="w-6 h-6 text-brand-purple" />
       </button>
     </div>
   );

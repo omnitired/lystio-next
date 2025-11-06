@@ -1,9 +1,9 @@
-import Image from "next/image";
 import {
   ChevronDownIcon,
   ChevronUpIcon,
   ChevronRightIcon,
-} from "@heroicons/react/24/outline";
+  CheckCircleIcon,
+} from "@heroicons/react/24/solid";
 import type { Location } from "@/lib/locations";
 import { cityImages } from "@/data/cityImages";
 
@@ -47,12 +47,7 @@ export function LocationCard({
           />
           {isSelected && (
             <div className="absolute top-0.5 right-0.5">
-              <Image
-                src="/icons/checkmark-circle-white.svg"
-                alt=""
-                width={16}
-                height={16}
-              />
+              <CheckCircleIcon className="w-4 h-4 text-white" />
             </div>
           )}
         </div>

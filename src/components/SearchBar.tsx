@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { useQuery } from "@tanstack/react-query";
+import { FunnelIcon } from "@heroicons/react/24/outline";
 import { searchMapbox, generateSessionToken } from "@/lib/mapbox";
 import { useSearchCount } from "@/lib/searchCount";
 import { PriceDropdown } from "./PriceDropdown";
@@ -256,11 +257,13 @@ export function SearchBar({
 
           {/* Mobile Action Buttons */}
           <div className="px-2 flex items-start justify-center gap-2 w-full md:hidden z-50">
-            <MobileButton
-              icon="/icons/filter-purple.svg"
-              label="Filters"
+            <button
               onClick={() => setShowFilterModal(true)}
-            />
+              className="flex-1 bg-white border border-border-light rounded-lg hover:bg-bg-light h-10 px-4 flex items-center justify-center gap-2 text-base font-medium text-text-primary transition-colors"
+            >
+              <FunnelIcon className="w-4 h-4 text-brand-purple" />
+              <span className="text-sm">Filters</span>
+            </button>
             <MobileButton
               icon="/icons/notification-purple.svg"
               label="Create Alert"

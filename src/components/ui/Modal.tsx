@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import Image from "next/image";
+import { XMarkIcon } from "@heroicons/react/24/outline";
 import { Button } from "./Button";
 
 interface ModalProps {
@@ -58,13 +58,12 @@ export function Modal({
               <h2 className="text-lg font-semibold text-text-primary">
                 {title}
               </h2>
-              <Button
-                variant="icon"
+              <button
                 onClick={onClose}
-                icon="/icons/close.svg"
-                iconWidth={24}
-                iconHeight={24}
-              />
+                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              >
+                <XMarkIcon className="w-6 h-6 text-gray-600" />
+              </button>
             </div>
 
             {/* Content */}

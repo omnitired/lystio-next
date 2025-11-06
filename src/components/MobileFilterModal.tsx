@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { ChevronRightIcon } from "@heroicons/react/24/outline";
 import { Modal } from "./ui/Modal";
 import { ModeToggle } from "./ui/ModeToggle";
 import { CategoryModal } from "./CategoryModal";
@@ -61,12 +62,7 @@ export function MobileFilterModal({
               <span className="text-md font-normal text-brand-purple">
                 {filter.category}
               </span>
-              <Image
-                src="/icons/chevron-right-purple.svg"
-                alt=""
-                width={24}
-                height={24}
-              />
+              <ChevronRightIcon className="w-6 h-6 text-brand-purple" />
             </div>
           </button>
 
@@ -95,12 +91,7 @@ export function MobileFilterModal({
                       "Any Price",
                     )}
               </span>
-              <Image
-                src="/icons/chevron-right-gray.svg"
-                alt=""
-                width={24}
-                height={24}
-              />
+              <ChevronRightIcon className="w-6 h-6 text-gray-600" />
             </div>
           </button>
         </div>
