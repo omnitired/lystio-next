@@ -71,15 +71,15 @@ export function PriceSelector({
           handlePriceSelect(price, type);
         }}
         disabled={isDisabled}
-        className={`flex gap-2.5 items-center justify-between px-3 py-2 relative ${
+        className={`flex gap-2.5 items-center justify-between ${isModal ? "px-4 py-3" : "px-3 py-2 relative"} ${
           isSelected ? "bg-bg-light" : "hover-purple-subtle"
         } ${isDisabled ? "opacity-40 cursor-not-allowed" : ""} ${isMax ? "flex-row-reverse text-right" : "flex-row text-left"}`}
       >
-        <span className="flex-1 text-sm leading-[1.6] relative z-10 font-medium text-black">
+        <span className={`flex-1 ${isModal ? "text-base" : "text-sm leading-[1.6] relative z-10"} font-medium text-black`}>
           {getDisplayText(price, type)}
         </span>
         {isSelected && (
-          <Image src="/icons/checkmark-purple.svg" alt="" width={24} height={24} className="relative z-10" />
+          <Image src="/icons/checkmark-purple.svg" alt="" width={24} height={24} className={isModal ? "" : "relative z-10"} />
         )}
       </button>
     );
@@ -100,9 +100,9 @@ export function PriceSelector({
           onClick={() => setActiveDropdown(isActive ? null : type)}
           className={`border ${
             isActive ? "border-2 border-brand-purple" : "border-border-light"
-          } rounded-lg h-11 px-2.5 flex items-center justify-between`}
+          } rounded-lg ${isModal ? "h-12 px-3" : "h-11 px-2.5"} flex items-center justify-between`}
         >
-          <span className={`text-sm font-medium ${
+          <span className={`${isModal ? "text-base" : "text-sm"} font-medium ${
             price === null ? "text-black opacity-40" : "text-black"
           }`}>
             {getDisplayText(price, type)}
@@ -127,7 +127,7 @@ export function PriceSelector({
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.2 }}
+            transition={{ duration:  0.2 }}
             className={`flex flex-col overflow-hidden ${
               isModal
                 ? "border border-border-light rounded-lg"
@@ -157,10 +157,10 @@ export function PriceSelector({
           setShowPriceOnRequest(newValue);
           onPriceUpdate?.(minPrice, maxPrice, newValue);
         }}
-        className={`flex gap-2 items-center p-3 w-full text-left cursor-pointer ${isModal ? "border border-border-light rounded-lg mt-4" : "border-t border-[#f2f2f2]"}`}
+        className={`flex ${isModal ? "gap-3 items-center p-4 border border-border-light rounded-lg w-full mt-4" : "gap-2 items-center p-3 border-t border-[#f2f2f2] w-full text-left cursor-pointer"}`}
       >
         <Checkbox checked={showPriceOnRequest} className="rounded-sm" />
-        <span className="flex-1 text-sm font-medium text-text-primary leading-[1.6]">
+        <span className={`flex-1 ${isModal ? "text-base" : "text-sm"} font-medium text-text-primary ${isModal ? "text-left" : "leading-[1.6]"}`}>
           Show listings with "Price on Request"
         </span>
       </button>
