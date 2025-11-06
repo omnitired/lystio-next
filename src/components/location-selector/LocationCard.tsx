@@ -1,3 +1,4 @@
+import Image from "next/image";
 import {
   ChevronDownIcon,
   ChevronUpIcon,
@@ -40,10 +41,11 @@ export function LocationCard({
         }`}
       >
         <div className="relative h-20 w-full rounded overflow-hidden mb-1">
-          <img
+          <Image
             src={cityImages[location.name] || "/cities/Vienna.png"}
             alt={location.name}
-            className="w-full h-full object-cover"
+            fill
+            className="object-cover"
           />
           {isSelected && (
             <div className="absolute top-0.5 right-0.5">
@@ -81,10 +83,12 @@ export function LocationCard({
     >
       <div className={`flex items-center ${isModal ? "gap-3" : "gap-2"}`}>
         {showImage && (
-          <img
+          <Image
             src={cityImages[location.name] || "/cities/LowerAustria.png"}
             alt={location.name}
-            className={`${isModal ? "w-[42px] h-[42px]" : "w-[38px] h-[38px]"} rounded object-cover shrink-0`}
+            width={isModal ? 42 : 38}
+            height={isModal ? 42 : 38}
+            className="rounded object-cover shrink-0"
           />
         )}
         <div className="flex flex-col items-start">

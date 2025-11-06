@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ChevronDownIcon,
@@ -167,10 +168,12 @@ function CategoryButton({
         }`}
       >
         <div className="flex items-center gap-2 flex-1 min-w-0">
-          <img
+          <Image
             src={categoryIcons[typeId]}
             alt={typeName}
-            className="w-5 h-5 shrink-0"
+            width={20}
+            height={20}
+            className="shrink-0"
             style={{ filter: isActive ? PURPLE_FILTER : "none" }}
           />
           <span
@@ -206,10 +209,12 @@ function CategoryButton({
       }`}
     >
       <div className="flex items-center gap-2 flex-1 min-w-0">
-        <img
+        <Image
           src={categoryIcons[typeId]}
           alt={typeName}
-          className="w-4 h-4 shrink-0"
+          width={16}
+          height={16}
+          className="shrink-0"
           style={{ filter: isActive ? PURPLE_FILTER : "none" }}
         />
         <span
