@@ -54,7 +54,7 @@ function SearchSection({
 
   return (
     <div
-      className={`flex-1 bg-bg-light h-full border-l border-border-light relative ${roundedClass} first:border-l-0`}
+      className={`hidden md:flex flex-1 bg-bg-light h-full border-l border-border-light relative ${roundedClass} first:border-l-0`}
     >
       <div
         onClick={onClick}
