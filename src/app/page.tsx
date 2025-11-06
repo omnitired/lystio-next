@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Header } from "@/components/ui/Header";
-import { SearchBar } from "@/components/ui/SearchBar";
+import { Header } from "@/components/Header";
+import { SearchBar } from "@/components/SearchBar";
 import { FilterProvider } from "@/contexts/FilterContext";
 
 export default function Home() {

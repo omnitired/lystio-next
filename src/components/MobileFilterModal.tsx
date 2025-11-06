@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { Modal } from "./Modal";
-import { ModeToggle } from "./ModeToggle";
+import { Modal } from "./ui/Modal";
+import { ModeToggle } from "./ui/ModeToggle";
 import { CategoryModal } from "./CategoryModal";
 import { PriceModal } from "./PriceModal";
 import { useFilter } from "@/contexts/FilterContext";

@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { searchMapbox, generateSessionToken } from "@/lib/mapbox";
-import { Modal } from "./Modal";
+import { Modal } from "./ui/Modal";
 import { LocationSelector } from "./LocationSelector";
 import { LocationInput } from "./LocationInput";
 import { useFilter } from "@/contexts/FilterContext";

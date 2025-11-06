@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { Modal } from "./Modal";
+import { Modal } from "./ui/Modal";
 import { CategorySelector } from "./CategorySelector";
 import { useFilter } from "@/contexts/FilterContext";
 import categoriesData from "@/data/categories.json";

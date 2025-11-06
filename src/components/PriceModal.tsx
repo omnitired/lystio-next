@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { type HistogramParams } from "@/lib/searchCount";
-import { Modal } from "./Modal";
+import { Modal } from "./ui/Modal";
 import { PriceSelector } from "./PriceSelector";
 import { useFilter } from "@/contexts/FilterContext";
 

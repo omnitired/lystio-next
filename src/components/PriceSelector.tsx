@@ -3,7 +3,7 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { useHistogram, type HistogramParams } from "@/lib/searchCount";
 import { formatPrice, generatePriceOptions, generateMaxPriceOptions, getNumericValue } from "@/lib/priceUtils";
-import { Checkbox } from "./Checkbox";
+import { Checkbox } from "./ui/Checkbox";
 
 interface PriceSelectorProps {
   onPriceUpdate?: (min: string, max: string, showPriceOnRequest: boolean) => void;

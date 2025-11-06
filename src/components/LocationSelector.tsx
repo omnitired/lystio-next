@@ -7,7 +7,7 @@ import { ChevronDownIcon, ChevronUpIcon, ChevronRightIcon } from "@heroicons/rea
 import type { MapboxSearchResponse, GroupedSuggestions } from "@/types/mapbox";
 import { useAllLocations, usePopularLocations, useRecentSearches, type Location } from "@/lib/locations";
 import { cityImages } from "@/data/cityImages";
-import { Checkbox } from "./Checkbox";
+import { Checkbox } from "./ui/Checkbox";
 
 interface LocationSelectorProps {
   onLocationUpdate?: (locationName: string, locationIds: string[], locationId?: string) => void;

@@ -1,4 +1,4 @@
-import { Dropdown } from "./Dropdown";
+import { Dropdown } from "./ui/Dropdown";
 import { PriceSelector } from "./PriceSelector";
 import { type HistogramParams } from "@/lib/searchCount";
 

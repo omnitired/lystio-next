@@ -4,7 +4,7 @@ import Image from "next/image";
 import { ChevronDownIcon, ChevronUpIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import categoriesData from "@/data/categories.json";
 import { mockCounts } from "@/data/mockCounts";
-import { Checkbox } from "./Checkbox";
+import { Checkbox } from "./ui/Checkbox";
 
 interface CategorySelectorProps {
   onCategoryUpdate?: (categoryName: string, typeId: string, subtypeIds: string[]) => void;

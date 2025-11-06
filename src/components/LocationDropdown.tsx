@@ -1,7 +1,7 @@
 "use client";
 
 import type { MapboxSearchResponse } from "@/types/mapbox";
-import { Dropdown } from "./Dropdown";
+import { Dropdown } from "./ui/Dropdown";
 import { LocationSelector } from "./LocationSelector";
 
 interface LocationDropdownProps {
